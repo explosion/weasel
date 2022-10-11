@@ -1,5 +1,3 @@
-import typer
-
 NAME = "weasel"
 HELP = """Command-line interface for weasel projects and templates.
 You'd typically start by cloning a project template to a local directory and

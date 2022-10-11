@@ -1,6 +1,9 @@
+import shutil 
 from typing import Tuple
 from pathlib import Path
 from wasabi import msg
+
+from ..util._general import run_command, make_tempdir, is_subpath_of
 
 def git_checkout(
     repo: str, subpath: str, dest: Path, *, branch: str = "master", sparse: bool = False

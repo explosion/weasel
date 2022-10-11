@@ -105,3 +105,29 @@ def ensure_path(path: Any) -> Any:
     else:
         return path
 
+@contextmanager
+def make_tempdir() -> Generator[Path, None, None]:
+    """Execute a block in a temporary directory and remove the directory and
+    its contents at the end of the with block.
+
+    YIELDS (Path): The path of the temp directory.
+    """
+    d = Path(tempfile.mkdtemp())
+    yield d
+    try:
+        shutil.rmtree(str(d))
+    except PermissionError as e:
+        warnings.warn(Warnings.W091.format(dir=d, msg=e))
+
+
+def is_subpath_of(parent, child):
+    """
+    Check whether `child` is a path contained within `parent`.
+    """
+    # Based on https://stackoverflow.com/a/37095733 .
+
+    # In Python 3.9, the `Path.is_relative_to()` method will supplant this, so
+    # we can stop using crusty old os.path functions.
+    parent_realpath = os.path.realpath(parent)
+    child_realpath = os.path.realpath(child)
+    return os.path.commonpath([parent_realpath, child_realpath]) == parent_realpath
