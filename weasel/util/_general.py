@@ -1,5 +1,5 @@
-import sys 
-import typer 
+import sys
+import typer
 import subprocess
 import logging
 import os
@@ -18,7 +18,13 @@ from wasabi import msg
 
 from ._errors import Warnings
 from ._compat import is_windows
-from ._schema import validate, validate_project_version, validate_project_commands, show_validation_error, ProjectConfigSchema
+from ._schema import (
+    validate,
+    validate_project_version,
+    validate_project_commands,
+    show_validation_error,
+    ProjectConfigSchema,
+)
 from ..info import PROJECT_FILE
 
 Arg = typer.Argument
@@ -133,6 +139,7 @@ def ensure_path(path: Any) -> Any:
         return Path(path)
     else:
         return path
+
 
 @contextmanager
 def make_tempdir() -> Generator[Path, None, None]:

@@ -3,6 +3,7 @@ from typing import Dict, Any, List, Union, Optional, Type
 from pydantic import BaseModel, Field, StrictStr
 from pathlib import Path
 
+
 class ProjectConfigAssetGitItem(BaseModel):
     # fmt: off
     repo: StrictStr = Field(..., title="URL of Git repo to download from")
@@ -42,8 +43,8 @@ class ProjectConfigCommand(BaseModel):
     class Config:
         title = "A single named command specified in a project config"
         extra = "forbid"
-        
-        
+
+
 class ProjectConfigSchema(BaseModel):
     # fmt: off
     vars: Dict[StrictStr, Any] = Field({}, title="Optional variables to substitute in commands")

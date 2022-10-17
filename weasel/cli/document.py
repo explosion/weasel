@@ -5,7 +5,7 @@ from ..util._general import Arg, Opt, working_dir, load_project_config
 from ..info import PROJECT_FILE
 
 
-# TODO: change to weasel github url 
+# TODO: change to weasel github url
 DOCS_URL = "https://spacy.io"
 INTRO_PROJECT = f"""The [`{PROJECT_FILE}`]({PROJECT_FILE}) defines the data assets required by the
 project, as well as the available commands and workflows. For details, see the
