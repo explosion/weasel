@@ -2,13 +2,11 @@ import typer
 
 from .info import NAME, HELP
 from .cli.clone import clone_cli
+from .cli.document import document_cli
 
-app = typer.Typer(name=NAME, help=HELP)
+app = typer.Typer(name=NAME, help=HELP, add_completion=False, no_args_is_help=True)
 app.command("clone")(clone_cli)
-
-@app.command("foobar", help="No-op")
-def foobar():
-    print("Just so that there are two commands")
+app.command("document")(document_cli)
 
 
 if __name__ == "__main__":
