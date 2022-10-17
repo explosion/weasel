@@ -20,12 +20,13 @@ inputs have changed."""
 INTRO_ASSETS = f"""The following assets are defined by the project. They can
 be fetched by running [`spacy project assets`]({DOCS_URL}/api/cli#project-assets)
 in the project directory."""
+
 # These markers are added to the Markdown and can be used to update the file in
 # place if it already exists. Only the auto-generated part will be replaced.
-MARKER_START = "<!-- SPACY PROJECT: AUTO-GENERATED DOCS START (do not remove) -->"
-MARKER_END = "<!-- SPACY PROJECT: AUTO-GENERATED DOCS END (do not remove) -->"
+MARKER_START = "<!-- WASABI PROJECT: AUTO-GENERATED DOCS START (do not remove) -->"
+MARKER_END = "<!-- WASABI PROJECT: AUTO-GENERATED DOCS END (do not remove) -->"
 # If this marker is used in an existing README, it's ignored and not replaced
-MARKER_IGNORE = "<!-- SPACY PROJECT: IGNORE -->"
+MARKER_IGNORE = "<!-- WASABI PROJECT: IGNORE -->"
 
 
 def document_cli(

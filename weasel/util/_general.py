@@ -210,8 +210,9 @@ def load_project_config(
         dir_path = path / subdir
         if not dir_path.exists():
             dir_path.mkdir(parents=True)
-    if interpolate:
-        err = f"{PROJECT_FILE} validation error"
-        with show_validation_error(title=err, hint_fill=False):
-            config = substitute_project_variables(config, overrides)
+    # TODO: double-check interpolation and thinc import here
+    # if interpolate:
+    #     err = f"{PROJECT_FILE} validation error"
+    #     with show_validation_error(title=err, hint_fill=False):
+    #         config = substitute_project_variables(config, overrides)
     return config

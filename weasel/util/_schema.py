@@ -1,4 +1,3 @@
-from thinc.api import Config, ConfigValidationError, require_gpu
 from contextlib import contextmanager
 from typing import Dict, Any, List, Union, Optional, Type
 from pydantic import BaseModel, Field, StrictStr
