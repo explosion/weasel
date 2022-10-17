@@ -14,6 +14,7 @@ from pathlib import Path
 from pydantic import BaseModel
 import shlex
 import srsly
+from wasabi import msg
 
 from ._errors import Warnings
 from ._compat import is_windows
