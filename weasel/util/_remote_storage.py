@@ -1,14 +1,15 @@
-from typing import Optional, List, Dict, TYPE_CHECKING
+import hashlib
 import os
 import site
-import hashlib
-import urllib.parse
 import tarfile
+import urllib.parse
 from pathlib import Path
+from typing import TYPE_CHECKING, Dict, List, Optional
 
 from weasel import __version__
-from ._general import get_hash, get_checksum, download_file, ensure_pathy
-from ._general import make_tempdir
+
+from ._general import (download_file, ensure_pathy, get_checksum, get_hash,
+                       make_tempdir)
 
 if TYPE_CHECKING:
     from pathy import Pathy  # noqa: F401

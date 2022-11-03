@@ -1,9 +1,11 @@
 from pathlib import Path
-from wasabi import msg, MarkdownRenderer
 
-from ..util._general import Arg, Opt, working_dir, load_project_config, SimpleFrozenDict, logger, update_lockfile
-from ..util._remote_storage import RemoteStorage, get_command_hash
+from wasabi import MarkdownRenderer, msg
+
 from ..info import PROJECT_FILE
+from ..util._general import (Arg, Opt, SimpleFrozenDict, load_project_config,
+                             logger, update_lockfile, working_dir)
+from ..util._remote_storage import RemoteStorage, get_command_hash
 
 
 def pull_cli(
@@ -17,7 +19,7 @@ def pull_cli(
     A storage can be anything that the smart-open library can upload to, e.g.
     AWS, Google Cloud Storage, SSH, local directories etc.
 
-    TODO: replace docs URL 
+    TODO: replace docs URL
     DOCS: https://spacy.io/api/cli#project-pull
     """
     for url, output_path in project_pull(project_dir, remote):

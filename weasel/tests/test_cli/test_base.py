@@ -1,4 +1,4 @@
-import pytest 
+import pytest
 from typer.testing import CliRunner
 
 from weasel.__main__ import app

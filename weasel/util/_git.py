@@ -1,9 +1,10 @@
 import shutil
-from typing import Tuple
 from pathlib import Path
+from typing import Tuple
+
 from wasabi import msg
 
-from ..util._general import run_command, make_tempdir, is_subpath_of
+from ..util._general import is_subpath_of, make_tempdir, run_command
 
 
 def git_checkout(

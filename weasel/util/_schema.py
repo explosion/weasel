@@ -1,7 +1,8 @@
 from contextlib import contextmanager
-from typing import Dict, Any, List, Union, Optional, Type
-from pydantic import BaseModel, Field, StrictStr
 from pathlib import Path
+from typing import Any, Dict, List, Optional, Type, Union
+
+from pydantic import BaseModel, Field, StrictStr
 
 
 class ProjectConfigAssetGitItem(BaseModel):

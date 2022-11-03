@@ -1,13 +1,13 @@
-from typing import Optional
-from pathlib import Path
-from wasabi import msg
-import subprocess
 import re
+import subprocess
+from pathlib import Path
+from typing import Optional
 
+from wasabi import msg
 
 from ..info import COMMAND, PROJECT_FILE
 from ..util._general import Arg, Opt, ensure_path
-from ..util._git import git_checkout, get_git_version, git_repo_branch_exists
+from ..util._git import get_git_version, git_checkout, git_repo_branch_exists
 
 DEFAULT_REPO = "https://github.com/explosion/projects"
 DEFAULT_PROJECTS_BRANCH = "v3"

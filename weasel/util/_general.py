@@ -1,34 +1,32 @@
-import sys
-import hashlib 
-import typer
-import subprocess
+import hashlib
 import logging
 import os
-import shutil
-import warnings
-import tempfile
-from contextlib import contextmanager
-from typing import List, Mapping, NoReturn, Union, Dict, Any, Set, cast
-from typing import Optional, Iterable, Callable, Tuple, Type
-from typing import Iterator, Pattern, Generator, TYPE_CHECKING
-from pathlib import Path
-from pydantic import BaseModel
 import shlex
+import shutil
+import subprocess
+import sys
+import tempfile
+import warnings
+from contextlib import contextmanager
+from pathlib import Path
+from typing import (TYPE_CHECKING, Any, Callable, Dict, Generator, Iterable,
+                    Iterator, List, Mapping, NoReturn, Optional, Pattern, Set,
+                    Tuple, Type, Union, cast)
+
 import srsly
+import typer
+from click.parser import split_arg_string
+from packaging.version import Version
+from pydantic import BaseModel
 from wasabi import msg
 
-from ._errors import Warnings
-from ._compat import is_windows
-from ._schema import (
-    validate,
-    validate_project_version,
-    validate_project_commands,
-    show_validation_error,
-    ProjectConfigSchema,
-)
-from ..info import PROJECT_FILE, PROJECT_LOCK, COMMAND
+from weasel import __version__ as weasel_version
 
-from weasel import __version__ as weasel_version 
+from ..info import COMMAND, PROJECT_FILE, PROJECT_LOCK
+from ._compat import is_windows
+from ._errors import Warnings
+from ._schema import (ProjectConfigSchema, show_validation_error, validate,
+                      validate_project_commands, validate_project_version)
 
 Arg = typer.Argument
 Opt = typer.Option
@@ -324,8 +322,8 @@ def get_fileinfo(project_dir: Path, paths: List[str]) -> List[Dict[str, Optional
         md5 = get_checksum(file_path) if file_path.exists() else None
         data.append({"path": path, "md5": md5})
     return data
-    
-    
+
+
 def update_lockfile(project_dir: Path, command: Dict[str, Any]) -> None:
     """Update the lockfile after running a command. Will create a lockfile if
     it doesn't yet exist and will add an entry for the current command, its
@@ -342,3 +340,156 @@ def update_lockfile(project_dir: Path, command: Dict[str, Any]) -> None:
         data = srsly.read_yaml(lock_path)
     data[command["name"]] = get_lock_entry(project_dir, command)
     srsly.write_yaml(lock_path, data)
+
+
+def is_cwd(path: Union[Path, str]) -> bool:
+    """Check whether a path is the current working directory.
+
+    path (Union[Path, str]): The directory path.
+    RETURNS (bool): Whether the path is the current working directory.
+    """
+    return str(Path(path).resolve()).lower() == str(Path.cwd().resolve()).lower()
+
+
+def join_command(command: List[str]) -> str:
+    """Join a command using shlex. shlex.join is only available for Python 3.8+,
+    so we're using a workaround here.
+
+    command (List[str]): The command to join.
+    RETURNS (str): The joined command
+    """
+    return " ".join(shlex.quote(cmd) for cmd in command)
+
+
+_frozen_dict_err_msg = "Can't write to frozen dictionary. This is likely an internal error. Are you writing to a default function argument?"
+
+
+class SimpleFrozenList(dict):
+    """Simplified implementation of a frozen dict, mainly used as default
+    function or method argument (for arguments that should default to empty
+    dictionary). Will raise an error if user or spaCy attempts to add to dict.
+    """
+
+    def __init__(self, *args, error: str = _frozen_dict_err_msg, **kwargs) -> None:
+        """Initialize the frozen dict. Can be initialized with pre-defined
+        values.
+
+        error (str): The error message when user tries to assign to dict.
+        """
+        super().__init__(*args, **kwargs)
+        self.error = error
+
+    def __setitem__(self, key, value):
+        raise NotImplementedError(self.error)
+
+    def pop(self, key, default=None):
+        raise NotImplementedError(self.error)
+
+    def update(self, other):
+        raise NotImplementedError(self.error)
+
+
+def get_minor_version(version: str) -> Optional[str]:
+    """Get the major + minor version (without patch or prerelease identifiers).
+
+    version (str): The version.
+    RETURNS (str): The major + minor version or None if version is invalid.
+    """
+    try:
+        v = Version(version)
+    except (TypeError, ValueError):
+        return None
+    return f"{v.major}.{v.minor}"
+
+
+def is_minor_version_match(version_a: str, version_b: str) -> bool:
+    """Compare two versions and check if they match in major and minor, without
+    patch or prerelease identifiers. Used internally for compatibility checks
+    that should be insensitive to patch releases.
+
+    version_a (str): The first version
+    version_b (str): The second version.
+    RETURNS (bool): Whether the versions match.
+    """
+    a = get_minor_version(version_a)
+    b = get_minor_version(version_b)
+    return a is not None and b is not None and a == b
+
+
+class ENV_VARS:
+    CONFIG_OVERRIDES = "SPACY_CONFIG_OVERRIDES"
+    PROJECT_USE_GIT_VERSION = "SPACY_PROJECT_USE_GIT_VERSION"
+
+
+def check_bool_env_var(env_var: str) -> bool:
+    """Convert the value of an environment variable to a boolean. Add special
+    check for "0" (falsy) and consider everything else truthy, except unset.
+
+    env_var (str): The name of the environment variable to check.
+    RETURNS (bool): Its boolean value.
+    """
+    value = os.environ.get(env_var, False)
+    if value == "0":
+        return False
+    return bool(value)
+
+
+def _parse_overrides(args: List[str], is_cli: bool = False) -> Dict[str, Any]:
+    result = {}
+    while args:
+        opt = args.pop(0)
+        err = f"Invalid config override '{opt}'"
+        if opt.startswith("--"):  # new argument
+            orig_opt = opt
+            opt = opt.replace("--", "")
+            if "." not in opt:
+                if is_cli:
+                    raise NoSuchOption(orig_opt)
+                else:
+                    msg.fail(f"{err}: can't override top-level sections", exits=1)
+            if "=" in opt:  # we have --opt=value
+                opt, value = opt.split("=", 1)
+                opt = opt.replace("-", "_")
+            else:
+                if not args or args[0].startswith("--"):  # flag with no value
+                    value = "true"
+                else:
+                    value = args.pop(0)
+            result[opt] = _parse_override(value)
+        else:
+            msg.fail(f"{err}: name should start with --", exits=1)
+    return result
+
+
+def _parse_override(value: Any) -> Any:
+    # Just like we do in the config, we're calling json.loads on the
+    # values. But since they come from the CLI, it'd be unintuitive to
+    # explicitly mark strings with escaped quotes. So we're working
+    # around that here by falling back to a string if parsing fails.
+    # TODO: improve logic to handle simple types like list of strings?
+    try:
+        return srsly.json_loads(value)
+    except ValueError:
+        return str(value)
+
+
+def parse_config_overrides(
+    args: List[str], env_var: Optional[str] = ENV_VARS.CONFIG_OVERRIDES
+) -> Dict[str, Any]:
+    """Generate a dictionary of config overrides based on the extra arguments
+    provided on the CLI, e.g. --training.batch_size to override
+    "training.batch_size". Arguments without a "." are considered invalid,
+    since the config only allows top-level sections to exist.
+
+    env_vars (Optional[str]): Optional environment variable to read from.
+    RETURNS (Dict[str, Any]): The parsed dict, keyed by nested config setting.
+    """
+    env_string = os.environ.get(env_var, "") if env_var else ""
+    env_overrides = _parse_overrides(split_arg_string(env_string))
+    cli_overrides = _parse_overrides(args, is_cli=True)
+    if cli_overrides:
+        keys = [k for k in cli_overrides if k not in env_overrides]
+        logger.debug(f"Config overrides from CLI: {keys}")
+    if env_overrides:
+        logger.debug(f"Config overrides from env variables: {list(env_overrides)}")
+    return {**cli_overrides, **env_overrides}
