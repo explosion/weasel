@@ -69,6 +69,7 @@ def project_run(
         when you want to run the command more like a function.
     """
     config = load_project_config(project_dir, overrides=overrides)
+    print(config)
     commands = {cmd["name"]: cmd for cmd in config.get("commands", [])}
     workflows = config.get("workflows", {})
     validate_subcommand(list(commands.keys()), list(workflows.keys()), subcommand)
