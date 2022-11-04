@@ -7,6 +7,7 @@ import typer
 from wasabi import msg
 from wasabi.util import locale_escape
 
+from weasel import __version__
 from ..info import PROJECT_FILE, PROJECT_LOCK
 from ..util._general import (COMMAND, ENV_VARS, Arg, Opt, SimpleFrozenDict,
                              SimpleFrozenList, check_bool_env_var,
@@ -212,7 +213,7 @@ def check_rerun(
     project_dir: Path,
     command: Dict[str, Any],
     *,
-    check_spacy_version: bool = True,
+    check_weasel_version: bool = True,
     check_spacy_commit: bool = False,
 ) -> bool:
     """Check if a command should be rerun because its settings or inputs/outputs
@@ -237,21 +238,16 @@ def check_rerun(
     if not entry.get("outs", []):
         return True
     # Always rerun if spaCy version or commit hash changed
-    spacy_v = entry.get("spacy_version")
-    commit = entry.get("spacy_git_version")
-    if check_spacy_version and not is_minor_version_match(spacy_v, about.__version__):
-        info = f"({spacy_v} in {PROJECT_LOCK}, {about.__version__} current)"
-        msg.info(f"Re-running '{command['name']}': spaCy minor version changed {info}")
-        return True
-    if check_spacy_commit and commit != GIT_VERSION:
-        info = f"({commit} in {PROJECT_LOCK}, {GIT_VERSION} current)"
-        msg.info(f"Re-running '{command['name']}': spaCy commit changed {info}")
+    weasel_v = entry.get("weasel_version")
+    if check_weasel_version and not is_minor_version_match(weasel_v, __version__):
+        info = f"({weasel_v} in {PROJECT_LOCK}, {__version__} current)"
+        msg.info(f"Re-running '{command['name']}': weasel minor version changed {info}")
         return True
     # If the entry in the lockfile matches the lockfile entry that would be
     # generated from the current command, we don't rerun because it means that
     # all inputs/outputs, hashes and scripts are the same and nothing changed
     lock_entry = get_lock_entry(project_dir, command)
-    exclude = ["spacy_version", "spacy_git_version"]
+    exclude = ["weasel_version"]
     return get_hash(lock_entry, exclude=exclude) != get_hash(entry, exclude=exclude)
 
 
@@ -291,8 +287,7 @@ def get_lock_entry(project_dir: Path, command: Dict[str, Any]) -> Dict[str, Any]
         "script": command["script"],
         "deps": deps,
         "outs": [*outs, *outs_nc],
-        "spacy_version": about.__version__,
-        "spacy_git_version": GIT_VERSION,
+        "weasel_version": __version__
     }
 
 
