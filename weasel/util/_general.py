@@ -32,8 +32,10 @@ from typing import (
 import srsly
 import typer
 from confection import Config
+from click import NoSuchOption
 from click.parser import split_arg_string
 from packaging.version import Version
+from pathy import Pathy
 from pydantic import BaseModel
 from wasabi import msg
 
@@ -125,8 +127,9 @@ def run_command(
     except FileNotFoundError:
         # Indicates the *command* wasn't found, it's an error before the command
         # is run.
+        err = "Can not execute command '{str_command}'. Do you have '{tool}' installed?"
         raise FileNotFoundError(
-            Errors.E970.format(str_command=cmd_str, tool=cmd_list[0])
+            err.format(str_command=cmd_str, tool=cmd_list[0])
         ) from None
     if ret.returncode != 0 and capture:
         message = f"Error running command:\n\n{cmd_str}\n\n"
