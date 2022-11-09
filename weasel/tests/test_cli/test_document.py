@@ -10,8 +10,8 @@ from weasel.__main__ import app
 runner = CliRunner()
 
 project_files = [
-    "tests/assets/project_files/ner_demo/project.yml",
-    "tests/assets/project_files/ner_drugs/project.yml",
+    "weasel/tests/assets/project_files/ner_demo/project.yml",
+    "weasel/tests/assets/project_files/ner_drugs/project.yml",
 ]
 
 
