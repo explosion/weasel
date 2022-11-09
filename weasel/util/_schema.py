@@ -1,8 +1,16 @@
+import sys
 from contextlib import contextmanager
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Type, Union
+from collections import defaultdict
+from wasabi import msg
+from confection import ConfigValidationError
+from packaging.specifiers import SpecifierSet, InvalidSpecifier
+from packaging.version import Version, InvalidVersion
+from configparser import InterpolationError
+from ..info import COMMAND, PROJECT_FILE
 
-from pydantic import BaseModel, Field, StrictStr
+from pydantic import BaseModel, Field, StrictStr, ValidationError
 
 
 class ProjectConfigAssetGitItem(BaseModel):
@@ -80,18 +88,66 @@ def validate(schema: Type[BaseModel], obj: Dict[str, Any]) -> List[str]:
         return [f"[{loc}] {', '.join(msg)}" for loc, msg in data.items()]  # type: ignore[arg-type]
 
 
+def get_spacy_version() -> Optional[str]:
+    """Return the version of spaCy installed, or None if not present."""
+    try:
+        import spacy
+
+        return spacy.__version__
+    except:
+        return None
+
+
+def is_compatible_version(
+    version: str, constraint: str, prereleases: bool = True
+) -> Optional[bool]:
+    """Check if a version (e.g. "2.0.0") is compatible given a version
+    constraint (e.g. ">=1.9.0,<2.2.1"). If the constraint is a specific version,
+    it's interpreted as =={version}.
+
+    version (str): The version to check.
+    constraint (str): The constraint string.
+    prereleases (bool): Whether to allow prereleases. If set to False,
+        prerelease versions will be considered incompatible.
+    RETURNS (bool / None): Whether the version is compatible, or None if the
+        version or constraint are invalid.
+    """
+    # Handle cases where exact version is provided as constraint
+    if constraint[0].isdigit():
+        constraint = f"=={constraint}"
+    try:
+        spec = SpecifierSet(constraint)
+        version = Version(version)  # type: ignore[assignment]
+    except (InvalidSpecifier, InvalidVersion):
+        return None
+    spec.prereleases = prereleases
+    return version in spec
+
+
 def validate_project_version(config: Dict[str, Any]) -> None:
     """If the project defines a compatible spaCy version range, chec that it's
-    compatible with the current version of spaCy.
+    compatible with the installed version of spaCy.
 
     config (Dict[str, Any]): The loaded config.
     """
     spacy_version = config.get("spacy_version", None)
-    if spacy_version and not is_compatible_version(about.__version__, spacy_version):
+    if spacy_version is None:
+        # Nothing to check
+        return
+
+    installed_version = get_spacy_version()
+    if installed_version is None:
+        err = (
+            f"The {PROJECT_FILE} specifies a spaCy version range ({spacy_version}), "
+            f"but spaCy is not installed."
+        )
+        msg.fail(err, exits=1)
+
+    elif not is_compatible_version(installed_version, spacy_version):
         err = (
             f"The {PROJECT_FILE} specifies a spaCy version range ({spacy_version}) "
             f"that's not compatible with the version of spaCy you're running "
-            f"({about.__version__}). You can edit version requirement in the "
+            f"({installed_version}). You can edit version requirement in the "
             f"{PROJECT_FILE} to load it, but the project may not run as expected."
         )
         msg.fail(err, exits=1)

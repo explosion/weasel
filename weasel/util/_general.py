@@ -9,9 +9,25 @@ import tempfile
 import warnings
 from contextlib import contextmanager
 from pathlib import Path
-from typing import (TYPE_CHECKING, Any, Callable, Dict, Generator, Iterable,
-                    Iterator, List, Mapping, NoReturn, Optional, Pattern, Set,
-                    Tuple, Type, Union, cast)
+from typing import (
+    TYPE_CHECKING,
+    Any,
+    Callable,
+    Dict,
+    Generator,
+    Iterable,
+    Iterator,
+    List,
+    Mapping,
+    NoReturn,
+    Optional,
+    Pattern,
+    Set,
+    Tuple,
+    Type,
+    Union,
+    cast,
+)
 
 import srsly
 import typer
@@ -26,8 +42,13 @@ from weasel import __version__ as weasel_version
 from ..info import COMMAND, PROJECT_FILE, PROJECT_LOCK
 from ._compat import is_windows
 from ._errors import Warnings
-from ._schema import (ProjectConfigSchema, show_validation_error, validate,
-                      validate_project_commands, validate_project_version)
+from ._schema import (
+    ProjectConfigSchema,
+    show_validation_error,
+    validate,
+    validate_project_commands,
+    validate_project_version,
+)
 
 Arg = typer.Argument
 Opt = typer.Option
@@ -255,6 +276,7 @@ def substitute_project_variables(
     cfg = Config().from_str(cfg.to_str(), overrides=overrides)
     interpolated = cfg.interpolate()
     return dict(interpolated["project"])
+
 
 def get_hash(data, exclude: Iterable[str] = tuple()) -> str:
     """Get the hash for a JSON-serializable object.
