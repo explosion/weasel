@@ -7,20 +7,23 @@ from typer.testing import CliRunner
 
 from weasel.__main__ import app
 
+BASE_PATH = Path(__file__).parent.parent.resolve()
+
 runner = CliRunner()
 
 project_files = [
-    "weasel/tests/assets/project_files/ner_demo/project.yml",
-    "weasel/tests/assets/project_files/ner_drugs/project.yml",
+    "assets/project_files/ner_demo/project.yml",
+    "assets/project_files/ner_drugs/project.yml",
 ]
 
 
 @pytest.fixture(scope="function", params=project_files)
 def project_yaml_file(request, tmp_path_factory):
-    config_contents = Path(request.param).read_text()
+    full_path = BASE_PATH / Path(request.param)
+    config_contents = full_path.read_text()
     local_file = Path("project.yml")
     local_file.write_text(config_contents)
-    yield request.param
+    yield full_path
     local_file.unlink()
 
 
