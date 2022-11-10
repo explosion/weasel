@@ -1,1 +1,2 @@
 include weasel/py.typed
+recursive-include weasel/tests/assets *
