@@ -107,9 +107,20 @@ class RemoteStorage:
         elif command_hash is not None:
             urls = list((self.url / name / command_hash).iterdir())
         else:
-            urls = list((self.url / name).iterdir())
+            urls = []
+            for sub_dir in (self.url / name).iterdir():
+                urls.extend(sub_dir.iterdir())
             if content_hash is not None:
                 urls = [url for url in urls if url.parts[-1] == content_hash]
+
+        if len(urls) >= 2:
+            try:
+                urls.sort(key=lambda x: x.stat().st_mtime)  # type: ignore
+            except Exception:
+                msg.warn(
+                    "Unable to sort remote files by last modified. The file(s) "
+                    "pulled from the cache may not be the most recent."
+                )
         return urls[-1] if urls else None
 
     def make_url(
