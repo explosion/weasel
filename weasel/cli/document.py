@@ -23,10 +23,10 @@ in the project directory."""
 
 # These markers are added to the Markdown and can be used to update the file in
 # place if it already exists. Only the auto-generated part will be replaced.
-MARKER_START = "<!-- WASABI PROJECT: AUTO-GENERATED DOCS START (do not remove) -->"
-MARKER_END = "<!-- WASABI PROJECT: AUTO-GENERATED DOCS END (do not remove) -->"
+MARKER_START = "<!-- WEASEL PROJECT: AUTO-GENERATED DOCS START (do not remove) -->"
+MARKER_END = "<!-- WEASEL PROJECT: AUTO-GENERATED DOCS END (do not remove) -->"
 # If this marker is used in an existing README, it's ignored and not replaced
-MARKER_IGNORE = "<!-- WASABI PROJECT: IGNORE -->"
+MARKER_IGNORE = "<!-- WEASEL PROJECT: IGNORE -->"
 
 
 def document_cli(
