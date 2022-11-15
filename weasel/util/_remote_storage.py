@@ -5,6 +5,7 @@ import tarfile
 import urllib.parse
 from pathlib import Path
 from typing import TYPE_CHECKING, Dict, List, Optional, Union
+from wasabi import msg
 
 from weasel import __version__
 
