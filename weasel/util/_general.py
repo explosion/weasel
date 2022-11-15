@@ -35,7 +35,7 @@ from confection import Config
 from click import NoSuchOption
 from click.parser import split_arg_string
 from packaging.version import Version
-from pathy import Pathy
+from cloudpathlib import CloudPath
 from pydantic import BaseModel
 from wasabi import msg
 
@@ -314,7 +314,9 @@ def get_checksum(path: Union[Path, str]) -> str:
         return dir_checksum.hexdigest()
 
 
-def download_file(src: Union[str, "Pathy"], dest: Path, *, force: bool = False) -> None:
+def download_file(
+    src: Union[str, Path, "CloudPath"], dest: Path, *, force: bool = False
+) -> None:
     """Download a file using smart_open.
 
     url (str): The URL of the file.
@@ -327,17 +329,17 @@ def download_file(src: Union[str, "Pathy"], dest: Path, *, force: bool = False) 
     if dest.exists() and not force:
         return None
     src = str(src)
-    with smart_open.open(src, mode="rb", ignore_ext=True) as input_file:
+    with smart_open.open(src, mode="rb", compression="disable") as input_file:
         with dest.open(mode="wb") as output_file:
             shutil.copyfileobj(input_file, output_file)
 
 
 def ensure_pathy(path):
-    """Temporary helper to prevent importing Pathy globally (which can cause
+    """Temporary helper to prevent importing globally (which can cause
     slow and annoying Google Cloud warning)."""
-    from pathy import Pathy  # noqa: F811
+    from cloudpathlib import AnyPath  # noqa: F811
 
-    return Pathy(path)
+    return AnyPath(path)
 
 
 def get_lock_entry(project_dir: Path, command: Dict[str, Any]) -> Dict[str, Any]:
