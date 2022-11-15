@@ -3,8 +3,15 @@ from pathlib import Path
 from wasabi import MarkdownRenderer, msg
 
 from ..info import PROJECT_FILE
-from ..util._general import (Arg, Opt, SimpleFrozenDict, load_project_config,
-                             logger, update_lockfile, working_dir)
+from ..util._general import (
+    Arg,
+    Opt,
+    SimpleFrozenDict,
+    load_project_config,
+    logger,
+    update_lockfile,
+    working_dir,
+)
 from ..util._remote_storage import RemoteStorage, get_command_hash
 
 

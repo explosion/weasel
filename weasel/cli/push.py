@@ -21,7 +21,7 @@ def push_cli(
     """
     config = load_project_config(project_dir)
     if "remote" not in config:
-        # TODO: add test for this. 
+        # TODO: add test for this.
         msg.fail("No `remote` configured in `project.yml` file.")
         raise typer.Exit(code=1)
     for output_path, url in project_push(project_dir, remote):

@@ -9,12 +9,25 @@ from wasabi.util import locale_escape
 
 from weasel import __version__
 from ..info import PROJECT_FILE, PROJECT_LOCK
-from ..util._general import (COMMAND, ENV_VARS, Arg, Opt, SimpleFrozenDict,
-                             SimpleFrozenList, check_bool_env_var,
-                             get_checksum, get_hash, is_cwd,
-                             is_minor_version_match, join_command,
-                             load_project_config, parse_config_overrides,
-                             run_command, split_command, working_dir)
+from ..util._general import (
+    COMMAND,
+    ENV_VARS,
+    Arg,
+    Opt,
+    SimpleFrozenDict,
+    SimpleFrozenList,
+    check_bool_env_var,
+    get_checksum,
+    get_hash,
+    is_cwd,
+    is_minor_version_match,
+    join_command,
+    load_project_config,
+    parse_config_overrides,
+    run_command,
+    split_command,
+    working_dir,
+)
 
 
 def run_cli(
@@ -39,9 +52,7 @@ def run_cli(
         print_run_help(project_dir, subcommand)
     else:
         overrides = parse_config_overrides(ctx.args)
-        project_run(
-            project_dir, subcommand, overrides=overrides, force=force, dry=dry
-        )
+        project_run(project_dir, subcommand, overrides=overrides, force=force, dry=dry)
 
 
 def project_run(
@@ -70,7 +81,6 @@ def project_run(
         when you want to run the command more like a function.
     """
     config = load_project_config(project_dir, overrides=overrides)
-    print(config)
     commands = {cmd["name"]: cmd for cmd in config.get("commands", [])}
     workflows = config.get("workflows", {})
     validate_subcommand(list(commands.keys()), list(workflows.keys()), subcommand)
@@ -287,7 +297,7 @@ def get_lock_entry(project_dir: Path, command: Dict[str, Any]) -> Dict[str, Any]
         "script": command["script"],
         "deps": deps,
         "outs": [*outs, *outs_nc],
-        "weasel_version": __version__
+        "weasel_version": __version__,
     }
 
 
