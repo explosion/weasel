@@ -5,7 +5,7 @@ import srsly
 import os
 from confection import ConfigValidationError
 
-from weasel.__main__ import app
+from weasel.cli import app
 from weasel.util._general import is_subpath_of, load_project_config
 from weasel.util._general import parse_config_overrides, make_tempdir
 from weasel.util._general import substitute_project_variables
