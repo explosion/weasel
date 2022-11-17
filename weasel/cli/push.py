@@ -20,7 +20,7 @@ def push_cli(
     DOCS: https://spacy.io/api/cli#project-push
     """
     config = load_project_config(project_dir)
-    if "remote" not in config:
+    if "remotes" not in config:
         # TODO: add test for this.
         msg.fail("No `remote` configured in `project.yml` file.")
         raise typer.Exit(code=1)
