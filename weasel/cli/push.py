@@ -23,8 +23,7 @@ def push_cli(
     config = load_project_config(project_dir)
     if "remotes" not in config:
         # TODO: add test for this.
-        msg.fail("No `remote` configured in `{PROJECT_FILE}` file.")
-        raise typer.Exit(code=1)
+        msg.fail(f"No remotes configured in {PROJECT_FILE} file.", exits=1)
     for output_path, url in project_push(project_dir, remote):
         if url is None:
             msg.info(f"Skipping {output_path}")
