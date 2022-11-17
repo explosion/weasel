@@ -2,6 +2,7 @@ from pathlib import Path
 from wasabi import msg
 
 import typer
+from ..info import PROJECT_FILE
 from ..util._remote_storage import RemoteStorage, get_command_hash, get_content_hash
 from ..util._general import load_project_config, Arg, logger
 
@@ -22,7 +23,7 @@ def push_cli(
     config = load_project_config(project_dir)
     if "remotes" not in config:
         # TODO: add test for this.
-        msg.fail("No `remote` configured in `project.yml` file.")
+        msg.fail("No `remote` configured in `{PROJECT_FILE}` file.")
         raise typer.Exit(code=1)
     for output_path, url in project_push(project_dir, remote):
         if url is None:
