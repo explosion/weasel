@@ -23,6 +23,38 @@ def test_show_help(cmd):
     assert "https://github.com/explosion/weasel" in result.stdout
 
 
+@pytest.fixture(scope="session")
+def project_dir(tmp_path_factory):
+    # a working directory for the session
+    base = tmp_path_factory.mktemp("project")
+    return base / "project"
+
+
+def test_clone(project_dir):
+    """Cloning shouldn't fail"""
+    result = runner.invoke(app, ["clone", "tutorials/ner_drugs", str(project_dir)])
+
+    print(result.stdout)
+    assert result.exit_code == 0
+    assert (project_dir / "project.yml").exists()
+
+
+def test_assets(project_dir):
+    result = runner.invoke(app, ["assets", str(project_dir)])
+
+    print(result.stdout)
+    assert result.exit_code == 0
+    assert (project_dir / "assets/drugs_patterns.jsonl").exists()
+
+
+def test_run(project_dir):
+    result = runner.invoke(app, ["run", "preprocess", str(project_dir)])
+
+    print(result.stdout)
+    assert result.exit_code == 0
+    assert (project_dir / "corpus/drugs_eval.spacy").exists()
+
+
 @pytest.mark.parametrize(
     "parent,child,expected",
     [
