@@ -6,7 +6,7 @@ directories: [assets, corpus, scripts]
 
 assets:
   - dest: assets/README.md
-    url: https://github.com/explosion/weasel/raw/main/README.md
+    url: https://raw.githubusercontent.com/explosion/weasel/main/README.md
 
 commands:
   - name: prep
