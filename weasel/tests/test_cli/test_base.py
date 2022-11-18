@@ -30,7 +30,21 @@ def remote_url(tmp_path_factory):
 
 def test_clone(project_dir):
     """Cloning shouldn't fail"""
-    result = runner.invoke(app, ["clone", "tutorials/ner_drugs", str(project_dir)])
+    # TODO point to main
+    repo = "https://github.com/koaning/weasel"
+    branch = "proposal-layout"
+    result = runner.invoke(
+        app,
+        [
+            "clone",
+            "--repo",
+            repo,
+            "--branch",
+            branch,
+            "weasel/tests/demo_project",
+            str(project_dir),
+        ],
+    )
 
     print(result.stdout)
     assert result.exit_code == 0
@@ -42,15 +56,15 @@ def test_assets(project_dir):
 
     print(result.stdout)
     assert result.exit_code == 0
-    assert (project_dir / "assets/drugs_patterns.jsonl").exists()
+    assert (project_dir / "assets/README.md").exists()
 
 
 def test_run(project_dir):
-    result = runner.invoke(app, ["run", "preprocess", str(project_dir)])
+    result = runner.invoke(app, ["run", "prep", str(project_dir)])
 
     print(result.stdout)
     assert result.exit_code == 0
-    assert (project_dir / "corpus/drugs_eval.spacy").exists()
+    assert (project_dir / "corpus/stuff.txt").exists()
 
 
 def test_push(project_dir, remote_url):
@@ -70,4 +84,4 @@ def test_pull(project_dir):
     result = runner.invoke(app, ["pull", "default", str(project_dir)])
     print(result.stdout)
     assert result.exit_code == 0
-    assert (project_dir / "corpus/drugs_eval.spacy").exists()
+    assert (project_dir / "corpus/stuff.txt").exists()
