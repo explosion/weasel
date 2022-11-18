@@ -105,7 +105,10 @@ class RemoteStorage:
             url = self.make_url(path, command_hash, content_hash)
             urls = [url] if url.exists() else []
         elif command_hash is not None:
-            urls = list((self.url / name / command_hash).iterdir())
+            try:
+                urls = list((self.url / name / command_hash).iterdir())
+            except FileNotFoundError:
+                urls = []
         else:
             urls = []
             for sub_dir in (self.url / name).iterdir():
