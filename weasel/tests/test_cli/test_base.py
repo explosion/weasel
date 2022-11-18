@@ -79,7 +79,7 @@ def test_push(project_dir, remote_url):
 
 def test_pull(project_dir):
     # delete a file, and make sure pull restores it
-    (project_dir / "corpus/drugs_eval.spacy").unlink()
+    (project_dir / "corpus/stuff.txt").unlink()
 
     result = runner.invoke(app, ["pull", "default", str(project_dir)])
     print(result.stdout)
