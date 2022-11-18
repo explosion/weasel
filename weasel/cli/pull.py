@@ -30,7 +30,9 @@ def pull_cli(
     DOCS: https://spacy.io/api/cli#project-pull
     """
     for url, output_path in project_pull(project_dir, remote):
-        if url is not None:
+        if url is None:
+            msg.info(f"Skipping {output_path}")
+        else:
             msg.good(f"Pulled {output_path} from {url}")
 
 
