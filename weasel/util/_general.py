@@ -314,6 +314,23 @@ def get_checksum(path: Union[Path, str]) -> str:
         return dir_checksum.hexdigest()
 
 
+def upload_file(src: Path, dest: Union[str, Path, "CloudPath"]) -> None:
+    """Upload a file.
+    src (Path): The source path.
+    url (str): The destination URL to upload to.
+    """
+    dest = ensure_pathy(dest)
+
+    # Create parent directories for local paths
+    if isinstance(dest, Path):
+        if not dest.parent.exists():
+            dest.parent.mkdir(parents=True)
+
+    with dest.open(mode="wb") as output_file:
+        with src.open(mode="rb") as input_file:
+            output_file.write(input_file.read())
+
+
 def download_file(
     src: Union[str, Path, "CloudPath"], dest: Path, *, force: bool = False
 ) -> None:

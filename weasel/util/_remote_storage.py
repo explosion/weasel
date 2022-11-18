@@ -9,7 +9,8 @@ from wasabi import msg
 
 from weasel import __version__
 
-from ._general import download_file, ensure_pathy, get_checksum, get_hash, make_tempdir
+from ._general import upload_file, download_file, ensure_pathy, get_checksum
+from ._general import get_hash, make_tempdir
 
 if TYPE_CHECKING:
     from cloudpathlib import CloudPath  # noqa: F401
@@ -50,9 +51,7 @@ class RemoteStorage:
             mode_string = f"w:{self.compression}" if self.compression else "w"
             with tarfile.open(tar_loc, mode=mode_string) as tar_file:
                 tar_file.add(str(loc), arcname=str(path))
-            with tar_loc.open(mode="rb") as input_file:
-                with url.open(mode="wb") as output_file:
-                    output_file.write(input_file.read())
+            upload_file(tar_loc, url)
         return url
 
     def pull(
