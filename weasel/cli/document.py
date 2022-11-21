@@ -3,7 +3,7 @@ from pathlib import Path
 from wasabi import MarkdownRenderer, msg
 
 from ..info import PROJECT_FILE
-from ..util._general import Arg, Opt, load_project_config, working_dir
+from .._util.general import Arg, Opt, load_project_config, working_dir
 
 # TODO: change to weasel github url
 DOCS_URL = "https://spacy.io"

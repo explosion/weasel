@@ -7,11 +7,11 @@ import shutil
 import requests
 import typer
 
-from ..util._general import ensure_path, working_dir
-from ..util._general import Arg, Opt, PROJECT_FILE, load_project_config
-from ..util._general import get_checksum, download_file
-from ..util._general import SimpleFrozenDict, parse_config_overrides
-from ..util._git import git_checkout, get_git_version
+from .._util.general import ensure_path, working_dir
+from .._util.general import Arg, Opt, PROJECT_FILE, load_project_config
+from .._util.general import get_checksum, download_file
+from .._util.general import SimpleFrozenDict, parse_config_overrides
+from .._util.git import git_checkout, get_git_version
 
 # Whether assets are extra if `extra` is not set.
 EXTRA_DEFAULT = False

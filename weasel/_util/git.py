@@ -4,7 +4,7 @@ from typing import Tuple
 
 from wasabi import msg
 
-from ..util._general import is_subpath_of, make_tempdir, run_command
+from .._util.general import is_subpath_of, make_tempdir, run_command
 
 
 def git_checkout(

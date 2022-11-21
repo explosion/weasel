@@ -3,7 +3,7 @@ from pathlib import Path
 from wasabi import MarkdownRenderer, msg
 
 from ..info import PROJECT_FILE
-from ..util._general import (
+from .._util.general import (
     Arg,
     Opt,
     SimpleFrozenDict,
@@ -12,7 +12,7 @@ from ..util._general import (
     update_lockfile,
     working_dir,
 )
-from ..util._remote_storage import RemoteStorage, get_command_hash
+from .._util.remote_storage import RemoteStorage, get_command_hash
 
 
 def pull_cli(

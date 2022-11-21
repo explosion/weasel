@@ -3,8 +3,8 @@ from wasabi import msg
 
 import typer
 from ..info import PROJECT_FILE
-from ..util._remote_storage import RemoteStorage, get_command_hash, get_content_hash
-from ..util._general import load_project_config, Arg, logger
+from .._util.remote_storage import RemoteStorage, get_command_hash, get_content_hash
+from .._util.general import load_project_config, Arg, logger
 
 
 def push_cli(

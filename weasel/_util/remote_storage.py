@@ -9,8 +9,8 @@ from wasabi import msg
 
 from weasel import __version__
 
-from ._general import upload_file, download_file, ensure_pathy, get_checksum
-from ._general import get_hash, make_tempdir
+from .general import upload_file, download_file, ensure_pathy, get_checksum
+from .general import get_hash, make_tempdir
 
 if TYPE_CHECKING:
     from cloudpathlib import CloudPath  # noqa: F401

@@ -42,9 +42,9 @@ from wasabi import msg
 from weasel import __version__ as weasel_version
 
 from ..info import COMMAND, PROJECT_FILE, PROJECT_LOCK
-from ._compat import is_windows
-from ._errors import Warnings
-from ._schema import (
+from .compat import is_windows
+from .errors import Warnings
+from .schema import (
     ProjectConfigSchema,
     show_validation_error,
     validate,

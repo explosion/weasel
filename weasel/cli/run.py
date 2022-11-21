@@ -9,7 +9,7 @@ from wasabi.util import locale_escape
 
 from weasel import __version__
 from ..info import PROJECT_FILE, PROJECT_LOCK
-from ..util._general import (
+from .._util.general import (
     COMMAND,
     ENV_VARS,
     Arg,

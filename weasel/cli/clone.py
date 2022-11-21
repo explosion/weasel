@@ -6,8 +6,8 @@ from typing import Optional
 from wasabi import msg
 
 from ..info import COMMAND, PROJECT_FILE
-from ..util._general import Arg, Opt, ensure_path
-from ..util._git import get_git_version, git_checkout, git_repo_branch_exists
+from .._util.general import Arg, Opt, ensure_path
+from .._util.git import get_git_version, git_checkout, git_repo_branch_exists
 
 DEFAULT_REPO = "https://github.com/explosion/projects"
 DEFAULT_PROJECTS_BRANCH = "v3"

@@ -2,11 +2,11 @@ import pytest
 import os
 import srsly
 
-from weasel.util._general import substitute_project_variables
-from weasel.util._general import parse_config_overrides, make_tempdir
-from weasel.util._general import is_subpath_of, load_project_config
-from weasel.util._general import validate_project_commands
-from weasel.util._schema import validate, ProjectConfigSchema
+from weasel._util.general import substitute_project_variables
+from weasel._util.general import parse_config_overrides, make_tempdir
+from weasel._util.general import is_subpath_of, load_project_config
+from weasel._util.general import validate_project_commands
+from weasel._util.schema import validate, ProjectConfigSchema
 from confection import ConfigValidationError
 
 
