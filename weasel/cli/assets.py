@@ -195,8 +195,8 @@ def convert_asset_url(url: str) -> str:
         converted = url.replace("github.com", "raw.githubusercontent.com")
         converted = re.sub(r"/(tree|blob)/", "/", converted)
         msg.warn(
-            "URL seems to be a regular Github URL, and not a direct link. "
-            "If you have issues, try this URL instead: \n"
+            "URL seems to be a regular Github URL, and not a direct link to the "
+            "raw data. If you have issues, try this URL instead: \n"
             f"  {converted}"
         )
     return url
