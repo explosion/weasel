@@ -44,13 +44,8 @@ from .. import __version__ as weasel_version
 from ..info import COMMAND, PROJECT_FILE, PROJECT_LOCK
 from .compat import is_windows
 from .errors import Warnings
-from .schema import (
-    ProjectConfigSchema,
-    show_validation_error,
-    validate,
-    validate_project_commands,
-    validate_project_version,
-)
+from .schema import ProjectConfigSchema, show_validation_error, validate
+from .schema import validate_project_commands, validate_project_version
 
 Arg = typer.Argument
 Opt = typer.Option
