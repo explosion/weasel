@@ -57,7 +57,7 @@ def project_run(
     project_dir: Path,
     subcommand: str,
     *,
-    overrides: Dict[str, Any] = None,
+    overrides: Optional[Dict[str, Any]] = None,
     force: bool = False,
     dry: bool = False,
     capture: bool = False,
@@ -161,7 +161,7 @@ def print_run_help(project_dir: Path, subcommand: Optional[str] = None) -> None:
 
 
 def run_commands(
-    commands: Iterable[str] = None,
+    commands: Optional[Iterable[str]] = None,
     silent: bool = False,
     dry: bool = False,
     capture: bool = False,

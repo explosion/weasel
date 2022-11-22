@@ -49,7 +49,7 @@ def assets_cli(
 def project_assets(
     project_dir: Path,
     *,
-    overrides: Dict[str, Any] = None,
+    overrides: Optional[Dict[str, Any]] = None,
     sparse_checkout: bool = False,
     extra: bool = False,
 ) -> None:

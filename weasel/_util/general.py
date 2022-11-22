@@ -184,7 +184,7 @@ def working_dir(path: Union[str, Path]) -> Iterator[Path]:
 
 
 def load_project_config(
-    path: Path, interpolate: bool = True, overrides: Dict[str, Any] = None
+    path: Path, interpolate: bool = True, overrides: Optional[Dict[str, Any]] = None
 ) -> Dict[str, Any]:
     """Load the project.yml file from a directory and validate it. Also make
     sure that all directories defined in the config exist.
@@ -227,7 +227,7 @@ def load_project_config(
 
 def substitute_project_variables(
     config: Dict[str, Any],
-    overrides: Dict[str, Any] = None,
+    overrides: Optional[Dict[str, Any]] = None,
     key: str = "vars",
     env_key: str = "env",
 ) -> Dict[str, Any]:
