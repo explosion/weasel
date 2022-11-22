@@ -6,7 +6,6 @@ from ..info import PROJECT_FILE
 from .._util.general import (
     Arg,
     Opt,
-    SimpleFrozenDict,
     load_project_config,
     logger,
     update_lockfile,

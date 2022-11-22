@@ -10,7 +10,7 @@ import typer
 from .._util.general import ensure_path, working_dir
 from .._util.general import Arg, Opt, PROJECT_FILE, load_project_config
 from .._util.general import get_checksum, download_file
-from .._util.general import SimpleFrozenDict, parse_config_overrides
+from .._util.general import parse_config_overrides
 from .._util.git import git_checkout, get_git_version
 
 # Whether assets are extra if `extra` is not set.
@@ -49,7 +49,7 @@ def assets_cli(
 def project_assets(
     project_dir: Path,
     *,
-    overrides: Dict[str, Any] = SimpleFrozenDict(),
+    overrides: Dict[str, Any] = None,
     sparse_checkout: bool = False,
     extra: bool = False,
 ) -> None:
@@ -61,6 +61,8 @@ def project_assets(
     extra (bool): Whether to download all assets, including those marked as 'extra'.
     """
     project_path = ensure_path(project_dir)
+    if overrides is None:
+        overrides = {}
     config = load_project_config(project_path, overrides=overrides)
     assets = [
         asset

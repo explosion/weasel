@@ -59,31 +59,6 @@ logger_stream_handler.setFormatter(
 logger.addHandler(logger_stream_handler)
 
 
-class SimpleFrozenDict(dict):
-    """Simplified implementation of a frozen dict, mainly used as default
-    function or method argument (for arguments that should default to empty
-    dictionary). Will raise an error if user or spaCy attempts to add to dict.
-    """
-
-    def __init__(self, *args, **kwargs) -> None:
-        """Initialize the frozen dict. Can be initialized with pre-defined
-        values.
-
-        error (str): The error message when user tries to assign to dict.
-        """
-        super().__init__(*args, **kwargs)
-        self.error = "Can't write to frozen dictionary. This is likely an internal error. Are you writing to a default function argument?"
-
-    def __setitem__(self, key, value):
-        raise NotImplementedError(self.error)
-
-    def pop(self, key, default=None):
-        raise NotImplementedError(self.error)
-
-    def update(self, other):
-        raise NotImplementedError(self.error)
-
-
 def run_command(
     command: Union[str, List[str]],
     *,
@@ -209,7 +184,7 @@ def working_dir(path: Union[str, Path]) -> Iterator[Path]:
 
 
 def load_project_config(
-    path: Path, interpolate: bool = True, overrides: Dict[str, Any] = SimpleFrozenDict()
+    path: Path, interpolate: bool = True, overrides: Dict[str, Any] = None
 ) -> Dict[str, Any]:
     """Load the project.yml file from a directory and validate it. Also make
     sure that all directories defined in the config exist.
@@ -244,13 +219,15 @@ def load_project_config(
     #     err = f"{PROJECT_FILE} validation error"
     #     with show_validation_error(title=err, hint_fill=False):
     #         config = substitute_project_variables(config, overrides)
+    if overrides is None:
+        overrides = {}
     config = substitute_project_variables(config, overrides)
     return config
 
 
 def substitute_project_variables(
     config: Dict[str, Any],
-    overrides: Dict[str, Any] = SimpleFrozenDict(),
+    overrides: Dict[str, Any] = None,
     key: str = "vars",
     env_key: str = "env",
 ) -> Dict[str, Any]:
@@ -271,6 +248,8 @@ def substitute_project_variables(
     # section "project" (otherwise, a list of commands in the top scope wouldn't)
     # be allowed by Thinc's config system
     cfg = Config({"project": config, key: config[key], env_key: config[env_key]})
+    if overrides is None:
+        overrides = {}
     cfg = Config().from_str(cfg.to_str(), overrides=overrides)
     interpolated = cfg.interpolate()
     return dict(interpolated["project"])
@@ -430,31 +409,6 @@ def join_command(command: List[str]) -> str:
 
 
 _frozen_dict_err_msg = "Can't write to frozen dictionary. This is likely an internal error. Are you writing to a default function argument?"
-
-
-class SimpleFrozenList(dict):
-    """Simplified implementation of a frozen dict, mainly used as default
-    function or method argument (for arguments that should default to empty
-    dictionary). Will raise an error if user or spaCy attempts to add to dict.
-    """
-
-    def __init__(self, *args, error: str = _frozen_dict_err_msg, **kwargs) -> None:
-        """Initialize the frozen dict. Can be initialized with pre-defined
-        values.
-
-        error (str): The error message when user tries to assign to dict.
-        """
-        super().__init__(*args, **kwargs)
-        self.error = error
-
-    def __setitem__(self, key, value):
-        raise NotImplementedError(self.error)
-
-    def pop(self, key, default=None):
-        raise NotImplementedError(self.error)
-
-    def update(self, other):
-        raise NotImplementedError(self.error)
 
 
 def get_minor_version(version: str) -> Optional[str]:

@@ -14,8 +14,6 @@ from .._util.general import (
     ENV_VARS,
     Arg,
     Opt,
-    SimpleFrozenDict,
-    SimpleFrozenList,
     check_bool_env_var,
     get_checksum,
     get_hash,
@@ -59,7 +57,7 @@ def project_run(
     project_dir: Path,
     subcommand: str,
     *,
-    overrides: Dict[str, Any] = SimpleFrozenDict(),
+    overrides: Dict[str, Any] = None,
     force: bool = False,
     dry: bool = False,
     capture: bool = False,
@@ -80,6 +78,8 @@ def project_run(
         when you want to turn over execution to the command, and capture=True
         when you want to run the command more like a function.
     """
+    if overrides is None:
+        overrides = {}
     config = load_project_config(project_dir, overrides=overrides)
     commands = {cmd["name"]: cmd for cmd in config.get("commands", [])}
     workflows = config.get("workflows", {})
@@ -161,7 +161,7 @@ def print_run_help(project_dir: Path, subcommand: Optional[str] = None) -> None:
 
 
 def run_commands(
-    commands: Iterable[str] = SimpleFrozenList(),
+    commands: Iterable[str] = None,
     silent: bool = False,
     dry: bool = False,
     capture: bool = False,
@@ -177,6 +177,8 @@ def run_commands(
         when you want to turn over execution to the command, and capture=True
         when you want to run the command more like a function.
     """
+    if commands is None:
+        commands = []
     for c in commands:
         command = split_command(c)
         # Not sure if this is needed or a good idea. Motivation: users may often
