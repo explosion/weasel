@@ -7,7 +7,7 @@ from pathlib import Path
 from typing import TYPE_CHECKING, Dict, List, Optional, Union
 from wasabi import msg
 
-from weasel import __version__
+from .. import __version__
 
 from .general import upload_file, download_file, ensure_pathy, get_checksum
 from .general import get_hash, make_tempdir

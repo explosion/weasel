@@ -39,7 +39,7 @@ from cloudpathlib import CloudPath
 from pydantic import BaseModel
 from wasabi import msg
 
-from weasel import __version__ as weasel_version
+from .. import __version__ as weasel_version
 
 from ..info import COMMAND, PROJECT_FILE, PROJECT_LOCK
 from .compat import is_windows
