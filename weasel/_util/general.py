@@ -78,15 +78,37 @@ def run_command(
         when you want to run the command more like a function.
     RETURNS (Optional[CompletedProcess]): The process object.
     """
-    if isinstance(command, str):
-        cmd_list = split_command(command)
-        cmd_str = command
+    # The actual command to execute
+    cmd_to_run = None
+    # these are used for debugging
+    cmd_str = None
+    tool = None
+
+    if is_windows:
+        # On Windows we can pass a list or string. In this case we'll just pass
+        # what we're given.
+        cmd_to_run = command
+        if isinstance(command, str):
+            cmd_str = command
+        else:  # list
+            # TODO list2cmdline is an intentionally undocumented internal Python
+            # function, check if we want to use this.
+            cmd_str = subprocess.list2cmdline(command)
+            tool = command[0]
     else:
-        cmd_list = command
-        cmd_str = " ".join(command)
+        # on Posix systems we should pass a list of strings
+        if isinstance(command, str):
+            cmd_str = command
+            cmd_to_run = shlex.split(command, posix=True)
+            tool = cmd_to_run[0]
+        else:  # list
+            cmd_to_run = command
+            tool = command[0]
+            # This is the same as shlex.join, added in Py 3.8
+            cmd_str = " ".join(shlex.quote(arg) for arg in command)
     try:
         ret = subprocess.run(
-            cmd_list,
+            cmd_to_run,
             env=os.environ.copy(),
             input=stdin,
             encoding="utf8",
@@ -97,9 +119,14 @@ def run_command(
     except FileNotFoundError:
         # Indicates the *command* wasn't found, it's an error before the command
         # is run.
-        err = "Can not execute command '{str_command}'. Do you have '{tool}' installed?"
+        if tool is None:
+            # On Windows we may be unable to get the executable name.
+            tool_check = ""
+        else:
+            tool_check = f" Do you have {tool} installed?"
+
         raise FileNotFoundError(
-            err.format(str_command=cmd_str, tool=cmd_list[0])
+            Errors.E970.format(str_command=cmd_str, msg=tool_check)
         ) from None
     if ret.returncode != 0 and capture:
         message = f"Error running command:\n\n{cmd_str}\n\n"
@@ -114,15 +141,6 @@ def run_command(
     elif ret.returncode != 0:
         sys.exit(ret.returncode)
     return ret
-
-
-def split_command(command: str) -> List[str]:
-    """Split a string command using shlex. Handles platform compatibility.
-
-    command (str) : The command to split
-    RETURNS (List[str]): The split command.
-    """
-    return shlex.split(command, posix=not is_windows)
 
 
 def ensure_path(path: Any) -> Any:

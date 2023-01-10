@@ -1,3 +1,4 @@
+import shlex
 import sys
 from pathlib import Path
 from typing import Any, Dict, Iterable, List, Optional, Sequence
@@ -19,11 +20,11 @@ from .._util.general import (
     get_hash,
     is_cwd,
     is_minor_version_match,
+    is_windows,
     join_command,
     load_project_config,
     parse_config_overrides,
     run_command,
-    split_command,
     working_dir,
 )
 
@@ -177,23 +178,46 @@ def run_commands(
         when you want to turn over execution to the command, and capture=True
         when you want to run the command more like a function.
     """
-    if commands is None:
-        commands = []
     for c in commands:
-        command = split_command(c)
-        # Not sure if this is needed or a good idea. Motivation: users may often
-        # use commands in their config that reference "python" and we want to
-        # make sure that it's always executing the same Python that spaCy is
-        # executed with and the pip in the same env, not some other Python/pip.
-        # Also ensures cross-compatibility if user 1 writes "python3" (because
-        # that's how it's set up on their system), and user 2 without the
-        # shortcut tries to re-run the command.
-        if len(command) and command[0] in ("python", "python3"):
-            command[0] = sys.executable
-        elif len(command) and command[0] in ("pip", "pip3"):
-            command = [sys.executable, "-m", "pip", *command[1:]]
-        if not silent:
-            print(f"Running command: {join_command(command)}")
+        command: Union[str, List[str]]
+        if is_windows:
+            command = c
+
+            # Correct Windows splitting is hard, so this only checks for simple
+            # cases. It will work in ordinary cases, but will miss cases where
+            # the command include a path like:
+            #   "C:\My Programs\python.exe" script.py
+            # In a "missed" case the command will simply be executed unchanged.
+            head, _, tail = c.partition(" ")
+
+            # Actual Windows quoting is more complicated, but simpler quoting
+            # rules are used for the first argument in command invocations.
+            #
+            # https://learn.microsoft.com/en-us/cpp/c-language/parsing-c-command-line-arguments
+            quoted_exe = f'"{sys.executable}"'
+            if head in ("python", "python3"):
+                command = f"{quoted_exe} {tail}"
+            if head in ("pip", "pip3"):
+                command = f"{quoted_exe} -m pip {tail}"
+
+            if not silent:
+                print(f"Running command: {command}")
+        else:
+            command = shlex.split(c, posix=True)
+            # Not sure if this is needed or a good idea. Motivation: users may often
+            # use commands in their config that reference "python" and we want to
+            # make sure that it's always executing the same Python that spaCy is
+            # executed with and the pip in the same env, not some other Python/pip.
+            # Also ensures cross-compatibility if user 1 writes "python3" (because
+            # that's how it's set up on their system), and user 2 without the
+            # shortcut tries to re-run the command.
+            if len(command) and command[0] in ("python", "python3"):
+                command[0] = sys.executable
+            elif len(command) and command[0] in ("pip", "pip3"):
+                command = [sys.executable, "-m", "pip", *command[1:]]
+            if not silent:
+                print(f"Running command: {c}")
+
         if not dry:
             run_command(command, capture=capture)
 
