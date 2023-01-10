@@ -1,0 +1,17 @@
+title: Weasel demo project (for tests)
+description: |
+  This project is a minimal demo for the Weasel tests.
+
+directories: [assets, corpus, scripts]
+
+assets:
+  - dest: assets/README.md
+    url: https://raw.githubusercontent.com/explosion/weasel/main/README.md
+
+commands:
+  - name: prep
+    help: Make a file to test with push/pull
+    script:
+      - python scripts/check.py
+    outputs:
+      - corpus/stuff.txt
