@@ -1,7 +1,12 @@
+import os
+
 import pytest
 from typer.testing import CliRunner
 
 from weasel.cli import app
+from weasel.cli.run import run_commands
+from weasel._util.compat import is_windows
+from weasel._util.general import run_command
 
 runner = CliRunner()
 
@@ -85,3 +90,46 @@ def test_pull(project_dir):
     print(result.stdout)
     assert result.exit_code == 0
     assert (project_dir / "corpus/stuff.txt").exists()
+
+
+def test_shell_quoting(tmp_path):
+    # simple quoted shell commands should run on any platform
+    # because mkdir is one of the few cross-platform commands,
+    # we'll work in a temp dir (pytest global fixture)
+    cwd = os.getcwd()
+    os.chdir(tmp_path)
+    try:
+        ret = run_command('mkdir "a b"')
+        assert ret.returncode == 0
+
+        # If things are working correctly, "a b"/c and "a b/c" should evaluate
+        # to the same directory. If they are working incorrectly, these could
+        # be treated differently.
+
+        # the slash here also works as a directory separator on Windows,
+        # for these commands at least.
+        ret = run_command('mkdir "a b"/c')
+        assert ret.returncode == 0
+        ls_cmd = "dir" if is_windows else "ls"
+        ret = run_command(f'{ls_cmd} "a b/c"')
+        assert ret.returncode == 0
+        # check outside the commands
+        assert os.path.isdir(tmp_path / "a b" / "c")
+        # since this is a temp dir, we don't have to delete it explicitly
+    finally:
+        # restore the original cwd so other tests are unaffected
+        os.chdir(cwd)
+
+
+def test_run_commands(tmp_path):
+    # minimal test
+    cwd = os.getcwd()
+    os.chdir(tmp_path)
+    try:
+        ls_cmd = "dir" if is_windows else "ls"
+        run_commands(["mkdir x", f"{ls_cmd} x"])
+        # check outside the commands
+        assert os.path.isdir(tmp_path / "x")
+    finally:
+        # restore the original cwd so other tests are unaffected
+        os.chdir(cwd)
