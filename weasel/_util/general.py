@@ -91,8 +91,7 @@ def run_command(
         if isinstance(command, str):
             cmd_str = command
         else:  # list
-            # TODO list2cmdline is an intentionally undocumented internal Python
-            # function, check if we want to use this.
+            # NOTE: list2cmdline is an intentionally undocumented internal Python function
             cmd_str = subprocess.list2cmdline(command)
             tool = command[0]
     else:
