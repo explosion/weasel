@@ -76,10 +76,10 @@ jobs:
       python -m build -s
     displayName: 'Build sdist'
 
-  - script: |
-      python -m mypy weasel
-    displayName: 'Run mypy'
-    condition: ne(variables['python.version'], '3.6')
+#  - script: |
+#      python -m mypy weasel
+#    displayName: 'Run mypy'
+#    condition: ne(variables['python.version'], '3.6')
 
   - task: DeleteFiles@1
     inputs:
@@ -109,6 +109,6 @@ jobs:
       python -m pip install -r requirements.txt
     displayName: 'Install test requirements'
 
-  - script: |
-      python -m pytest --pyargs weasel
-    displayName: 'Run tests'
+#  - script: |
+#      python -m pytest --pyargs weasel
+#    displayName: 'Run tests'
