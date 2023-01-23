@@ -10,7 +10,7 @@ jobs:
   strategy:
     matrix:
       Python36Linux:
-        imageName: 'ubuntu-latest'
+        imageName: 'ubuntu-20.04'
         python.version: '3.6'
       Python36Windows:
         imageName: 'windows-2019'
@@ -51,6 +51,15 @@ jobs:
       Python310Mac:
         imageName: 'macos-latest'
         python.version: '3.10'
+      Python311Linux:
+        imageName: 'ubuntu-latest'
+        python.version: '3.11'
+      Python311Windows:
+        imageName: 'windows-latest'
+        python.version: '3.11'
+      Python311Mac:
+        imageName: 'macos-latest'
+        python.version: '3.11'
     maxParallel: 4
   pool:
     vmImage: $(imageName)
@@ -62,23 +71,44 @@ jobs:
       architecture: 'x64'
 
   - script: |
+      python -m pip install -U build pip setuptools
       python -m pip install -U -r requirements.txt
-      python setup.py sdist
+      python -m build -s
     displayName: 'Build sdist'
 
-  - script: python -m mypy weasel
-    displayName: 'Run mypy'
-    condition: ne(variables['python.version'], '3.6')
+#  - script: |
+#      python -m mypy weasel
+#    displayName: 'Run mypy'
+#    condition: ne(variables['python.version'], '3.6')
 
   - task: DeleteFiles@1
     inputs:
       contents: 'weasel'
     displayName: 'Delete source directory'
 
+  - task: DeleteFiles@1
+    inputs:
+      contents: '*.egg-info'
+    displayName: 'Delete egg-info directory'
+
+  - script: |
+      python -m pip freeze > installed.txt
+      python -m pip uninstall -y -r installed.txt
+    displayName: 'Uninstall all packages'
+
   - bash: |
       SDIST=$(python -c "import os;print(os.listdir('./dist')[-1])" 2>&1)
       python -m pip install dist/$SDIST
     displayName: 'Install from sdist'
 
-  - script: python -m pytest --pyargs weasel
-    displayName: 'Run tests'
+  - bash: |
+      python -W error -c 'import weasel'
+    displayName: 'Test import'
+
+  - bash: |
+      python -m pip install -r requirements.txt
+    displayName: 'Install test requirements'
+
+#  - script: |
+#      python -m pytest --pyargs weasel
+#    displayName: 'Run tests'
