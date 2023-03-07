@@ -5,6 +5,7 @@ srsly>=2.4.3,<3.0.0
 typer>=0.3.0,<0.8.0
 # Third party dependencies
 requests>=2.13.0,<3.0.0
+pydantic>=1.7.4,!=1.8,!=1.8.1,<1.11.0
 # Official Python utilities
 typing_extensions>=3.7.4.1,<4.5.0; python_version < "3.8"
 # Development dependencies
