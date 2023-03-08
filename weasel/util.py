@@ -30,6 +30,7 @@ logger.addHandler(logger_stream_handler)
 
 
 class ENV_VARS:
+    CONFIG_OVERRIDES = "SPACY_CONFIG_OVERRIDES"
     PROJECT_USE_GIT_VERSION = "SPACY_PROJECT_USE_GIT_VERSION"
 
 

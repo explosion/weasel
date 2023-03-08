@@ -1,6 +1,7 @@
 # code initially copied from spacy/cli/_util.py
 
 from typing import Dict, Any, Union, List, Optional, Tuple, Iterable
+from typing import TYPE_CHECKING
 import sys
 import shutil
 from pathlib import Path
@@ -21,6 +22,9 @@ from .util import is_compatible_version, SimpleFrozenDict, ENV_VARS
 from .schemas import ProjectConfigSchema, validate
 
 from . import about
+
+if TYPE_CHECKING:
+    from pathy import FluidPath  # noqa: F401
 
 
 COMMAND = "python -m spacy"
@@ -342,7 +346,6 @@ def ensure_pathy(path):
     from pathy import Pathy  # noqa: F811
 
     return Pathy.fluid(path)
-
 
 
 def git_checkout(
