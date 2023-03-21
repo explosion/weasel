@@ -27,9 +27,9 @@ if TYPE_CHECKING:
     from pathy import FluidPath  # noqa: F401
 
 
-COMMAND = "python -m spacy"
-NAME = "spacy"
-HELP = """spaCy Command-line Interface
+COMMAND = "python -m weasel"
+NAME = "weasel"
+HELP = """weasel Command-line Interface
 
 DOCS: https://spacy.io/api/cli
 """
