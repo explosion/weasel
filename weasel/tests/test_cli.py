@@ -11,6 +11,7 @@ from weasel._util import validate_project_commands, ConfigValidationError
 from weasel.schemas import ProjectConfigSchema, validate
 
 from weasel.cli.remote_storage import RemoteStorage
+from weasel.cli.run import _check_requirements
 
 from weasel.util import make_tempdir
 
@@ -230,4 +231,46 @@ def test_local_remote_storage_pull_missing():
         remote = RemoteStorage(d / "root", str(d / "remote"))
         assert remote.pull(filename, command_hash="aaaa") is None
         assert remote.pull(filename) is None
+
+
+@pytest.mark.filterwarnings("ignore::DeprecationWarning")
+@pytest.mark.parametrize(
+    "reqs,output",
+    [
+        [
+            """
+            spacy
+
+            # comment
+
+            thinc""",
+            (False, False),
+        ],
+        [
+            """# comment
+            --some-flag
+            spacy""",
+            (False, False),
+        ],
+        [
+            """# comment
+            --some-flag
+            spacy; python_version >= '3.6'""",
+            (False, False),
+        ],
+        [
+            """# comment
+             spacyunknowndoesnotexist12345""",
+            (True, False),
+        ],
+    ],
+)
+def test_project_check_requirements(reqs, output):
+    import pkg_resources
+
+    # excessive guard against unlikely package name
+    try:
+        pkg_resources.require("spacyunknowndoesnotexist12345")
+    except pkg_resources.DistributionNotFound:
+        assert output == _check_requirements([req.strip() for req in reqs.split("\n")])
 
