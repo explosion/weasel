@@ -239,7 +239,7 @@ def test_local_remote_storage_pull_missing():
     [
         [
             """
-            spacy
+            weasel
 
             # comment
 
@@ -249,13 +249,13 @@ def test_local_remote_storage_pull_missing():
         [
             """# comment
             --some-flag
-            spacy""",
+            weasel""",
             (False, False),
         ],
         [
             """# comment
             --some-flag
-            spacy; python_version >= '3.6'""",
+            weasel; python_version >= '3.6'""",
             (False, False),
         ],
         [
