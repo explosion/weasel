@@ -109,6 +109,6 @@ jobs:
       python -m pip install -r requirements.txt
     displayName: 'Install test requirements'
 
-#  - script: |
-#      python -m pytest --pyargs weasel
-#    displayName: 'Run tests'
+  - script: |
+      python -m pytest --pyargs weasel
+    displayName: 'Run tests'
