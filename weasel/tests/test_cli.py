@@ -8,6 +8,7 @@ import time
 from weasel._util import is_subpath_of, load_project_config
 from weasel._util import substitute_project_variables
 from weasel._util import validate_project_commands, ConfigValidationError
+from weasel._util import upload_file, download_file
 from weasel.schemas import ProjectConfigSchema, validate
 
 from weasel.cli.remote_storage import RemoteStorage
@@ -274,3 +275,17 @@ def test_project_check_requirements(reqs, output):
     except pkg_resources.DistributionNotFound:
         assert output == _check_requirements([req.strip() for req in reqs.split("\n")])
 
+
+def test_upload_download_local_file():
+    with make_tempdir() as d1, make_tempdir() as d2:
+        filename = "f.txt"
+        content = "content"
+        local_file = d1 / filename
+        remote_file = d2 / filename
+        with local_file.open(mode="w") as file_:
+            file_.write(content)
+        upload_file(local_file, remote_file)
+        local_file.unlink()
+        download_file(remote_file, local_file)
+        with local_file.open(mode="r") as file_:
+            assert file_.read() == content
