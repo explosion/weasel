@@ -1,3 +1,3 @@
-from ._util import app
+from ._util import COMMAND, app
 
-app(prog_name="weasel")
+app(prog_name=COMMAND)
