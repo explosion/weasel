@@ -37,12 +37,6 @@ DOCS: https://spacy.io/api/cli
 PROJECT_FILE = "project.yml"
 PROJECT_LOCK = "project.lock"
 
-PROJECT_HELP = f"""Command-line interface for spaCy projects and templates.
-You'd typically start by cloning a project template to a local directory and
-fetching its assets like datasets etc. See the project's {PROJECT_FILE} for the
-available commands.
-"""
-
 
 # Wrappers for Typer's annotations. Initially created to set defaults and to
 # keep the names short, but not needed at the moment.
@@ -50,8 +44,6 @@ Arg = typer.Argument
 Opt = typer.Option
 
 app = typer.Typer(name=NAME, help=HELP)
-project_cli = typer.Typer(name="project", help=PROJECT_HELP, no_args_is_help=True)
-app.add_typer(project_cli)
 
 
 def parse_config_overrides(

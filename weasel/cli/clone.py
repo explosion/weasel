@@ -6,7 +6,7 @@ import re
 
 from .. import about
 from ..util import ensure_path
-from .._util import project_cli, Arg, Opt, COMMAND, PROJECT_FILE
+from .._util import app, Arg, Opt, COMMAND, PROJECT_FILE
 from .._util import git_checkout, get_git_version, git_repo_branch_exists
 
 DEFAULT_REPO = about.__projects__
@@ -14,7 +14,7 @@ DEFAULT_PROJECTS_BRANCH = about.__projects_branch__
 DEFAULT_BRANCHES = ["main", "master"]
 
 
-@project_cli.command("clone")
+@app.command("clone")
 def project_clone_cli(
     # fmt: off
     name: str = Arg(..., help="The name of the template to clone"),
