@@ -1,29 +1,20 @@
-import re
-import subprocess
-from pathlib import Path
 from typing import Optional
-
+from pathlib import Path
 from wasabi import msg
+import subprocess
+import re
 
 from .. import about
-from .._util import (
-    COMMAND,
-    PROJECT_FILE,
-    Arg,
-    Opt,
-    app,
-    get_git_version,
-    git_checkout,
-    git_repo_branch_exists,
-)
 from ..util import ensure_path
+from .._util import project_cli, Arg, Opt, COMMAND, PROJECT_FILE
+from .._util import git_checkout, get_git_version, git_repo_branch_exists
 
 DEFAULT_REPO = about.__projects__
 DEFAULT_PROJECTS_BRANCH = about.__projects_branch__
 DEFAULT_BRANCHES = ["main", "master"]
 
 
-@app.command("clone")
+@project_cli.command("clone")
 def project_clone_cli(
     # fmt: off
     name: str = Arg(..., help="The name of the template to clone"),
@@ -92,7 +83,7 @@ def project_clone(
     if not (project_dir / PROJECT_FILE).exists():
         msg.warn(f"No {PROJECT_FILE} found in directory")
     else:
-        msg.good("Your project is now ready!")
+        msg.good(f"Your project is now ready!")
         print(f"To fetch the assets, run:\n{COMMAND} project assets {dest}")
 
 

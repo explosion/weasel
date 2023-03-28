@@ -50,6 +50,8 @@ Arg = typer.Argument
 Opt = typer.Option
 
 app = typer.Typer(name=NAME, help=HELP)
+project_cli = typer.Typer(name="project", help=PROJECT_HELP, no_args_is_help=True)
+app.add_typer(project_cli)
 
 
 def parse_config_overrides(
