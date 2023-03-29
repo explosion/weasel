@@ -15,21 +15,19 @@ def has_git():
         return False
 
 
-# project tests
-
 SAMPLE_PROJECT = {
     "title": "Sample project",
     "description": "This is a project for testing",
     "assets": [
         {
-            "dest": "assets/spacy-readme.md",
-            "url": "https://github.com/explosion/spaCy/raw/dec81508d28b47f09a06203c472b37f00db6c869/README.md",
-            "checksum": "411b2c89ccf34288fae8ed126bf652f7",
+            "dest": "assets/weasel-readme.md",
+            "url": "https://github.com/explosion/weasel/raw/9a3632862b47069d2f9033b773e814d4c4e09c83/README.md",
+            "checksum": "65f4c426a9b153b7683738c92d0d20f9",
         },
         {
-            "dest": "assets/citation.cff",
-            "url": "https://github.com/explosion/spaCy/raw/master/CITATION.cff",
-            "checksum": "c996bfd80202d480eb2e592369714e5e",
+            "dest": "assets/pyproject.toml",
+            "url": "https://github.com/explosion/weasel/raw/9a3632862b47069d2f9033b773e814d4c4e09c83/pyproject.toml",
+            "checksum": "1e2da3a3030d6611520952d5322cd94e",
             "extra": True,
         },
     ],
@@ -81,11 +79,11 @@ def test_project_assets(project_dir: Path):
     assert not asset_dir.exists(), "Assets dir is already present"
     result = CliRunner().invoke(app, ["assets", str(project_dir)])
     assert result.exit_code == 0
-    assert (asset_dir / "spacy-readme.md").is_file(), "Assets not downloaded"
+    assert (asset_dir / "weasel-readme.md").is_file(), "Assets not downloaded"
     # check that extras work
     result = CliRunner().invoke(app, ["assets", "--extra", str(project_dir)])
     assert result.exit_code == 0
-    assert (asset_dir / "citation.cff").is_file(), "Extras not downloaded"
+    assert (asset_dir / "pyproject.toml").is_file(), "Extras not downloaded"
 
 
 def test_project_run(project_dir: Path):
