@@ -1,18 +1,21 @@
 # code copied from spacy/tests/test_cli.py
 
 import os
-import pytest
-import srsly
 import time
 
-from weasel._util import is_subpath_of, load_project_config
-from weasel._util import substitute_project_variables
-from weasel._util import validate_project_commands, ConfigValidationError
-from weasel.schemas import ProjectConfigSchema, validate
+import pytest
+import srsly
 
+from weasel._util import (
+    ConfigValidationError,
+    is_subpath_of,
+    load_project_config,
+    substitute_project_variables,
+    validate_project_commands,
+)
 from weasel.cli.remote_storage import RemoteStorage
 from weasel.cli.run import _check_requirements
-
+from weasel.schemas import ProjectConfigSchema, validate
 from weasel.util import make_tempdir
 
 

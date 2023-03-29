@@ -1,16 +1,27 @@
-from typing import Any, Dict, Optional
-from pathlib import Path
-from wasabi import msg
 import os
 import re
 import shutil
+from pathlib import Path
+from typing import Any, Dict, Optional
+
 import requests
 import typer
+from wasabi import msg
 
+from .._util import (
+    PROJECT_FILE,
+    Arg,
+    Opt,
+    SimpleFrozenDict,
+    app,
+    download_file,
+    get_checksum,
+    get_git_version,
+    git_checkout,
+    load_project_config,
+    parse_config_overrides,
+)
 from ..util import ensure_path, working_dir
-from .._util import app, Arg, Opt, PROJECT_FILE, load_project_config
-from .._util import get_checksum, download_file, git_checkout, get_git_version
-from .._util import SimpleFrozenDict, parse_config_overrides
 
 # Whether assets are extra if `extra` is not set.
 EXTRA_DEFAULT = False
@@ -77,8 +88,8 @@ def project_assets(
         checksum = asset.get("checksum")
         if "git" in asset:
             git_err = (
-                f"Cloning spaCy project templates requires Git and the 'git' command. "
-                f"Make sure it's installed and that the executable is available."
+                "Cloning spaCy project templates requires Git and the 'git' command. "
+                "Make sure it's installed and that the executable is available."
             )
             get_git_version(error=git_err)
             if dest.exists():

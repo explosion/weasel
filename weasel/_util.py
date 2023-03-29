@@ -1,27 +1,32 @@
 # code initially copied from spacy/cli/_util.py
 
-from typing import Dict, Any, Union, List, Optional, Tuple, Iterable
-from typing import TYPE_CHECKING
-import sys
-import shutil
-from pathlib import Path
-from wasabi import msg
-import srsly
 import hashlib
+import os
+import shutil
+import subprocess
+import sys
+from configparser import InterpolationError
+from contextlib import contextmanager
+from pathlib import Path
+from typing import TYPE_CHECKING, Any, Dict, Iterable, List, Optional, Tuple, Union
+
+import srsly
 import typer
 from click import NoSuchOption
 from click.parser import split_arg_string
-from contextlib import contextmanager
 from thinc.api import Config, ConfigValidationError
-from configparser import InterpolationError
-import os
-
-from .util import run_command, make_tempdir, logger
-from .util import is_compatible_version, SimpleFrozenDict, ENV_VARS
-
-from .schemas import ProjectConfigSchema, validate
+from wasabi import msg
 
 from . import about
+from .schemas import ProjectConfigSchema, validate
+from .util import (
+    ENV_VARS,
+    SimpleFrozenDict,
+    is_compatible_version,
+    logger,
+    make_tempdir,
+    run_command,
+)
 
 if TYPE_CHECKING:
     from pathy import FluidPath  # noqa: F401
@@ -459,7 +464,7 @@ def get_git_version(
     """
     try:
         ret = run_command("git --version", capture=True)
-    except:
+    except subprocess.SubprocessError:
         raise RuntimeError(error)
     stdout = ret.stdout.strip()
     if not stdout or not stdout.startswith("git version"):
@@ -490,4 +495,3 @@ def is_subpath_of(parent, child):
     parent_realpath = os.path.realpath(parent)
     child_realpath = os.path.realpath(child)
     return os.path.commonpath([parent_realpath, child_realpath]) == parent_realpath
-
