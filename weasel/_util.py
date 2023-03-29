@@ -29,7 +29,7 @@ from .util import (
 )
 
 if TYPE_CHECKING:
-    from pathy import FluidPath  # noqa: F401
+    from pathy import FluidPath
 
 
 COMMAND = "python -m weasel"

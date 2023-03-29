@@ -22,7 +22,7 @@ from ..git_info import GIT_VERSION
 from ..util import ENV_VARS, check_bool_env_var, get_minor_version
 
 if TYPE_CHECKING:
-    from pathy import FluidPath  # noqa: F401
+    from pathy import FluidPath
 
 
 class RemoteStorage:
