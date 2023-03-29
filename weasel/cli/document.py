@@ -2,7 +2,7 @@ from pathlib import Path
 from wasabi import msg, MarkdownRenderer
 
 from ..util import working_dir
-from .._util import project_cli, Arg, Opt, PROJECT_FILE, load_project_config
+from .._util import app, Arg, Opt, PROJECT_FILE, load_project_config
 
 
 DOCS_URL = "https://spacy.io"
@@ -27,7 +27,7 @@ MARKER_END = "<!-- SPACY PROJECT: AUTO-GENERATED DOCS END (do not remove) -->"
 MARKER_IGNORE = "<!-- SPACY PROJECT: IGNORE -->"
 
 
-@project_cli.command("document")
+@app.command("document")
 def project_document_cli(
     # fmt: off
     project_dir: Path = Arg(Path.cwd(), help="Path to cloned project. Defaults to current working directory.", exists=True, file_okay=False),

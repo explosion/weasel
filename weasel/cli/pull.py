@@ -2,12 +2,12 @@ from pathlib import Path
 from wasabi import msg
 from .remote_storage import RemoteStorage
 from .remote_storage import get_command_hash
-from .._util import project_cli, Arg, logger
+from .._util import app, Arg, logger
 from .._util import load_project_config
 from .run import update_lockfile
 
 
-@project_cli.command("pull")
+@app.command("pull")
 def project_pull_cli(
     # fmt: off
     remote: str = Arg("default", help="Name or path of remote storage"),

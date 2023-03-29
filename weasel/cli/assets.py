@@ -8,7 +8,7 @@ import requests
 import typer
 
 from ..util import ensure_path, working_dir
-from .._util import project_cli, Arg, Opt, PROJECT_FILE, load_project_config
+from .._util import app, Arg, Opt, PROJECT_FILE, load_project_config
 from .._util import get_checksum, download_file, git_checkout, get_git_version
 from .._util import SimpleFrozenDict, parse_config_overrides
 
@@ -16,7 +16,7 @@ from .._util import SimpleFrozenDict, parse_config_overrides
 EXTRA_DEFAULT = False
 
 
-@project_cli.command(
+@app.command(
     "assets",
     context_settings={"allow_extra_args": True, "ignore_unknown_options": True},
 )
