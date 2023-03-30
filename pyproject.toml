@@ -10,10 +10,14 @@ select = [
     "E",    # pycodestyle errors
     "W",    # pycodestyle warnings
     "F",    # Pyflakes
-    "I",    # isort
     "Q",    # flake8-quotes
 ]
 
 [tool.ruff.per-file-ignores]
 # Ignore unused imports in __init__ files
 "__init__.py" = ["F401"]
+
+
+[tool.isort]
+multi_line_output = 9
+profile = "black"

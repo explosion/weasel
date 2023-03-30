@@ -9,31 +9,12 @@ from wasabi import msg
 from wasabi.util import locale_escape
 
 from .. import about
-from .._util import (
-    COMMAND,
-    PROJECT_FILE,
-    PROJECT_LOCK,
-    Arg,
-    Opt,
-    app,
-    get_checksum,
-    get_hash,
-    load_project_config,
-    parse_config_overrides,
-)
+from .._util import COMMAND, PROJECT_FILE, PROJECT_LOCK, Arg, Opt, app, get_checksum
+from .._util import get_hash, load_project_config, parse_config_overrides
 from ..git_info import GIT_VERSION
-from ..util import (
-    ENV_VARS,
-    SimpleFrozenDict,
-    SimpleFrozenList,
-    check_bool_env_var,
-    is_cwd,
-    is_minor_version_match,
-    join_command,
-    run_command,
-    split_command,
-    working_dir,
-)
+from ..util import ENV_VARS, SimpleFrozenDict, SimpleFrozenList, check_bool_env_var
+from ..util import is_cwd, is_minor_version_match, join_command, run_command
+from ..util import split_command, working_dir
 
 
 @app.command(

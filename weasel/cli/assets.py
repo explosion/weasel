@@ -8,19 +8,9 @@ import requests
 import typer
 from wasabi import msg
 
-from .._util import (
-    PROJECT_FILE,
-    Arg,
-    Opt,
-    SimpleFrozenDict,
-    app,
-    download_file,
-    get_checksum,
-    get_git_version,
-    git_checkout,
-    load_project_config,
-    parse_config_overrides,
-)
+from .._util import PROJECT_FILE, Arg, Opt, SimpleFrozenDict, app, download_file
+from .._util import get_checksum, get_git_version, git_checkout, load_project_config
+from .._util import parse_config_overrides
 from ..util import ensure_path, working_dir
 
 # Whether assets are extra if `extra` is not set.

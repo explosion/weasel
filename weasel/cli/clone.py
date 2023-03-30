@@ -6,16 +6,8 @@ from typing import Optional
 from wasabi import msg
 
 from .. import about
-from .._util import (
-    COMMAND,
-    PROJECT_FILE,
-    Arg,
-    Opt,
-    app,
-    get_git_version,
-    git_checkout,
-    git_repo_branch_exists,
-)
+from .._util import COMMAND, PROJECT_FILE, Arg, Opt, app, get_git_version, git_checkout
+from .._util import git_repo_branch_exists
 from ..util import ensure_path
 
 DEFAULT_REPO = about.__projects__

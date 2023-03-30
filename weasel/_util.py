@@ -19,14 +19,8 @@ from wasabi import msg
 
 from . import about
 from .schemas import ProjectConfigSchema, validate
-from .util import (
-    ENV_VARS,
-    SimpleFrozenDict,
-    is_compatible_version,
-    logger,
-    make_tempdir,
-    run_command,
-)
+from .util import ENV_VARS, SimpleFrozenDict, is_compatible_version, logger
+from .util import make_tempdir, run_command
 
 if TYPE_CHECKING:
     from pathy import FluidPath

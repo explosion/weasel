@@ -9,14 +9,8 @@ from typing import TYPE_CHECKING, Dict, List, Optional
 from wasabi import msg
 
 from .. import about
-from .._util import (
-    download_file,
-    ensure_pathy,
-    get_checksum,
-    get_hash,
-    make_tempdir,
-    upload_file,
-)
+from .._util import download_file, ensure_pathy, get_checksum, get_hash, make_tempdir
+from .._util import upload_file
 from ..errors import Errors
 from ..git_info import GIT_VERSION
 from ..util import ENV_VARS, check_bool_env_var, get_minor_version
