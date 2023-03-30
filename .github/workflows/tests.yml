@@ -47,6 +47,11 @@ jobs:
         run: |
           python -m build --sdist
 
+      - name: Run mypy
+        run: |
+          python -m mypy weasel
+        if: matrix.python_version != '3.6'
+
       - name: Delete source directory and .egg-info
         run: |
           rm -rf weasel *.egg-info
