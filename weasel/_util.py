@@ -3,7 +3,6 @@
 import hashlib
 import os
 import shutil
-import subprocess
 import sys
 from configparser import InterpolationError
 from contextlib import contextmanager
@@ -458,7 +457,7 @@ def get_git_version(
     """
     try:
         ret = run_command("git --version", capture=True)
-    except subprocess.SubprocessError:
+    except Exception:
         raise RuntimeError(error)
     stdout = ret.stdout.strip()
     if not stdout or not stdout.startswith("git version"):
