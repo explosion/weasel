@@ -15,7 +15,6 @@ on:
 jobs:
   tests:
     name: Test
-    needs: Validate
     strategy:
       fail-fast: true
       matrix:
