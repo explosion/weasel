@@ -59,7 +59,7 @@ def write_version_py():
     path = Path("weasel/_version.py")
 
     match = re.search(r"(?<=version = ).+", config)
-    version = match.groupdict()["version"]
+    version = match.group()
 
     path.write_text(f'__version__ = "{version}"\n')
 
