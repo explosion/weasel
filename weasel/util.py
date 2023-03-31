@@ -1,25 +1,25 @@
 # code copied from spacy/util.py
 
-from typing import List, Union, Any
-from typing import Optional, Iterator, Generator
-from types import ModuleType
-import os
 import importlib
-from pathlib import Path
-import sys
-import warnings
-from packaging.specifiers import SpecifierSet, InvalidSpecifier
-from packaging.version import Version, InvalidVersion
-import subprocess
-from contextlib import contextmanager
-import tempfile
-import shutil
-import shlex
 import logging
+import os
+import shlex
+import shutil
 import stat
+import subprocess
+import sys
+import tempfile
+import warnings
+from contextlib import contextmanager
+from pathlib import Path
+from types import ModuleType
+from typing import Any, Generator, Iterator, List, Optional, Union
 
-from .errors import Errors, Warnings
+from packaging.specifiers import InvalidSpecifier, SpecifierSet
+from packaging.version import InvalidVersion, Version
+
 from .compat import is_windows
+from .errors import Errors, Warnings
 
 logger = logging.getLogger("spacy")
 logger_stream_handler = logging.StreamHandler()
@@ -229,7 +229,7 @@ def run_command(
         message = f"Error running command:\n\n{cmd_str}\n\n"
         message += f"Subprocess exited with status {ret.returncode}"
         if ret.stdout is not None:
-            message += f"\n\nProcess log (stdout and stderr):\n\n"
+            message += "\n\nProcess log (stdout and stderr):\n\n"
             message += ret.stdout
         error = subprocess.SubprocessError(message)
         error.ret = ret  # type: ignore[attr-defined]

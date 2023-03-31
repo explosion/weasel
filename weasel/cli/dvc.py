@@ -1,15 +1,14 @@
 """This module contains helpers and subcommands for integrating spaCy projects
 with Data Version Controk (DVC). https://dvc.org"""
-from typing import Dict, Any, List, Optional, Iterable
 import subprocess
 from pathlib import Path
+from typing import Any, Dict, List, Optional
+
 from wasabi import msg
 
-from .._util import PROJECT_FILE, load_project_config, get_hash, app
-from .._util import Arg, Opt, NAME, COMMAND
-from ..util import working_dir, split_command, join_command, run_command
-from ..util import SimpleFrozenList
-
+from .._util import COMMAND, NAME, PROJECT_FILE, Arg, Opt, app, get_hash
+from .._util import load_project_config
+from ..util import join_command, run_command, working_dir
 
 DVC_CONFIG = "dvc.yaml"
 DVC_DIR = ".dvc"
