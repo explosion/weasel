@@ -1,13 +1,14 @@
-from typing import Optional
-from pathlib import Path
-from wasabi import msg
-import subprocess
 import re
+import subprocess
+from pathlib import Path
+from typing import Optional
+
+from wasabi import msg
 
 from .. import about
+from .._util import COMMAND, PROJECT_FILE, Arg, Opt, app, get_git_version, git_checkout
+from .._util import git_repo_branch_exists
 from ..util import ensure_path
-from .._util import app, Arg, Opt, COMMAND, PROJECT_FILE
-from .._util import git_checkout, get_git_version, git_repo_branch_exists
 
 DEFAULT_REPO = about.__projects__
 DEFAULT_PROJECTS_BRANCH = about.__projects_branch__
@@ -83,7 +84,7 @@ def project_clone(
     if not (project_dir / PROJECT_FILE).exists():
         msg.warn(f"No {PROJECT_FILE} found in directory")
     else:
-        msg.good(f"Your project is now ready!")
+        msg.good("Your project is now ready!")
         print(f"To fetch the assets, run:\n{COMMAND} project assets {dest}")
 
 
