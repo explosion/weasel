@@ -52,7 +52,8 @@ GIT_VERSION = "{git_version}"
     filepath.write_text(text)
 
 
-def read_version():
+def write_version_py():
+    """A utility for automatic version extration from setup.py."""
 
     config = Path("setup.cfg").read_text()
     path = Path("weasel/_version.py")
@@ -66,5 +67,7 @@ def read_version():
 if __name__ == "__main__":
     from setuptools import find_packages, setup
 
+    write_version_py()
     write_git_info_py()
+
     setup(packages=find_packages())
