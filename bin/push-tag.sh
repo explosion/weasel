@@ -9,8 +9,8 @@ git checkout $1
 git pull origin $1
 git push origin $1
 
-version=$(grep "__version__ = " weasel/about.py)
-version=${version/__version__ = }
+version=$(grep "version = " setup.cfg)
+version=${version/version = }
 version=${version/\'/}
 version=${version/\'/}
 version=${version/\"/}
