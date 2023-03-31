@@ -1,9 +1,9 @@
 # code copied from spacy/schemas.py
 
-from typing import Dict, List, Union, Optional, Any, Type
-from pydantic import BaseModel, ValidationError
-from pydantic import StrictStr, Field
 from collections import defaultdict
+from typing import Any, Dict, List, Optional, Type, Union
+
+from pydantic import BaseModel, Field, StrictStr, ValidationError
 
 
 def validate(schema: Type[BaseModel], obj: Dict[str, Any]) -> List[str]:
