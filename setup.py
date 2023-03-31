@@ -3,6 +3,7 @@
 import os
 import subprocess
 from pathlib import Path
+import re
 
 
 # Include the git version in the build (adapted from NumPy)
@@ -49,6 +50,17 @@ GIT_VERSION = "{git_version}"
 """
 
     filepath.write_text(text)
+
+
+def read_version():
+
+    config = Path("setup.cfg").read_text()
+    path = Path("weasel/_version.py")
+
+    match = re.search(r"(?<=version = ).+", config)
+    version = match.groupdict()["version"]
+
+    path.write_text(f'__version__ = "{version}"\n')
 
 
 if __name__ == "__main__":
