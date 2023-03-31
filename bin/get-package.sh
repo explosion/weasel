@@ -2,7 +2,7 @@
 
 set -e
 
-version=$(grep "__title__ = " weasel/about.py)
+version=$(grep "name = " setup.cfg)
 version=${version/__title__ = }
 version=${version/\'/}
 version=${version/\'/}

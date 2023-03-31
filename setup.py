@@ -67,4 +67,4 @@ if __name__ == "__main__":
     from setuptools import find_packages, setup
 
     write_git_info_py()
-    setup(name="weasel", packages=find_packages())
+    setup(packages=find_packages())
