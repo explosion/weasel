@@ -44,7 +44,6 @@ Pipfile.lock
 *.egg
 .eggs
 MANIFEST
-weasel/git_info.py
 weasel/_version.py
 
 # Temporary files
