@@ -11,7 +11,6 @@ from wasabi.util import locale_escape
 from .. import about
 from .._util import COMMAND, PROJECT_FILE, PROJECT_LOCK, Arg, Opt, app, get_checksum
 from .._util import get_hash, load_project_config, parse_config_overrides
-from ..git_info import GIT_VERSION
 from ..util import ENV_VARS, SimpleFrozenDict, SimpleFrozenList, check_bool_env_var
 from ..util import is_cwd, is_minor_version_match, join_command, run_command
 from ..util import split_command, working_dir
@@ -255,10 +254,20 @@ def check_rerun(
         info = f"({spacy_v} in {PROJECT_LOCK}, {about.__version__} current)"
         msg.info(f"Re-running '{command['name']}': spaCy minor version changed {info}")
         return True
-    if check_spacy_commit and commit != GIT_VERSION:
-        info = f"({commit} in {PROJECT_LOCK}, {GIT_VERSION} current)"
-        msg.info(f"Re-running '{command['name']}': spaCy commit changed {info}")
-        return True
+    if check_spacy_commit:
+        try:
+            from spacy.git_info import GIT_VERSION
+        except ImportError:
+            msg.fail(
+                f"You specified a `spacy_git_version` key ({commit}), "
+                "but spaCy is not installed.",
+                exit=1,
+            )
+
+        if not commit != GIT_VERSION:
+            info = f"({commit} in {PROJECT_LOCK}, {GIT_VERSION} current)"
+            msg.info(f"Re-running '{command['name']}': spaCy commit changed {info}")
+            return True
     # If the entry in the lockfile matches the lockfile entry that would be
     # generated from the current command, we don't rerun because it means that
     # all inputs/outputs, hashes and scripts are the same and nothing changed

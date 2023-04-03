@@ -12,7 +12,6 @@ from .. import about
 from .._util import download_file, ensure_pathy, get_checksum, get_hash, make_tempdir
 from .._util import upload_file
 from ..errors import Errors
-from ..git_info import GIT_VERSION
 from ..util import ENV_VARS, check_bool_env_var, get_minor_version
 
 if TYPE_CHECKING:
@@ -162,6 +161,14 @@ def get_command_hash(
     as relevant, and the command.
     """
     if check_bool_env_var(ENV_VARS.PROJECT_USE_GIT_VERSION):
+        try:
+            from spacy.git_info import GIT_VERSION
+        except ImportError:
+            msg.fail(
+                f"The `{ENV_VARS.PROJECT_USE_GIT_VERSION}` in your environment is set to true,"
+                "but spaCy is not installed.",
+                exit=1,
+            )
         spacy_v = GIT_VERSION
     else:
         spacy_v = str(get_minor_version(about.__version__) or "")
