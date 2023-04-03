@@ -202,13 +202,14 @@ def validate_spacy_version(config: Dict[str, Any]) -> None:
     if version:
 
         import spacy
+
         spacy_version = spacy.about.__version__
 
         if not is_compatible_version(spacy_version, version):
             err = (
                 f"The {PROJECT_FILE} specifies a spaCy version range ({version}) "
                 f"that's not compatible with the version of spaCy you're running "
-                f"({about.__version__}). You can edit version requirement in the "
+                f"({spacy_version}). You can edit version requirement in the "
                 f"{PROJECT_FILE} to load it, but the project may not run as expected."
             )
             msg.fail(err, exits=1)
