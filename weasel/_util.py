@@ -12,7 +12,7 @@ from typing import TYPE_CHECKING, Any, Dict, Iterable, List, Optional, Tuple, Un
 try:
     from importlib.metadata import version, PackageNotFoundError
 except ImportError:
-    from catalogue._importlib_metadata import version, PackageNotFoundError
+    from catalogue._importlib_metadata import version, PackageNotFoundError  # type: ignore[no-redef]
 
 import srsly
 import typer
@@ -21,7 +21,6 @@ from click.parser import split_arg_string
 from thinc.api import Config, ConfigValidationError
 from wasabi import msg
 
-from . import about
 from .schemas import ProjectConfigSchema, validate
 from .util import ENV_VARS, SimpleFrozenDict, is_compatible_version, logger
 from .util import make_tempdir, run_command
