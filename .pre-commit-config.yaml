@@ -28,7 +28,10 @@ repos:
     rev: v1.1.1
     hooks:
       - id: mypy
-        additional_dependencies: ["types-requests", "types-setuptools"]
+        additional_dependencies:
+          - "types-requests"
+          - "types-setuptools"
+          - "pydantic"
 
   - repo: https://github.com/pycqa/isort
     rev: 5.12.0
