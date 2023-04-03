@@ -129,7 +129,11 @@ def load_project_config(
         msg.fail(invalid_err)
         print("\n".join(errors))
         sys.exit(1)
-    validate_project_version(config)
+
+    # Validate versions
+    validate_weasel_version(config)
+    validate_spacy_version(config)
+
     validate_project_commands(config)
     if interpolate:
         err = f"{PROJECT_FILE} validation error"
@@ -171,21 +175,43 @@ def substitute_project_variables(
     return dict(interpolated["project"])
 
 
-def validate_project_version(config: Dict[str, Any]) -> None:
-    """If the project defines a compatible spaCy version range, chec that it's
-    compatible with the current version of spaCy.
+def validate_weasel_version(config: Dict[str, Any]) -> None:
+    """If the project defines a compatible Weasel version range, check that it's
+    compatible with the current version of Weasel.
 
     config (Dict[str, Any]): The loaded config.
     """
-    spacy_version = config.get("spacy_version", None)
-    if spacy_version and not is_compatible_version(about.__version__, spacy_version):
+    version = config.get("weasel_version", None)
+    if version and not is_compatible_version(about.__version__, version):
         err = (
-            f"The {PROJECT_FILE} specifies a spaCy version range ({spacy_version}) "
-            f"that's not compatible with the version of spaCy you're running "
+            f"The {PROJECT_FILE} specifies a Weasel version range ({version}) "
+            f"that's not compatible with the version of Weasel you're running "
             f"({about.__version__}). You can edit version requirement in the "
             f"{PROJECT_FILE} to load it, but the project may not run as expected."
         )
         msg.fail(err, exits=1)
+
+
+def validate_spacy_version(config: Dict[str, Any]) -> None:
+    """If the project defines a compatible spaCy version range, check that it's
+    compatible with the current version of spaCy.
+
+    config (Dict[str, Any]): The loaded config.
+    """
+    version = config.get("spacy_version", None)
+    if version:
+
+        import spacy
+        spacy_version = spacy.about.__version__
+
+        if not is_compatible_version(spacy_version, version):
+            err = (
+                f"The {PROJECT_FILE} specifies a spaCy version range ({version}) "
+                f"that's not compatible with the version of spaCy you're running "
+                f"({about.__version__}). You can edit version requirement in the "
+                f"{PROJECT_FILE} to load it, but the project may not run as expected."
+            )
+            msg.fail(err, exits=1)
 
 
 def validate_project_commands(config: Dict[str, Any]) -> None:
