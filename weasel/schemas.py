@@ -78,6 +78,7 @@ class ProjectConfigSchema(BaseModel):
     commands: List[ProjectConfigCommand] = Field([], title="Project command shortucts")
     title: Optional[str] = Field(None, title="Project title")
     spacy_version: Optional[StrictStr] = Field(None, title="spaCy version range that the project is compatible with")
+    weasel_version: Optional[StrictStr] = Field(None, title="Weasel version range that the project is compatible with")
     # fmt: on
 
     class Config:
