@@ -8,16 +8,16 @@ from ..util import working_dir
 DOCS_URL = "https://spacy.io"
 INTRO_PROJECT = f"""The [`{PROJECT_FILE}`]({PROJECT_FILE}) defines the data assets required by the
 project, as well as the available commands and workflows. For details, see the
-[spaCy projects documentation]({DOCS_URL}/usage/projects)."""
+[spaCy project/Weasel documentation]({DOCS_URL}/usage/projects)."""
 INTRO_COMMANDS = f"""The following commands are defined by the project. They
-can be executed using [`spacy project run [name]`]({DOCS_URL}/api/cli#project-run).
+can be executed using [`[spacy project]/[weasel] run [name]`]({DOCS_URL}/api/cli#project-run).
 Commands are only re-run if their inputs have changed."""
 INTRO_WORKFLOWS = f"""The following workflows are defined by the project. They
-can be executed using [`spacy project run [name]`]({DOCS_URL}/api/cli#project-run)
+can be executed using [`[spacy project]/[weasel] run [name]`]({DOCS_URL}/api/cli#project-run)
 and will run the specified commands in order. Commands are only re-run if their
 inputs have changed."""
 INTRO_ASSETS = f"""The following assets are defined by the project. They can
-be fetched by running [`spacy project assets`]({DOCS_URL}/api/cli#project-assets)
+be fetched by running [`[spacy project]/[weasel] assets`]({DOCS_URL}/api/cli#project-assets)
 in the project directory."""
 # These markers are added to the Markdown and can be used to update the file in
 # place if it already exists. Only the auto-generated part will be replaced.

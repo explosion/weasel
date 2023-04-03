@@ -78,7 +78,7 @@ def project_assets(
         checksum = asset.get("checksum")
         if "git" in asset:
             git_err = (
-                "Cloning spaCy project templates requires Git and the 'git' command. "
+                "Cloning spaCy project/Weasel templates requires Git and the 'git' command. "
                 "Make sure it's installed and that the executable is available."
             )
             get_git_version(error=git_err)

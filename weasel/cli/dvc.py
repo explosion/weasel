@@ -1,4 +1,4 @@
-"""This module contains helpers and subcommands for integrating spaCy projects
+"""This module contains helpers and subcommands for integrating spaCy project/Weasel
 with Data Version Controk (DVC). https://dvc.org"""
 import subprocess
 from pathlib import Path
@@ -189,7 +189,7 @@ def ensure_dvc(project_dir: Path) -> None:
         subprocess.run(["dvc", "--version"], stdout=subprocess.DEVNULL)
     except Exception:
         msg.fail(
-            "To use spaCy projects with DVC (Data Version Control), DVC needs "
+            "To use spaCy project/Weasel with DVC (Data Version Control), DVC needs "
             "to be installed and the 'dvc' command needs to be available",
             "You can install the Python package from pip (pip install dvc) or "
             "conda (conda install -c conda-forge dvc). For more details, see the "
