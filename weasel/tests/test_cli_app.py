@@ -1,4 +1,5 @@
 from pathlib import Path
+from typing import Any, Dict
 
 import pytest
 import srsly
@@ -15,7 +16,7 @@ def has_git():
         return False
 
 
-SAMPLE_PROJECT = {
+SAMPLE_PROJECT: Dict[str, Any] = {
     "title": "Sample project",
     "description": "This is a project for testing",
     "assets": [
@@ -102,7 +103,7 @@ def test_project_run(project_dir: Path):
 
 @pytest.mark.skipif(not has_git(), reason="git not installed")
 @pytest.mark.parametrize(
-    "options",
+    "options_string",
     [
         "",
         # "--sparse",
@@ -110,14 +111,14 @@ def test_project_run(project_dir: Path):
         "--repo https://github.com/explosion/projects --branch v3",
     ],
 )
-def test_project_clone(tmp_path: Path, options: str):
+def test_project_clone(tmp_path: Path, options_string: str):
 
     out = tmp_path / "project_clone"
     target = "benchmarks/ner_conll03"
-    if not options:
+    if not options_string:
         options = []
     else:
-        options = options.split()
+        options = options_string.split()
     result = CliRunner().invoke(app, ["clone", target, *options, str(out)])
     assert result.exit_code == 0
     assert (out / "README.md").is_file()
