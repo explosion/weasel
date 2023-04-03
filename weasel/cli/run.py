@@ -312,8 +312,7 @@ def get_lock_entry(project_dir: Path, command: Dict[str, Any]) -> Dict[str, Any]
         "script": command["script"],
         "deps": deps,
         "outs": [*outs, *outs_nc],
-        "spacy_version": about.__version__,
-        "spacy_git_version": GIT_VERSION,
+        "weasel_version": about.__version__,
     }
 
 
