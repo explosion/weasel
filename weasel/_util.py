@@ -9,6 +9,11 @@ from contextlib import contextmanager
 from pathlib import Path
 from typing import TYPE_CHECKING, Any, Dict, Iterable, List, Optional, Tuple, Union
 
+try:
+    from importlib.metadata import version, PackageNotFoundError
+except ImportError:
+    from catalogue._importlib_metadata import version, PackageNotFoundError
+
 import srsly
 import typer
 from click import NoSuchOption
@@ -181,12 +186,15 @@ def validate_weasel_version(config: Dict[str, Any]) -> None:
 
     config (Dict[str, Any]): The loaded config.
     """
-    version = config.get("weasel_version", None)
-    if version and not is_compatible_version(about.__version__, version):
+    version_specifier = config.get("weasel_version", None)
+    weasel_version = version("weasel")
+    if version_specifier and not is_compatible_version(
+        weasel_version, version_specifier
+    ):
         err = (
-            f"The {PROJECT_FILE} specifies a Weasel version range ({version}) "
+            f"The {PROJECT_FILE} specifies a Weasel version range ({version_specifier}) "
             f"that's not compatible with the version of Weasel you're running "
-            f"({about.__version__}). You can edit version requirement in the "
+            f"({weasel_version}). You can edit version requirement in the "
             f"{PROJECT_FILE} to load it, but the project may not run as expected."
         )
         msg.fail(err, exits=1)
@@ -198,23 +206,21 @@ def validate_spacy_version(config: Dict[str, Any]) -> None:
 
     config (Dict[str, Any]): The loaded config.
     """
-    version = config.get("spacy_version", None)
-    if version:
+    version_specifier = config.get("spacy_version", None)
+    if version_specifier:
         try:
-            import spacy
-        except ImportError:
+            spacy_version = version("spacy")
+        except PackageNotFoundError:
             err = (
-                f"The {PROJECT_FILE} specifies a spaCy version range ({version}) "
+                f"The {PROJECT_FILE} specifies a spaCy version range ({version_specifier}) "
                 f"but spaCy is not installed within the environment. "
-                f"Did you forget to add 'spacy{version}` to your requirement file?"
+                f"Did you forget to add 'spacy{version_specifier}` to your requirement file?"
             )
             msg.fail(err, exits=1)
 
-        spacy_version = spacy.about.__version__
-
-        if not is_compatible_version(spacy_version, version):
+        if not is_compatible_version(spacy_version, version_specifier):
             err = (
-                f"The {PROJECT_FILE} specifies a spaCy version range ({version}) "
+                f"The {PROJECT_FILE} specifies a spaCy version range ({version_specifier}) "
                 f"that's not compatible with the version of spaCy you're running "
                 f"({spacy_version}). You can edit version requirement in the "
                 f"{PROJECT_FILE} to load it, but the project may not run as expected."
