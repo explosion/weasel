@@ -200,8 +200,15 @@ def validate_spacy_version(config: Dict[str, Any]) -> None:
     """
     version = config.get("spacy_version", None)
     if version:
-
-        import spacy
+        try:
+            import spacy
+        except ImportError:
+            err = (
+                f"The {PROJECT_FILE} specifies a spaCy version range ({version}) "
+                f"but spaCy is not installed within the environment. "
+                f"Did you forget to add 'spacy{version}` to your requirement file?"
+            )
+            msg.fail(err, exits=1)
 
         spacy_version = spacy.about.__version__
 
