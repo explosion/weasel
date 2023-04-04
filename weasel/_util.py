@@ -9,6 +9,8 @@ from contextlib import contextmanager
 from pathlib import Path
 from typing import TYPE_CHECKING, Any, Dict, Iterable, List, Optional, Tuple, Union
 
+# We cannot use catalogue in all cases
+# because it relies on the zipp library
 try:
     from importlib.metadata import version, PackageNotFoundError
 except ImportError:
