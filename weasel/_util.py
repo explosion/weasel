@@ -212,12 +212,12 @@ def validate_spacy_version(config: Dict[str, Any]) -> None:
         try:
             spacy_version = version("spacy")
         except PackageNotFoundError:
-            err = (
+            warning = (
                 f"The {PROJECT_FILE} specifies a spaCy version range ({version_specifier}) "
                 f"but spaCy is not installed within the environment. "
-                f"Did you forget to add 'spacy{version_specifier}` to your requirements?"
             )
-            msg.fail(err, exits=1)
+            msg.warn(warning)
+            return
 
         if not is_compatible_version(spacy_version, version_specifier):
             err = (
