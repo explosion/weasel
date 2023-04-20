@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import Any, Callable, Optional
 
 import pytest
 
@@ -6,7 +6,7 @@ from weasel import util
 from weasel._util import validate_spacy_version
 
 
-def mock_version(output: Optional[str]) -> str:
+def mock_version(output: Optional[str]) -> Callable[[Any], Optional[str]]:
     def f(package):
         return output
 
