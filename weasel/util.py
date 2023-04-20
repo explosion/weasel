@@ -26,8 +26,8 @@ from .errors import Errors, Warnings
 try:
     from importlib.metadata import PackageNotFoundError, version
 except ImportError:
-    from catalogue._importlib_metadata import PackageNotFoundError  # noqa
-    from catalogue._importlib_metadata import version  # noqa
+    from catalogue._importlib_metadata import PackageNotFoundError  # type: ignore[no-redef]
+    from catalogue._importlib_metadata import version  # type: ignore[no-redef]
 
 logger = logging.getLogger("spacy")
 logger_stream_handler = logging.StreamHandler()
