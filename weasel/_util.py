@@ -12,9 +12,12 @@ from typing import TYPE_CHECKING, Any, Dict, Iterable, List, Optional, Tuple, Un
 # We cannot use catalogue in all cases
 # because it relies on the zipp library
 try:
-    from importlib.metadata import version, PackageNotFoundError
+    from importlib.metadata import PackageNotFoundError, version
 except ImportError:
-    from catalogue._importlib_metadata import version, PackageNotFoundError  # type: ignore[no-redef]
+    from catalogue._importlib_metadata import (  # type: ignore[no-redef]
+        PackageNotFoundError,
+        version,
+    )
 
 import srsly
 import typer
@@ -24,8 +27,14 @@ from thinc.api import Config, ConfigValidationError
 from wasabi import msg
 
 from .schemas import ProjectConfigSchema, validate
-from .util import ENV_VARS, SimpleFrozenDict, is_compatible_version, logger
-from .util import make_tempdir, run_command
+from .util import (
+    ENV_VARS,
+    SimpleFrozenDict,
+    is_compatible_version,
+    logger,
+    make_tempdir,
+    run_command,
+)
 
 if TYPE_CHECKING:
     from pathy import FluidPath
@@ -137,7 +146,6 @@ def load_project_config(
         sys.exit(1)
 
     # Validate versions
-    validate_weasel_version(config)
     validate_spacy_version(config)
 
     validate_project_commands(config)
@@ -179,26 +187,6 @@ def substitute_project_variables(
     cfg = Config().from_str(cfg.to_str(), overrides=overrides)
     interpolated = cfg.interpolate()
     return dict(interpolated["project"])
-
-
-def validate_weasel_version(config: Dict[str, Any]) -> None:
-    """If the project defines a compatible Weasel version range, check that it's
-    compatible with the current version of Weasel.
-
-    config (Dict[str, Any]): The loaded config.
-    """
-    version_specifier = config.get("weasel_version", None)
-    weasel_version = version("weasel")
-    if version_specifier and not is_compatible_version(
-        weasel_version, version_specifier
-    ):
-        err = (
-            f"The {PROJECT_FILE} specifies a Weasel version range ({version_specifier}) "
-            f"that's not compatible with the version of Weasel you're running "
-            f"({weasel_version}). You can edit version requirement in the "
-            f"{PROJECT_FILE} to load it, but the project may not run as expected."
-        )
-        msg.fail(err, exits=1)
 
 
 def validate_spacy_version(config: Dict[str, Any]) -> None:
