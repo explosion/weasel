@@ -13,13 +13,21 @@ import warnings
 from contextlib import contextmanager
 from pathlib import Path
 from types import ModuleType
-from typing import Any, Generator, Iterator, List, Optional, Union
+from typing import Any, Generator, Iterator, List, Optional, Tuple, Union
 
 from packaging.specifiers import InvalidSpecifier, SpecifierSet
 from packaging.version import InvalidVersion, Version
 
 from .compat import is_windows
 from .errors import Errors, Warnings
+
+# We cannot use catalogue in all cases
+# because it relies on the zipp library
+try:
+    from importlib.metadata import PackageNotFoundError, version
+except ImportError:
+    from catalogue._importlib_metadata import PackageNotFoundError  # noqa
+    from catalogue._importlib_metadata import version  # noqa
 
 logger = logging.getLogger("spacy")
 logger_stream_handler = logging.StreamHandler()
@@ -313,3 +321,25 @@ def check_bool_env_var(env_var: str) -> bool:
     if value == "0":
         return False
     return bool(value)
+
+
+def read_package_version(package: str) -> Optional[str]:
+    try:
+        return version(package)
+    except PackageNotFoundError:
+        return None
+
+
+def get_spacy_version_and_commit() -> Tuple[Optional[str], Optional[str]]:
+
+    spacy_version = read_package_version("spacy")
+
+    if spacy_version is not None:
+        # Since the version is not None, the package is installed
+        from spacy.git_info import GIT_VERSION as SPACY_GIT_VERSION  # noqa
+
+        spacy_commit = SPACY_GIT_VERSION
+    else:
+        spacy_commit = None
+
+    return spacy_version, spacy_commit

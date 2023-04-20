@@ -11,10 +11,9 @@ from wasabi.util import locale_escape
 from .. import about
 from .._util import COMMAND, PROJECT_FILE, PROJECT_LOCK, Arg, Opt, app, get_checksum
 from .._util import get_hash, load_project_config, parse_config_overrides
-from ..git_info import GIT_VERSION
 from ..util import ENV_VARS, SimpleFrozenDict, SimpleFrozenList, check_bool_env_var
-from ..util import is_cwd, is_minor_version_match, join_command, run_command
-from ..util import split_command, working_dir
+from ..util import get_spacy_version_and_commit, is_cwd, is_minor_version_match
+from ..util import join_command, run_command, split_command, working_dir
 
 
 @app.command(
@@ -251,14 +250,23 @@ def check_rerun(
     # Always rerun if spaCy version or commit hash changed
     spacy_v = entry.get("spacy_version")
     commit = entry.get("spacy_git_version")
-    if check_spacy_version and not is_minor_version_match(spacy_v, about.__version__):
-        info = f"({spacy_v} in {PROJECT_LOCK}, {about.__version__} current)"
-        msg.info(f"Re-running '{command['name']}': spaCy minor version changed {info}")
-        return True
-    if check_spacy_commit and commit != GIT_VERSION:
-        info = f"({commit} in {PROJECT_LOCK}, {GIT_VERSION} current)"
-        msg.info(f"Re-running '{command['name']}': spaCy commit changed {info}")
-        return True
+
+    spacy_version, spacy_commit = get_spacy_version_and_commit()
+
+    if spacy_version is not None:
+
+        if check_spacy_version and not is_minor_version_match(
+            spacy_v, about.__version__
+        ):
+            info = f"({spacy_v} in {PROJECT_LOCK}, {about.__version__} current)"
+            msg.info(
+                f"Re-running '{command['name']}': spaCy minor version changed {info}"
+            )
+            return True
+        if check_spacy_commit and commit != spacy_commit:
+            info = f"({commit} in {PROJECT_LOCK}, {spacy_commit} current)"
+            msg.info(f"Re-running '{command['name']}': spaCy commit changed {info}")
+            return True
     # If the entry in the lockfile matches the lockfile entry that would be
     # generated from the current command, we don't rerun because it means that
     # all inputs/outputs, hashes and scripts are the same and nothing changed
@@ -298,13 +306,16 @@ def get_lock_entry(project_dir: Path, command: Dict[str, Any]) -> Dict[str, Any]
     deps = get_fileinfo(project_dir, command.get("deps", []))
     outs = get_fileinfo(project_dir, command.get("outputs", []))
     outs_nc = get_fileinfo(project_dir, command.get("outputs_no_cache", []))
+
+    spacy_version, spacy_commit = get_spacy_version_and_commit()
+
     return {
         "cmd": f"{COMMAND} run {command['name']}",
         "script": command["script"],
         "deps": deps,
         "outs": [*outs, *outs_nc],
-        "spacy_version": about.__version__,
-        "spacy_git_version": GIT_VERSION,
+        "spacy_version": spacy_version,
+        "spacy_git_version": spacy_commit,
     }
 
 

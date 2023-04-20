@@ -9,16 +9,6 @@ from contextlib import contextmanager
 from pathlib import Path
 from typing import TYPE_CHECKING, Any, Dict, Iterable, List, Optional, Tuple, Union
 
-# We cannot use catalogue in all cases
-# because it relies on the zipp library
-try:
-    from importlib.metadata import PackageNotFoundError, version
-except ImportError:
-    from catalogue._importlib_metadata import (  # type: ignore[no-redef]
-        PackageNotFoundError,
-        version,
-    )
-
 import srsly
 import typer
 from click import NoSuchOption
@@ -27,14 +17,11 @@ from thinc.api import Config, ConfigValidationError
 from wasabi import msg
 
 from .schemas import ProjectConfigSchema, validate
-from .util import (
-    ENV_VARS,
-    SimpleFrozenDict,
-    is_compatible_version,
-    logger,
-    make_tempdir,
-    run_command,
-)
+
+# We cannot use catalogue in all cases
+# because it relies on the zipp library
+from .util import ENV_VARS, SimpleFrozenDict, is_compatible_version, logger
+from .util import make_tempdir, read_package_version, run_command
 
 if TYPE_CHECKING:
     from pathy import FluidPath
@@ -197,9 +184,9 @@ def validate_spacy_version(config: Dict[str, Any]) -> None:
     """
     version_specifier = config.get("spacy_version", None)
     if version_specifier:
-        try:
-            spacy_version = version("spacy")
-        except PackageNotFoundError:
+        spacy_version = read_package_version("spacy")
+
+        if spacy_version is None:
             warning = (
                 f"The {PROJECT_FILE} specifies a spaCy version range ({version_specifier}) "
                 f"but spaCy is not installed within the environment. "
