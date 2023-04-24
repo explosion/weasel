@@ -3,7 +3,8 @@
 from collections import defaultdict
 from typing import Any, Dict, List, Optional, Type, Union
 
-from pydantic import BaseModel, Field, StrictStr, ValidationError
+from pydantic import BaseModel, Field, StrictStr, ValidationError, root_validator
+from wasabi import msg
 
 
 def validate(schema: Type[BaseModel], obj: Dict[str, Any]) -> List[str]:
@@ -77,8 +78,16 @@ class ProjectConfigSchema(BaseModel):
     workflows: Dict[StrictStr, List[StrictStr]] = Field({}, title="Named workflows, mapped to list of project commands to run in order")
     commands: List[ProjectConfigCommand] = Field([], title="Project command shortucts")
     title: Optional[str] = Field(None, title="Project title")
-    spacy_version: Optional[StrictStr] = Field(None, title="spaCy version range that the project is compatible with")
     # fmt: on
 
     class Config:
         title = "Schema for project configuration file"
+
+    @root_validator(pre=True)
+    def check_legacy_keys(cls, obj: Dict[str, Any]) -> Dict[str, Any]:
+        if "spacy_version" in obj:
+            msg.warn(
+                "Your project configuration file includes a `spacy_version` key, "
+                "which is now deprecated. Weasel will NOT validate your version of spaCy.",
+            )
+        return obj
