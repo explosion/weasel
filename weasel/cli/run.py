@@ -208,9 +208,7 @@ def validate_subcommand(
     if subcommand not in commands and subcommand not in workflows:
         help_msg = []
         if subcommand in ["assets", "asset"]:
-            help_msg.append(
-                "Did you mean to run: python -m [spacy project]/[weasel] assets?"
-            )
+            help_msg.append("Did you mean to run: python -m spacy project assets?")
         if commands:
             help_msg.append(f"Available commands: {', '.join(commands)}")
         if workflows:
