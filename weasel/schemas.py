@@ -88,6 +88,6 @@ class ProjectConfigSchema(BaseModel):
         if "spacy_version" in obj:
             msg.warn(
                 "Your project configuration file includes a `spacy_version` key, "
-                "which is now deprecated. Weasel will NOT validate your version of spaCy.",
+                "which is now deprecated. Weasel will not validate your version of spaCy.",
             )
         return obj
