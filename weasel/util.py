@@ -21,7 +21,7 @@ from packaging.version import InvalidVersion, Version
 from .compat import is_windows
 from .errors import Errors, Warnings
 
-logger = logging.getLogger("weasel")
+logger = logging.getLogger("spacy")
 logger_stream_handler = logging.StreamHandler()
 logger_stream_handler.setFormatter(
     logging.Formatter("[%(asctime)s] [%(levelname)s] %(message)s")
