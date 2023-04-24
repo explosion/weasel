@@ -16,10 +16,8 @@ from click.parser import split_arg_string
 from thinc.api import Config, ConfigValidationError
 from wasabi import msg
 
-from . import about
 from .schemas import ProjectConfigSchema, validate
-from .util import ENV_VARS, SimpleFrozenDict, is_compatible_version, logger
-from .util import make_tempdir, run_command
+from .util import ENV_VARS, SimpleFrozenDict, logger, make_tempdir, run_command
 
 if TYPE_CHECKING:
     from pathy import FluidPath
@@ -129,7 +127,6 @@ def load_project_config(
         msg.fail(invalid_err)
         print("\n".join(errors))
         sys.exit(1)
-    validate_project_version(config)
     validate_project_commands(config)
     if interpolate:
         err = f"{PROJECT_FILE} validation error"
@@ -169,23 +166,6 @@ def substitute_project_variables(
     cfg = Config().from_str(cfg.to_str(), overrides=overrides)
     interpolated = cfg.interpolate()
     return dict(interpolated["project"])
-
-
-def validate_project_version(config: Dict[str, Any]) -> None:
-    """If the project defines a compatible spaCy version range, chec that it's
-    compatible with the current version of spaCy.
-
-    config (Dict[str, Any]): The loaded config.
-    """
-    spacy_version = config.get("spacy_version", None)
-    if spacy_version and not is_compatible_version(about.__version__, spacy_version):
-        err = (
-            f"The {PROJECT_FILE} specifies a spaCy version range ({spacy_version}) "
-            f"that's not compatible with the version of spaCy you're running "
-            f"({about.__version__}). You can edit version requirement in the "
-            f"{PROJECT_FILE} to load it, but the project may not run as expected."
-        )
-        msg.fail(err, exits=1)
 
 
 def validate_project_commands(config: Dict[str, Any]) -> None:
