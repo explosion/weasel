@@ -271,4 +271,3 @@ def test_project_check_requirements(reqs, output):
         pkg_resources.require("spacyunknowndoesnotexist12345")
     except pkg_resources.DistributionNotFound:
         assert output == _check_requirements([req.strip() for req in reqs.split("\n")])
-

@@ -296,8 +296,8 @@ def import_file(name: str, loc: Union[str, Path]) -> ModuleType:
     loc (str / Path): Path to the file.
     RETURNS: The loaded module.
     """
-    spec = importlib.util.spec_from_file_location(name, str(loc))
-    module = importlib.util.module_from_spec(spec)  # type: ignore[arg-type]
+    spec = importlib.util.spec_from_file_location(name, str(loc))  # type: ignore
+    module = importlib.util.module_from_spec(spec)  # type: ignore
     spec.loader.exec_module(module)  # type: ignore[union-attr]
     return module
 
