@@ -112,7 +112,6 @@ def test_project_run(project_dir: Path):
     ],
 )
 def test_project_clone(tmp_path: Path, options_string: str):
-
     out = tmp_path / "project_clone"
     target = "benchmarks/ner_conll03"
     if not options_string:
