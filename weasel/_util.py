@@ -13,7 +13,7 @@ import srsly
 import typer
 from click import NoSuchOption
 from click.parser import split_arg_string
-from thinc.api import Config, ConfigValidationError
+from confection import Config, ConfigValidationError
 from wasabi import msg
 
 from .schemas import ProjectConfigSchema, validate
