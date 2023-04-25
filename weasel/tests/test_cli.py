@@ -6,13 +6,8 @@ import time
 import pytest
 import srsly
 
-from weasel._util import (
-    ConfigValidationError,
-    is_subpath_of,
-    load_project_config,
-    substitute_project_variables,
-    validate_project_commands,
-)
+from weasel._util import ConfigValidationError, is_subpath_of, load_project_config
+from weasel._util import substitute_project_variables, validate_project_commands
 from weasel.cli.remote_storage import RemoteStorage
 from weasel.cli.run import _check_requirements
 from weasel.schemas import ProjectConfigSchema, validate
