@@ -95,8 +95,8 @@ class ProjectConfigSchema(BaseModel):
 
 
 class SpacyEnvVars(BaseSettings):
-    SPACY_CONFIG_OVERRIDES: str | None = None
-    SPACY_PROJECT_USE_GIT_VERSION: bool | None = None
+    SPACY_CONFIG_OVERRIDES: Optional[str] = None
+    SPACY_PROJECT_USE_GIT_VERSION: Optional[bool] = None
 
     def check(self):
         if self.SPACY_CONFIG_OVERRIDES is not None:
