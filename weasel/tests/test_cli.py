@@ -241,7 +241,7 @@ def test_local_remote_storage_pull_missing():
 
             # comment
 
-            thinc""",
+            confection""",
             (False, False),
         ],
         [
