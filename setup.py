@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
-from pathlib import Path
 import re
+from pathlib import Path
 
 
 def write_version_py():

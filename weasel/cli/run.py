@@ -11,9 +11,9 @@ from wasabi.util import locale_escape
 from .. import about
 from .._util import COMMAND, PROJECT_FILE, PROJECT_LOCK, Arg, Opt, app, get_checksum
 from .._util import get_hash, load_project_config, parse_config_overrides
-from ..util import ENV_VARS, SimpleFrozenDict, SimpleFrozenList, check_bool_env_var
-from ..util import is_cwd, is_minor_version_match, join_command, run_command
-from ..util import split_command, working_dir
+from ..util import SimpleFrozenDict, SimpleFrozenList, check_spacy_env_vars, is_cwd
+from ..util import is_minor_version_match, join_command, run_command, split_command
+from ..util import working_dir
 
 
 @app.command(
@@ -101,10 +101,10 @@ def project_run(
                 err_help = "Maybe you forgot to run the 'project assets' command or a previous step?"
                 err_exits = 1 if not dry else None
                 msg.fail(err, err_help, exits=err_exits)
-        check_spacy_commit = check_bool_env_var(ENV_VARS.PROJECT_USE_GIT_VERSION)
+        check_spacy_env_vars()
         with working_dir(project_dir) as current_dir:
             msg.divider(subcommand)
-            rerun = check_rerun(current_dir, cmd, check_spacy_commit=check_spacy_commit)
+            rerun = check_rerun(current_dir, cmd)
             if not rerun and not force:
                 msg.info(f"Skipping '{cmd['name']}': nothing changed")
             else:
@@ -223,8 +223,7 @@ def check_rerun(
     project_dir: Path,
     command: Dict[str, Any],
     *,
-    check_spacy_version: bool = True,
-    check_spacy_commit: bool = False,
+    check_weasel_version: bool = True,
 ) -> bool:
     """Check if a command should be rerun because its settings or inputs/outputs
     changed.
@@ -247,32 +246,17 @@ def check_rerun(
     # Always run commands with no outputs (otherwise they'd always be skipped)
     if not entry.get("outs", []):
         return True
-    # Always rerun if spaCy version or commit hash changed
-    spacy_v = entry.get("spacy_version")
-    commit = entry.get("spacy_git_version")
-    if check_spacy_version and not is_minor_version_match(spacy_v, about.__version__):
-        info = f"({spacy_v} in {PROJECT_LOCK}, {about.__version__} current)"
+    # Always rerun if version changed
+    version = entry.get("weasel_version")
+    if check_weasel_version and not is_minor_version_match(version, about.__version__):
+        info = f"({version} in {PROJECT_LOCK}, {about.__version__} current)"
         msg.info(f"Re-running '{command['name']}': spaCy minor version changed {info}")
         return True
-    if check_spacy_commit:
-        try:
-            from spacy.git_info import GIT_VERSION
-        except ImportError:
-            msg.fail(
-                f"You specified a `spacy_git_version` key ({commit}), "
-                "but spaCy is not installed.",
-                exit=1,
-            )
-
-        if not commit != GIT_VERSION:
-            info = f"({commit} in {PROJECT_LOCK}, {GIT_VERSION} current)"
-            msg.info(f"Re-running '{command['name']}': spaCy commit changed {info}")
-            return True
     # If the entry in the lockfile matches the lockfile entry that would be
     # generated from the current command, we don't rerun because it means that
     # all inputs/outputs, hashes and scripts are the same and nothing changed
     lock_entry = get_lock_entry(project_dir, command)
-    exclude = ["spacy_version", "spacy_git_version"]
+    exclude = ["weasel_version"]
     return get_hash(lock_entry, exclude=exclude) != get_hash(entry, exclude=exclude)
 
 
