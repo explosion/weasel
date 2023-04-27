@@ -1,3 +1,4 @@
+import os
 from pathlib import Path
 from typing import Any, Dict
 
@@ -96,9 +97,59 @@ def test_project_run(project_dir: Path):
     result = CliRunner().invoke(app, ["run", "create", str(project_dir)])
     assert result.exit_code == 0
     assert test_file.is_file()
+
+    assert (
+        "You've set a `SPACY_CONFIG_OVERRIDES` environment variable"
+        not in result.output
+    )
+    assert (
+        "You've set a `SPACY_PROJECT_USE_GIT_VERSION` environment variable"
+        not in result.output
+    )
+
+    os.environ["SPACY_CONFIG_OVERRIDES"] = "test"
+    os.environ["SPACY_PROJECT_USE_GIT_VERSION"] = "false"
+
     result = CliRunner().invoke(app, ["run", "ok", str(project_dir)])
     assert result.exit_code == 0
     assert "okokok" in result.stdout
+
+    assert "You've set a `SPACY_CONFIG_OVERRIDES` environment variable" in result.output
+    assert (
+        "You've set a `SPACY_PROJECT_USE_GIT_VERSION` environment variable"
+        in result.output
+    )
+
+
+def test_check_spacy_env_vars(project_dir: Path, monkeypatch: pytest.MonkeyPatch):
+    # make sure dry run works
+    project_dir / "abc.txt"
+
+    monkeypatch.delenv("SPACY_CONFIG_OVERRIDES")
+    monkeypatch.delenv("SPACY_PROJECT_USE_GIT_VERSION")
+
+    result = CliRunner().invoke(app, ["run", "--dry", "create", str(project_dir)])
+    assert result.exit_code == 0
+    assert (
+        "You've set a `SPACY_CONFIG_OVERRIDES` environment variable"
+        not in result.output
+    )
+    assert (
+        "You've set a `SPACY_PROJECT_USE_GIT_VERSION` environment variable"
+        not in result.output
+    )
+
+    monkeypatch.setenv("SPACY_CONFIG_OVERRIDES", "test")
+    monkeypatch.setenv("SPACY_PROJECT_USE_GIT_VERSION", "false")
+
+    result = CliRunner().invoke(app, ["run", "--dry", "create", str(project_dir)])
+    assert result.exit_code == 0
+
+    assert "You've set a `SPACY_CONFIG_OVERRIDES` environment variable" in result.output
+    assert (
+        "You've set a `SPACY_PROJECT_USE_GIT_VERSION` environment variable"
+        in result.output
+    )
 
 
 @pytest.mark.skipif(not has_git(), reason="git not installed")
