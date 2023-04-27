@@ -8,12 +8,10 @@ import typer
 from wasabi import msg
 from wasabi.util import locale_escape
 
-from .. import about
 from .._util import COMMAND, PROJECT_FILE, PROJECT_LOCK, Arg, Opt, app, get_checksum
 from .._util import get_hash, load_project_config, parse_config_overrides
 from ..util import SimpleFrozenDict, SimpleFrozenList, check_spacy_env_vars, is_cwd
-from ..util import is_minor_version_match, join_command, run_command, split_command
-from ..util import working_dir
+from ..util import join_command, run_command, split_command, working_dir
 
 
 @app.command(
@@ -222,8 +220,6 @@ def validate_subcommand(
 def check_rerun(
     project_dir: Path,
     command: Dict[str, Any],
-    *,
-    check_weasel_version: bool = True,
 ) -> bool:
     """Check if a command should be rerun because its settings or inputs/outputs
     changed.
@@ -246,18 +242,11 @@ def check_rerun(
     # Always run commands with no outputs (otherwise they'd always be skipped)
     if not entry.get("outs", []):
         return True
-    # Always rerun if version changed
-    version = entry.get("weasel_version")
-    if check_weasel_version and not is_minor_version_match(version, about.__version__):
-        info = f"({version} in {PROJECT_LOCK}, {about.__version__} current)"
-        msg.info(f"Re-running '{command['name']}': spaCy minor version changed {info}")
-        return True
     # If the entry in the lockfile matches the lockfile entry that would be
     # generated from the current command, we don't rerun because it means that
     # all inputs/outputs, hashes and scripts are the same and nothing changed
     lock_entry = get_lock_entry(project_dir, command)
-    exclude = ["weasel_version"]
-    return get_hash(lock_entry, exclude=exclude) != get_hash(entry, exclude=exclude)
+    return get_hash(lock_entry) != get_hash(entry)
 
 
 def update_lockfile(project_dir: Path, command: Dict[str, Any]) -> None:
@@ -296,7 +285,6 @@ def get_lock_entry(project_dir: Path, command: Dict[str, Any]) -> Dict[str, Any]
         "script": command["script"],
         "deps": deps,
         "outs": [*outs, *outs_nc],
-        "weasel_version": about.__version__,
     }
 
 

@@ -8,11 +8,10 @@ from typing import TYPE_CHECKING, Dict, List, Optional
 
 from wasabi import msg
 
-from .. import about
 from .._util import download_file, ensure_pathy, get_checksum, get_hash, make_tempdir
 from .._util import upload_file
 from ..errors import Errors
-from ..util import check_spacy_env_vars, get_minor_version
+from ..util import check_spacy_env_vars
 
 if TYPE_CHECKING:
     from pathy import FluidPath
@@ -161,9 +160,8 @@ def get_command_hash(
     as relevant, and the command.
     """
     check_spacy_env_vars()
-    version = str(get_minor_version(about.__version__) or "")
     dep_checksums = [get_checksum(dep) for dep in sorted(deps)]
-    hashes = [version, site_hash, env_hash] + dep_checksums
+    hashes = [site_hash, env_hash] + dep_checksums
     hashes.extend(cmd)
     creation_bytes = "".join(hashes).encode("utf8")
     return hashlib.md5(creation_bytes).hexdigest()
