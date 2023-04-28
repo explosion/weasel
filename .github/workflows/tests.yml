@@ -4,10 +4,8 @@ on:
   push:
     paths-ignore:
       - "*.md"
-    branches:
-      - "main"
-      - "release/*"
   pull_request:
+    types: [opened, synchronize, reopened, edited]
     paths-ignore:
       - "*.md"
 
