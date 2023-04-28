@@ -1,5 +1,3 @@
-# code copied from spacy/tests/test_cli.py
-
 import os
 import time
 

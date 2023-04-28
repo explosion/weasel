@@ -1,5 +1,3 @@
-# code copied from spacy/util.py
-
 import importlib
 import logging
 import os
@@ -22,7 +20,7 @@ from .compat import is_windows
 from .errors import Errors, Warnings
 from .schemas import SpacyEnvVars
 
-logger = logging.getLogger("spacy")
+logger = logging.getLogger("weasel")
 logger_stream_handler = logging.StreamHandler()
 logger_stream_handler.setFormatter(
     logging.Formatter("[%(asctime)s] [%(levelname)s] %(message)s")
@@ -41,7 +39,7 @@ def check_spacy_env_vars():
 class SimpleFrozenDict(dict):
     """Simplified implementation of a frozen dict, mainly used as default
     function or method argument (for arguments that should default to empty
-    dictionary). Will raise an error if user or spaCy attempts to add to dict.
+    dictionary). Will raise an error if user or Weasel attempts to add to dict.
     """
 
     def __init__(self, *args, error: str = Errors.E095, **kwargs) -> None:

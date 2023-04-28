@@ -1,5 +1,3 @@
-# code initially copied from spacy/cli/_util.py
-
 import hashlib
 import os
 import shutil

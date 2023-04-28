@@ -9,6 +9,7 @@ from weasel._util import app
 EXAMPLES = [
     (dict(title="Test"), False),
     (dict(title="Test", spacy_version=""), True),
+    (dict(title="Test", spacy_version="3.4.1"), True),
 ]
 
 

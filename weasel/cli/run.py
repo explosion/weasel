@@ -177,7 +177,7 @@ def run_commands(
         command = split_command(c)
         # Not sure if this is needed or a good idea. Motivation: users may often
         # use commands in their config that reference "python" and we want to
-        # make sure that it's always executing the same Python that spaCy is
+        # make sure that it's always executing the same Python that Weasel is
         # executed with and the pip in the same env, not some other Python/pip.
         # Also ensures cross-compatibility if user 1 writes "python3" (because
         # that's how it's set up on their system), and user 2 without the
@@ -205,7 +205,7 @@ def validate_subcommand(
     if subcommand not in commands and subcommand not in workflows:
         help_msg = []
         if subcommand in ["assets", "asset"]:
-            help_msg.append("Did you mean to run: python -m spacy project assets?")
+            help_msg.append("Did you mean to run: python -m weasel assets?")
         if commands:
             help_msg.append(f"Available commands: {', '.join(commands)}")
         if workflows:
