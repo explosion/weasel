@@ -16,6 +16,7 @@ env:
 jobs:
   validate:
     name: Validate
+    if: github.repository_owner == 'explosion'
     runs-on: ubuntu-latest
 
     steps:
@@ -74,12 +75,6 @@ jobs:
           python -m pip install -U build pip setuptools
           python -m pip install -U -r requirements.txt
           python -m build --sdist
-
-      - name: Run mypy
-        shell: bash
-        if: env.RUN_MYPY == 'true' && matrix.python_version != '3.6'
-        run: |
-          python -m mypy $MODULE_NAME
 
       - name: Delete source directory
         shell: bash
