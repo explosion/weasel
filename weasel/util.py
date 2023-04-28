@@ -20,6 +20,7 @@ from packaging.version import InvalidVersion, Version
 
 from .compat import is_windows
 from .errors import Errors, Warnings
+from .schemas import SpacyEnvVars
 
 logger = logging.getLogger("spacy")
 logger_stream_handler = logging.StreamHandler()
@@ -30,8 +31,11 @@ logger.addHandler(logger_stream_handler)
 
 
 class ENV_VARS:
-    CONFIG_OVERRIDES = "SPACY_CONFIG_OVERRIDES"
-    PROJECT_USE_GIT_VERSION = "SPACY_PROJECT_USE_GIT_VERSION"
+    CONFIG_OVERRIDES = "WEASEL_CONFIG_OVERRIDES"
+
+
+def check_spacy_env_vars():
+    SpacyEnvVars().check()
 
 
 class SimpleFrozenDict(dict):

@@ -8,12 +8,10 @@ from typing import TYPE_CHECKING, Dict, List, Optional
 
 from wasabi import msg
 
-from .. import about
 from .._util import download_file, ensure_pathy, get_checksum, get_hash, make_tempdir
 from .._util import upload_file
 from ..errors import Errors
-from ..git_info import GIT_VERSION
-from ..util import ENV_VARS, check_bool_env_var, get_minor_version
+from ..util import check_spacy_env_vars
 
 if TYPE_CHECKING:
     from pathy import FluidPath
@@ -161,12 +159,9 @@ def get_command_hash(
     currently installed packages, whatever environment variables have been marked
     as relevant, and the command.
     """
-    if check_bool_env_var(ENV_VARS.PROJECT_USE_GIT_VERSION):
-        spacy_v = GIT_VERSION
-    else:
-        spacy_v = str(get_minor_version(about.__version__) or "")
+    check_spacy_env_vars()
     dep_checksums = [get_checksum(dep) for dep in sorted(deps)]
-    hashes = [spacy_v, site_hash, env_hash] + dep_checksums
+    hashes = [site_hash, env_hash] + dep_checksums
     hashes.extend(cmd)
     creation_bytes = "".join(hashes).encode("utf8")
     return hashlib.md5(creation_bytes).hexdigest()
