@@ -54,7 +54,7 @@ production.
   </Integration>
 </Grid> -->
 
-!!! project "Project templates"
+!!! info "Project templates"
 
     Our [`projects`](https://github.com/explosion/projects) repo includes various
     project templates for different NLP tasks, models, workflows and integrations
