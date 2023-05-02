@@ -1,6 +1,6 @@
 site_name: Weasel
 
-repo_url: https://github.com/bdura/project-template
+repo_url: https://github.com/explosion/weasel
 
 theme:
   name: material
