@@ -118,7 +118,7 @@ settings on the command line and passing through system-level settings.
     For more examples, see the [`projects`](https://github.com/explosion/projects)
     repo.
 
-    ![Screenshot of auto-generated Markdown Readme](/assets/images/project_document.jpg)
+    ![Screenshot of auto-generated Markdown Readme](../assets/images/project_document.jpg)
 
 When your custom project is ready and you want to share it with others, you can
 use the [`weasel document`](../cli.md#document) command to

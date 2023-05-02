@@ -9,7 +9,7 @@ and share your results with your team. Weasel can be used via the
 [`weasel`](../cli.md) command and we provide templates in our
 [`projects`](https://github.com/explosion/projects) repo.
 
-![Illustration of project workflow and commands](/assets/images/projects.svg)
+![Illustration of project workflow and commands](assets/images/projects.svg)
 
 !!! example "Get started with a project template: `pipelines/tagger_parser_ud`"
 

@@ -204,7 +204,7 @@ python -m weasel document [project_dir] [--output] [--no-emoji]
     For more examples, see the templates in our
     [`projects`](https://github.com/explosion/projects) repo.
 
-    ![Screenshot of auto-generated Markdown Readme](/assets/images/project_document.jpg)
+    ![Screenshot of auto-generated Markdown Readme](assets/images/project_document.jpg)
 
 | Name                | Description                                                                                                                                                                                             |
 | ------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
