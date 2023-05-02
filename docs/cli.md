@@ -1,24 +1,10 @@
----
-title: Weasel Command Line Interface
-teaser: Download, train and package pipelines, and debug spaCy
-source: spacy/cli
-menu:
-  - ['project', 'project']
----
+# Command Line Interface
 
-spaCy's CLI provides a range of helpful commands for downloading and training
-pipelines, converting data and debugging your config, data and installation. For
-a list of available commands, you can type `python -m spacy --help`. You can
-also add the `--help` flag to any command or subcommand to see the description,
-available arguments and usage.
-
-## project {id="project",version="3"}
-
-The `spacy project` CLI includes subcommands for working with
-[spaCy projects](/usage/projects), end-to-end workflows for building and
+The `weasel` CLI includes subcommands for working with
+[Weasel projects](/usage/projects), end-to-end workflows for building and
 deploying custom spaCy pipelines.
 
-### project clone {id="project-clone",tag="command"}
+## clone
 
 Clone a project template from a Git repository. Calls into `git` under the hood
 and can use the sparse checkout feature if available, so you're only downloading
@@ -28,20 +14,20 @@ can provide any other repo (public or private) that you have access to using the
 `--repo` option.
 
 ```bash
-$ python -m spacy project clone [name] [dest] [--repo] [--branch] [--sparse]
+python -m weasel clone [name] [dest] [--repo] [--branch] [--sparse]
 ```
 
-> #### Example
->
-> ```bash
-> $ python -m spacy project clone pipelines/ner_wikiner
-> ```
->
-> Clone from custom repo:
->
-> ```bash
-> $ python -m spacy project clone template --repo https://github.com/your_org/your_repo
-> ```
+!!! example
+
+    ```bash
+    $ python -m weasel clone pipelines/ner_wikiner
+    ```
+
+    Clone from custom repo:
+
+    ```bash
+    $ python -m weasel clone template --repo https://github.com/your_org/your_repo
+    ```
 
 | Name             | Description                                                                                                                                               |
 | ---------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -53,7 +39,7 @@ $ python -m spacy project clone [name] [dest] [--repo] [--branch] [--sparse]
 | `--help`, `-h`   | Show help message and available arguments. ~~bool (flag)~~                                                                                                |
 | **CREATES**      | The cloned [project directory](/usage/projects#project-files).                                                                                            |
 
-### project assets {id="project-assets",tag="command"}
+## assets
 
 Fetch project assets like datasets and pretrained weights. Assets are defined in
 the `assets` section of the [`project.yml`](/usage/projects#project-yml). If a
@@ -65,14 +51,14 @@ destination directory yourself. If a local path is provided, the asset is copied
 into the current project.
 
 ```bash
-$ python -m spacy project assets [project_dir]
+python -m weasel assets [project_dir]
 ```
 
-> #### Example
->
-> ```bash
-> $ python -m spacy project assets [--sparse]
-> ```
+!!! example
+
+    ```bash
+    $ python -m weasel assets [--sparse]
+    ```
 
 | Name                                           | Description                                                                                                                                               |
 | ---------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -82,7 +68,7 @@ $ python -m spacy project assets [project_dir]
 | `--help`, `-h`                                 | Show help message and available arguments. ~~bool (flag)~~                                                                                                |
 | **CREATES**                                    | Downloaded or copied assets defined in the `project.yml`.                                                                                                 |
 
-### project run {id="project-run",tag="command"}
+## run
 
 Run a named command or workflow defined in the
 [`project.yml`](/usage/projects#project-yml). If a workflow name is specified,
@@ -92,14 +78,14 @@ re-run if state has changed. For example, if the input dataset changes, a
 preprocessing command that depends on those files will be re-run.
 
 ```bash
-$ python -m spacy project run [subcommand] [project_dir] [--force] [--dry]
+python -m weasel run [subcommand] [project_dir] [--force] [--dry]
 ```
 
-> #### Example
->
-> ```bash
-> $ python -m spacy project run train
-> ```
+!!! example
+
+    ```bash
+    $ python -m weasel run train
+    ```
 
 | Name            | Description                                                                             |
 | --------------- | --------------------------------------------------------------------------------------- |
@@ -110,7 +96,7 @@ $ python -m spacy project run [subcommand] [project_dir] [--force] [--dry]
 | `--help`, `-h`  | Show help message and available arguments. ~~bool (flag)~~                              |
 | **EXECUTES**    | The command defined in the `project.yml`.                                               |
 
-### project push {id="project-push",tag="command"}
+## push
 
 Upload all available files or directories listed as in the `outputs` section of
 commands to a remote storage. Outputs are archived and compressed prior to
@@ -131,20 +117,19 @@ filesystem, although you may need to install extra dependencies to use certain
 protocols.
 
 ```bash
-$ python -m spacy project push [remote] [project_dir]
+python -m weasel push [remote] [project_dir]
 ```
 
-> #### Example
->
-> ```bash
-> $ python -m spacy project push my_bucket
-> ```
->
-> ```yaml
-> ### project.yml
-> remotes:
->   my_bucket: 's3://my-spacy-bucket'
-> ```
+!!! example
+
+    ```bash
+    $ python -m weasel push my_bucket
+    ```
+
+    ```yaml title="project.yml"
+    remotes:
+      my_bucket: 's3://my-spacy-bucket'
+    ```
 
 | Name           | Description                                                                             |
 | -------------- | --------------------------------------------------------------------------------------- |
@@ -153,7 +138,7 @@ $ python -m spacy project push [remote] [project_dir]
 | `--help`, `-h` | Show help message and available arguments. ~~bool (flag)~~                              |
 | **UPLOADS**    | All project outputs that exist and are not already stored in the remote.                |
 
-### project pull {id="project-pull",tag="command"}
+## pull
 
 Download all files or directories listed as `outputs` for commands, unless they
 are already present locally. When searching for files in the remote, `pull`
@@ -176,20 +161,20 @@ filesystem, although you may need to install extra dependencies to use certain
 protocols.
 
 ```bash
-$ python -m spacy project pull [remote] [project_dir]
+python -m weasel pull [remote] [project_dir]
 ```
 
-> #### Example
->
-> ```bash
-> $ python -m spacy project pull my_bucket
-> ```
->
-> ```yaml
-> ### project.yml
-> remotes:
->   my_bucket: 's3://my-spacy-bucket'
-> ```
+!!! example
+
+    ```bash
+    $ python -m weasel pull my_bucket
+    ```
+
+    ```yaml
+    ##.yml
+    remotes:
+      my_bucket: 's3://my-spacy-bucket'
+    ```
 
 | Name           | Description                                                                             |
 | -------------- | --------------------------------------------------------------------------------------- |
@@ -198,7 +183,7 @@ $ python -m spacy project pull [remote] [project_dir]
 | `--help`, `-h` | Show help message and available arguments. ~~bool (flag)~~                              |
 | **DOWNLOADS**  | All project outputs that do not exist locally and can be found in the remote.           |
 
-### project document {id="project-document",tag="command"}
+## document
 
 Auto-generate a pretty Markdown-formatted `README` for your project, based on
 its [`project.yml`](/usage/projects#project-yml). Will create sections that
@@ -208,23 +193,21 @@ custom content before or after the auto-generated documentation. When you re-run
 the `project document` command, only the auto-generated part is replaced.
 
 ```bash
-$ python -m spacy project document [project_dir] [--output] [--no-emoji]
+python -m weasel document [project_dir] [--output] [--no-emoji]
 ```
 
-> #### Example
->
-> ```bash
-> $ python -m spacy project document --output README.md
-> ```
+!!! example
 
-<Accordion title="Example output" spaced>
+    ```bash
+    $ python -m weasel document --output README.md
+    ```
 
-For more examples, see the templates in our
-[`projects`](https://github.com/explosion/projects) repo.
+??? example "Example output"
 
-![Screenshot of auto-generated Markdown Readme](/images/project_document.jpg)
+    For more examples, see the templates in our
+    [`projects`](https://github.com/explosion/projects) repo.
 
-</Accordion>
+    ![Screenshot of auto-generated Markdown Readme](assets/project_document.jpg)
 
 | Name                | Description                                                                                                                                                                                             |
 | ------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -233,7 +216,7 @@ For more examples, see the templates in our
 | `--no-emoji`, `-NE` | Don't use emoji in the titles. ~~bool (flag)~~                                                                                                                                                          |
 | **CREATES**         | The Markdown-formatted project documentation.                                                                                                                                                           |
 
-### project dvc {id="project-dvc",tag="command"}
+## dvc
 
 Auto-generate [Data Version Control](https://dvc.org) (DVC) config file. Calls
 [`dvc run`](https://dvc.org/doc/command-reference/run) with `--no-exec` under
@@ -244,26 +227,24 @@ first defined workflow is used. The DVC config will only be updated if the
 `project.yml` changed. For details, see the
 [DVC integration](/usage/projects#dvc) docs.
 
-<Infobox variant="warning">
+!!! warning
 
-This command requires DVC to be installed and initialized in the project
-directory, e.g. via [`dvc init`](https://dvc.org/doc/command-reference/init).
-You'll also need to add the assets you want to track with
-[`dvc add`](https://dvc.org/doc/command-reference/add).
-
-</Infobox>
+    This command requires DVC to be installed and initialized in the project
+    directory, e.g. via [`dvc init`](https://dvc.org/doc/command-reference/init).
+    You'll also need to add the assets you want to track with
+    [`dvc add`](https://dvc.org/doc/command-reference/add).
 
 ```bash
-$ python -m spacy project dvc [project_dir] [workflow] [--force] [--verbose] [--quiet]
+python -m weasel dvc [project_dir] [workflow] [--force] [--verbose] [--quiet]
 ```
 
-> #### Example
->
-> ```bash
-> $ git init
-> $ dvc init
-> $ python -m spacy project dvc all
-> ```
+!!! example
+
+    ```bash
+    $ git init
+    $ dvc init
+    $ python -m weasel dvc all
+    ```
 
 | Name              | Description                                                                                                   |
 | ----------------- | ------------------------------------------------------------------------------------------------------------- |

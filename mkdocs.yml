@@ -1,0 +1,78 @@
+site_name: Weasel
+
+repo_url: https://github.com/bdura/project-template
+
+theme:
+  name: material
+  palette:
+    - scheme: default
+      toggle:
+        icon: material/brightness-4
+        name: Switch to dark mode
+    - scheme: slate
+      toggle:
+        icon: material/brightness-7
+        name: Switch to light mode
+  features:
+    - navigation.tracking
+    - navigation.instant
+    - navigation.indexes
+    - content.code.annotate
+    - content.code.copy
+
+nav:
+  - index.md
+  - cli.md
+
+extra_javascript:
+  - https://cdn.jsdelivr.net/npm/vega@5
+  - https://cdn.jsdelivr.net/npm/vega-lite@5
+  - https://cdn.jsdelivr.net/npm/vega-embed@6
+  - assets/termynal/termynal.js
+
+plugins:
+  - search
+  # - bibtex:
+  #     bib_file: "docs/references.bib"
+  # - literate-nav:
+  #     nav_file: SUMMARY.md
+  - autorefs
+  # - mkdocstrings:
+  #     handlers:
+  #       python:
+  #         options:
+  #           docstring_style: numpy
+  #           docstring_section_style: spacy
+  #           heading_level: 2
+  #           members_order: source
+  #           show_root_toc_entry: false
+  - glightbox:
+      touchNavigation: true
+      loop: false
+      effect: none
+      width: 100%
+      height: auto
+      zoomable: true
+      draggable: true
+
+markdown_extensions:
+  - admonition
+  - pymdownx.superfences:
+      custom_fences:
+        - name: vegalite
+          class: vegalite
+          format: !!python/name:mkdocs_charts_plugin.fences.fence_vegalite
+  - pymdownx.highlight
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.tabbed:
+      alternate_style: true
+  - footnotes
+  - md_in_html
+  - attr_list
+  - pymdownx.details
+  - pymdownx.tasklist:
+      custom_checkbox: true
+  - pymdownx.emoji:
+      emoji_index: !!python/name:materialx.emoji.twemoji
+      emoji_generator: !!python/name:materialx.emoji.to_svg
