@@ -22,6 +22,11 @@ theme:
 
 nav:
   - index.md
+  - Tutorial:
+      - tutorial/intro.md
+      - tutorial/directory-and-assets.md
+      - tutorial/custom-scripts.md
+      - tutorial/remote-storage.md
   - cli.md
 
 extra_javascript:
