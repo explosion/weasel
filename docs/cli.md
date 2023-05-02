@@ -170,8 +170,7 @@ python -m weasel pull [remote] [project_dir]
     $ python -m weasel pull my_bucket
     ```
 
-    ```yaml
-    ##.yml
+    ```yaml title="project.yml"
     remotes:
       my_bucket: 's3://my-spacy-bucket'
     ```
@@ -196,18 +195,16 @@ the `project document` command, only the auto-generated part is replaced.
 python -m weasel document [project_dir] [--output] [--no-emoji]
 ```
 
-!!! example
+??? example "Example usage"
 
     ```bash
     $ python -m weasel document --output README.md
     ```
 
-??? example "Example output"
-
     For more examples, see the templates in our
     [`projects`](https://github.com/explosion/projects) repo.
 
-    ![Screenshot of auto-generated Markdown Readme](assets/project_document.jpg)
+    ![Screenshot of auto-generated Markdown Readme](/assets/images/project_document.jpg)
 
 | Name                | Description                                                                                                                                                                                             |
 | ------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
