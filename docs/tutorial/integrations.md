@@ -1,9 +1,6 @@
 # Integrations
 
-{<H3 id="dvc"> Data Version Control (DVC)
-
-<IntegrationLogo name="dvc" title="DVC" width={70} height="auto" align="right"/>
-</H3>}
+## Data Version Control (DVC)
 
 Data assets like training corpora or pretrained weights are at the core of any
 NLP project, but they're often difficult to manage: you can't just check them
@@ -297,7 +294,7 @@ tracking. spaCy integrates with it out-of-the-box via the
 you can add as the `[training.logger]` block of your training
 [config](/usage/training#config). The results of each step are then logged in
 your project, together with the full **training config**. This means that
-_every_ hyperparameter, registered function name and argument will be tracked
+*every* hyperparameter, registered function name and argument will be tracked
 and you'll be able to see the impact it has on your results.
 
 > #### Example config
