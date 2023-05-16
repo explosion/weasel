@@ -42,7 +42,7 @@ class SimpleFrozenDict(dict):
     dictionary). Will raise an error if user or Weasel attempts to add to dict.
     """
 
-    def __init__(self, *args, error: str = Errors.E095, **kwargs) -> None:
+    def __init__(self, *args, error: str = Errors.E001, **kwargs) -> None:
         """Initialize the frozen dict. Can be initialized with pre-defined
         values.
 
@@ -69,7 +69,7 @@ class SimpleFrozenList(list):
     accidentally calls nlp.pipeline.append(), we can raise a more helpful error.
     """
 
-    def __init__(self, *args, error: str = Errors.E927) -> None:
+    def __init__(self, *args, error: str = Errors.E002) -> None:
         """Initialize the frozen list.
 
         error (str): The error message when user tries to mutate the list.
@@ -225,7 +225,7 @@ def run_command(
         # Indicates the *command* wasn't found, it's an error before the command
         # is run.
         raise FileNotFoundError(
-            Errors.E970.format(str_command=cmd_str, tool=cmd_list[0])
+            Errors.E101.format(str_command=cmd_str, tool=cmd_list[0])
         ) from None
     if ret.returncode != 0 and capture:
         message = f"Error running command:\n\n{cmd_str}\n\n"
@@ -279,7 +279,7 @@ def make_tempdir() -> Generator[Path, None, None]:
     try:
         shutil.rmtree(str(d), onerror=force_remove)
     except PermissionError as e:
-        warnings.warn(Warnings.W091.format(dir=d, msg=e))
+        warnings.warn(Warnings.W001.format(dir=d, msg=e))
 
 
 def is_cwd(path: Union[Path, str]) -> bool:
