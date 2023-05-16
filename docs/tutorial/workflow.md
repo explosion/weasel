@@ -2,10 +2,10 @@
 
 ## 1. Clone a project template
 
-!!! note "Cloning under the hood"
-
-    To clone a project, spaCy calls into `git` and uses the "sparse checkout"
-    feature to only clone the relevant directory or directories.
+> :information_source: **Cloning under the hood**
+>
+> To clone a project, spaCy calls into `git` and uses the "sparse checkout"
+> feature to only clone the relevant directory or directories.
 
 The [`weasel clone`](../cli.md#clone) command clones an existing
 project template and copies the files to a local directory. You can then run the
@@ -30,26 +30,26 @@ with. Each project template comes with a `project.yml` that defines the assets
 to download and where to put them. The [`weasel assets`](../cli.md#run)
 will fetch the project assets for you.
 
-???+ example "Example usage"
-
-    ```yaml title="project.yml"
-    assets:
-    - dest: 'assets/training.spacy'
-        url: 'https://example.com/data.spacy'
-        checksum: '63373dd656daa1fd3043ce166a59474c'
-    - dest: 'assets/development.spacy'
-        git:
-        repo: 'https://github.com/example/repo'
-        branch: 'master'
-        path: 'path/development.spacy'
-        checksum: '5113dc04e03f079525edd8df3f4f39e3'
-    ```
-
-    Let Weasel fetch the assets:
-
-    ```bash
-    python -m weasel assets
-    ```
+> :bulb: **Example usage**
+>
+> ```yaml title="project.yml"
+> assets:
+> - dest: 'assets/training.spacy'
+>     url: 'https://example.com/data.spacy'
+>     checksum: '63373dd656daa1fd3043ce166a59474c'
+> - dest: 'assets/development.spacy'
+>     git:
+>     repo: 'https://github.com/example/repo'
+>     branch: 'master'
+>     path: 'path/development.spacy'
+>     checksum: '5113dc04e03f079525edd8df3f4f39e3'
+> ```
+>
+> Let Weasel fetch the assets:
+>
+> ```bash
+> python -m weasel assets
+> ```
 
 Asset URLs can be a number of different protocols: HTTP, HTTPS, FTP, SSH, and
 even cloud storage such as GCS and S3. You can also fetch assets using git, by
@@ -58,7 +58,7 @@ checkout" feature to avoid downloading the whole repository.
 
 Sometimes your project configuration may include large assets that you don't
 necessarily want to download when you run `weasel assets`. That's why
-assets can be marked as [`extra`](#data-assets-url) - by default, these assets
+assets can be marked as [`extra`](./directory-and-assets.md#data-assets) - by default, these assets
 are not downloaded. If they should be, run `weasel assets --extra`.
 
 ## 3. Run a command
@@ -67,28 +67,28 @@ Commands consist of one or more steps and can be run with
 [`weasel run`](../cli.md#run). The following will run the command
 `preprocess` defined in the `project.yml`:
 
-???+ example "Example usage"
-
-    ```yaml title="project.yml"
-    commands:
-    - name: preprocess
-        help: "Convert the input data to spaCy's format"
-        script:
-        - 'python -m spacy convert assets/train.conllu corpus/'
-        - 'python -m spacy convert assets/eval.conllu corpus/'
-        deps:
-        - 'assets/train.conllu'
-        - 'assets/eval.conllu'
-        outputs:
-        - 'corpus/train.spacy'
-        - 'corpus/eval.spacy'
-    ```
-
-    Run the command:
-
-    ```bash
-    python -m weasel run preprocess
-    ```
+> :bulb: **Example usage**
+>
+> ```yaml title="project.yml"
+> commands:
+> - name: preprocess
+>     help: "Convert the input data to spaCy's format"
+>     script:
+>     - 'python -m spacy convert assets/train.conllu corpus/'
+>     - 'python -m spacy convert assets/eval.conllu corpus/'
+>     deps:
+>     - 'assets/train.conllu'
+>     - 'assets/eval.conllu'
+>     outputs:
+>     - 'corpus/train.spacy'
+>     - 'corpus/eval.spacy'
+> ```
+>
+> Run the command:
+>
+> ```bash
+> python -m weasel run preprocess
+> ```
 
 Commands can define their expected [dependencies and outputs](#deps-outputs)
 using the `deps` (files the commands require) and `outputs` (files the commands
@@ -116,19 +116,19 @@ pipeline on the converted data and if that's successful, run
 installable Python package. The following command runs the workflow named `all`
 defined in the `project.yml`, and executes the commands it specifies, in order:
 
-???+ example "Example usage"
-
-    ```yaml title="project.yml"
-    workflows:
-    all:
-        - preprocess
-        - train
-        - package
-    ```
-
-    ```bash
-    python -m weasel run all
-    ```
+> :bulb: **Example usage**
+>
+> ```yaml title="project.yml"
+> workflows:
+> all:
+>     - preprocess
+>     - train
+>     - package
+> ```
+>
+> ```bash
+> python -m weasel run all
+> ```
 
 Using the expected [dependencies and outputs](./directory-and-assets.md#dependencies-and-outputs) defined in the
 commands, spaCy can determine whether to re-run a command (if its inputs or
@@ -148,19 +148,19 @@ a remote storage, using protocols like [S3](https://aws.amazon.com/s3/),
 you **export** your pipeline packages, **share** work with your team, or **cache
 results** to avoid repeating work.
 
-???+ example "Example usage"
-
-    ```yaml title="project.yml"
-    remotes:
-      default: 's3://my-spacy-bucket'
-      local: '/mnt/scratch/cache'
-    ```
-
-    Push to remote:
-
-    ```bash
-    python -m weasel push
-    ```
+> :bulb: **Example usage**
+>
+>```yaml title="project.yml"
+>remotes:
+>  default: 's3://my-spacy-bucket'
+>  local: '/mnt/scratch/cache'
+>```
+>
+>Push to remote:
+>
+>```bash
+>python -m weasel push
+>```
 
 The `remotes` section in your `project.yml` lets you assign names to the
 different storages. To download state from a remote storage, you can use the
