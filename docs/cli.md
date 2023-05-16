@@ -22,12 +22,6 @@ python -m weasel clone [name] [dest] [--repo] [--branch] [--sparse]
 > ```bash
 > $ python -m weasel clone pipelines/ner_wikiner
 > ```
->
-> Clone from custom repo:
->
-> ```bash
-> your_org/your_repo
-> ```
 
 | Name             | Description                                                                                                                                               |
 | ---------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -37,12 +31,12 @@ python -m weasel clone [name] [dest] [--repo] [--branch] [--sparse]
 | `--branch`, `-b` | The branch to clone from. Defaults to `master`. ~~str (option)~~                                                                                          |
 | `--sparse`, `-S` | Enable [sparse checkout](https://git-scm.com/docs/git-sparse-checkout) to only check out and download what's needed. Requires Git v22.2+. ~~bool (flag)~~ |
 | `--help`, `-h`   | Show help message and available arguments. ~~bool (flag)~~                                                                                                |
-| **CREATES**      | The cloned [project directory](tutorial/directory-and-assets.md#project-files).                                                                                            |
+| **CREATES**      | The cloned [project directory](tutorial/directory-and-assets.md).                                                                                         |
 
 ## assets
 
 Fetch project assets like datasets and pretrained weights. Assets are defined in
-the `assets` section of the [`project.yml`](/usage/projects#project-yml). If a
+the `assets` section of the [`project.yml`](tutorial/directory-and-assets.md#project-yml). If a
 `checksum` is provided, the file is only downloaded if no local file with the
 same checksum exists and spaCy will show an error if the checksum of the
 downloaded file doesn't match. If assets don't specify a `url` they're
@@ -53,12 +47,6 @@ into the current project.
 ```bash
 python -m weasel assets [project_dir]
 ```
-
-> :bulb: **Example**
->
-> ```bash
-> $ python -m weasel assets [--sparse]
-> ```
 
 | Name                                           | Description                                                                                                                                               |
 | ---------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -71,21 +59,15 @@ python -m weasel assets [project_dir]
 ## run
 
 Run a named command or workflow defined in the
-[`project.yml`](/usage/projects#project-yml). If a workflow name is specified,
+[`project.yml`](tutorial/directory-and-assets.md#project-yml). If a workflow name is specified,
 all commands in the workflow are run, in order. If commands define
-[dependencies or outputs](/usage/projects#deps-outputs), they will only be
+[dependencies or outputs](tutorial/directory-and-assets.md#dependencies-and-outputs), they will only be
 re-run if state has changed. For example, if the input dataset changes, a
 preprocessing command that depends on those files will be re-run.
 
 ```bash
 python -m weasel run [subcommand] [project_dir] [--force] [--dry]
 ```
-
-> :bulb: **Example**
->
-> ```bash
-> $ python -m weasel run train
-> ```
 
 | Name            | Description                                                                             |
 | --------------- | --------------------------------------------------------------------------------------- |
@@ -108,7 +90,7 @@ If the contents are different, the new version of the file is uploaded. Deleting
 obsolete files is left up to you.
 
 Remotes can be defined in the `remotes` section of the
-[`project.yml`](/usage/projects#project-yml). Under the hood, spaCy uses
+[`project.yml`](tutorial/directory-and-assets.md#project-yml). Under the hood, spaCy uses
 [`Pathy`](https://github.com/justindujardin/pathy) to communicate with the
 remote storages, so you can use any protocol that `Pathy` supports, including
 [S3](https://aws.amazon.com/s3/),
@@ -128,7 +110,7 @@ python -m weasel push [remote] [project_dir]
 >
 > ```yaml title="project.yml"
 > remotes:
->   my_bucket: 's3://my-spacy-bucket'
+>   my_bucket: 's3://my-weasel-bucket'
 > ```
 
 | Name           | Description                                                                             |
@@ -152,7 +134,7 @@ outputs, so if you change the config back, you'll be able to fetch back the
 result.
 
 Remotes can be defined in the `remotes` section of the
-[`project.yml`](/usage/projects#project-yml). Under the hood, spaCy uses
+[`project.yml`](tutorial/directory-and-assets.md#project-yml). Under the hood, spaCy uses
 [`Pathy`](https://github.com/justindujardin/pathy) to communicate with the
 remote storages, so you can use any protocol that `Pathy` supports, including
 [S3](https://aws.amazon.com/s3/),
@@ -172,7 +154,7 @@ python -m weasel pull [remote] [project_dir]
 >
 > ```yaml title="project.yml"
 > remotes:
->   my_bucket: 's3://my-spacy-bucket'
+>   my_bucket: 's3://my-weasel-bucket'
 > ```
 
 | Name           | Description                                                                             |
@@ -185,7 +167,7 @@ python -m weasel pull [remote] [project_dir]
 ## document
 
 Auto-generate a pretty Markdown-formatted `README` for your project, based on
-its [`project.yml`](/usage/projects#project-yml). Will create sections that
+its [`project.yml`](tutorial/directory-and-assets.md#project-yml). Will create sections that
 document the available commands, workflows and assets. The auto-generated
 content will be placed between two hidden markers, so you can add your own
 custom content before or after the auto-generated documentation. When you re-run
@@ -203,8 +185,6 @@ python -m weasel document [project_dir] [--output] [--no-emoji]
 >
 > For more examples, see the templates in our
 > [`projects`](https://github.com/explosion/projects) repo.
->
-> project_document.jpg)
 
 | Name                | Description                                                                                                                                                                                             |
 | ------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -219,10 +199,10 @@ Auto-generate [Data Version Control](https://dvc.org) (DVC) config file. Calls
 [`dvc run`](https://dvc.org/doc/command-reference/run) with `--no-exec` under
 the hood to generate the `dvc.yaml`. A DVC project can only define one pipeline,
 so you need to specify one workflow defined in the
-[`project.yml`](/usage/projects#project-yml). If no workflow is specified, the
+[`project.yml`](tutorial/directory-and-assets.md#project-yml). If no workflow is specified, the
 first defined workflow is used. The DVC config will only be updated if the
 `project.yml` changed. For details, see the
-[DVC integration](/usage/projects#dvc) docs.
+[DVC integration](tutorial/integrations.md#data-version-control-dvc) docs.
 
 > **Warning**
 >
