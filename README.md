@@ -13,7 +13,7 @@ and share your results with your team. Weasel can be used via the
 
 ![Illustration of project workflow and commands](docs/assets/images/projects.svg)
 
-> **Example: Get started with a project template: `pipelines/tagger_parser_ud`**
+> :bulb: **Example: Get started with a project template: `pipelines/tagger_parser_ud`**
 >
 > The easiest way to get started is to clone a project template and run it – for
 > example, this end-to-end template that lets you train a spaCy **part-of-speech
@@ -23,7 +23,7 @@ and share your results with your team. Weasel can be used via the
 > python -m weasel clone pipelines/tagger_parser_ud
 > ```
 
-> **Note**
+> :information_source: **Note**
 >
 > Our [`projects`](https://github.com/explosion/projects) repo includes various
 > project templates for different NLP tasks, models, workflows and integrations
