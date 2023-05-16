@@ -13,15 +13,15 @@ and share your results with your team. Weasel can be used via the
 
 ![Illustration of project workflow and commands](docs/assets/images/projects.svg)
 
-> :bulb: **Example: Get started with a project template: `pipelines/tagger_parser_ud`**
->
-> The easiest way to get started is to clone a project template and run it – for
-> example, this end-to-end template that lets you train a spaCy **part-of-speech
-> tagger** and **dependency parser** on a Universal Dependencies treebank.
->
-> ```shell
-> python -m weasel clone pipelines/tagger_parser_ud
-> ```
+## :bulb: Example: Get started with a project template
+
+The easiest way to get started is to clone a project template and run it – for
+example, this [end-to-end template](https://github.com/explosion/projects/tree/v3/pipelines/tagger_parser_ud) that lets you train a spaCy **part-of-speech
+tagger** and **dependency parser** on a Universal Dependencies treebank.
+
+```shell
+python -m weasel clone pipelines/tagger_parser_ud
+```
 
 > **Note**
 >
@@ -29,3 +29,14 @@ and share your results with your team. Weasel can be used via the
 > project templates for different NLP tasks, models, workflows and integrations
 > that you can clone and run. The easiest way to get started is to pick a
 > template, clone it and start modifying it!
+
+## :closed_book: Documentation
+
+Get started with the documentation:
+
+- [Learn how to create a Weasel workflow](docs/tutorial/workflow.md)
+- [Working with directory and assets](docs/tutorial/directory-and-assets.md)
+- [Running custom scripts](docs/tutorial/custom-scripts.md)
+- [Using remote storage](docs/tutorial/remote-storage.md)
+- [Weasel integrations](docs/tutorial/integrations.md)
+- [Command line interface description](docs/cli.md)
