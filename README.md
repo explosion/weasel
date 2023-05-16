@@ -8,7 +8,7 @@ serving your custom pipelines. You can start off by cloning a pre-defined
 project template, adjust it to fit your needs, load in your data, train a
 pipeline, export it as a Python package, upload your outputs to a remote storage
 and share your results with your team. Weasel can be used via the
-[`weasel`](docs/tutorial/cli.md) command and we provide templates in our
+[`weasel`](docs/cli.md) command and we provide templates in our
 [`projects`](https://github.com/explosion/projects) repo.
 
 ![Illustration of project workflow and commands](docs/assets/images/projects.svg)
@@ -23,7 +23,7 @@ and share your results with your team. Weasel can be used via the
 > python -m weasel clone pipelines/tagger_parser_ud
 > ```
 
-> :information_source: **Note**
+> **Note**
 >
 > Our [`projects`](https://github.com/explosion/projects) repo includes various
 > project templates for different NLP tasks, models, workflows and integrations
