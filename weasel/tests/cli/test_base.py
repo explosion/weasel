@@ -1,3 +1,5 @@
+from pathlib import Path
+
 import pytest
 from typer.testing import CliRunner
 
@@ -15,24 +17,24 @@ def test_show_help(cmd):
 
 
 @pytest.fixture(scope="session")
-def project_dir(tmp_path_factory):
+def project_dir(tmp_path_factory: pytest.TempPathFactory):
     # a working directory for the session
     base = tmp_path_factory.mktemp("project")
     return base / "project"
 
 
 @pytest.fixture(scope="session")
-def remote_url(tmp_path_factory):
+def remote_url(tmp_path_factory: pytest.TempPathFactory):
     # a "remote" for testing
     base = tmp_path_factory.mktemp("remote")
     return base / "remote"
 
 
-def test_clone(project_dir):
+def test_clone(project_dir: Path):
     """Cloning shouldn't fail"""
     # TODO point to main
-    repo = "https://github.com/koaning/weasel"
-    branch = "proposal-layout"
+    repo = "https://github.com/explosion/weasel"
+    branch = "test/add-test-from-pr"
     result = runner.invoke(
         app,
         [
@@ -51,7 +53,7 @@ def test_clone(project_dir):
     assert (project_dir / "project.yml").exists()
 
 
-def test_assets(project_dir):
+def test_assets(project_dir: Path):
     result = runner.invoke(app, ["assets", str(project_dir)])
 
     print(result.stdout)
@@ -59,7 +61,7 @@ def test_assets(project_dir):
     assert (project_dir / "assets/README.md").exists()
 
 
-def test_run(project_dir):
+def test_run(project_dir: Path):
     result = runner.invoke(app, ["run", "prep", str(project_dir)])
 
     print(result.stdout)
@@ -67,7 +69,7 @@ def test_run(project_dir):
     assert (project_dir / "corpus/stuff.txt").exists()
 
 
-def test_push(project_dir, remote_url):
+def test_push(project_dir: Path, remote_url: Path):
     # append remote to the file
     with open(project_dir / "project.yml", "a") as project_file:
         project_file.write(f"\nremotes:\n    default: {remote_url}\n")
@@ -77,7 +79,7 @@ def test_push(project_dir, remote_url):
     assert result.exit_code == 0
 
 
-def test_pull(project_dir):
+def test_pull(project_dir: Path):
     # delete a file, and make sure pull restores it
     (project_dir / "corpus/stuff.txt").unlink()
 
