@@ -8,9 +8,11 @@ import typer
 from wasabi import msg
 from wasabi.util import locale_escape
 
-from ..utils import SimpleFrozenDict, SimpleFrozenList, check_spacy_env_vars
-from ..utils import get_checksum, get_hash, is_cwd, join_command, load_project_config
-from ..utils import parse_config_overrides, run_command, split_command, working_dir
+from weasel.utils import SimpleFrozenDict, SimpleFrozenList, check_spacy_env_vars
+from weasel.utils import get_checksum, get_hash, is_cwd, join_command
+from weasel.utils import load_project_config, parse_config_overrides, run_command
+from weasel.utils import split_command, working_dir
+
 from .main import COMMAND, PROJECT_FILE, PROJECT_LOCK, Arg, Opt, app
 
 

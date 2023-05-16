@@ -2,7 +2,8 @@ from pathlib import Path
 
 from wasabi import MarkdownRenderer, msg
 
-from ..utils import load_project_config, working_dir
+from weasel.utils import load_project_config, working_dir
+
 from .main import PROJECT_FILE, Arg, Opt, app
 
 DOCS_URL = "https://spacy.io"
