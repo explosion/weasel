@@ -9,22 +9,22 @@ class ErrorsWithCodes(type):
 
 class Warnings(metaclass=ErrorsWithCodes):
     # File system
-    W201 = "Could not clean/remove the temp directory at {dir}: {msg}."
+    W2001 = "Could not clean/remove the temp directory at {dir}: {msg}."
 
 
 class Errors(metaclass=ErrorsWithCodes):
     # API - Datastructure
-    E001 = (
+    E0001 = (
         "Can't write to frozen dictionary. This is likely an internal "
         "error. Are you writing to a default function argument?"
     )
-    E002 = (
+    E0002 = (
         "Can't write to frozen list. Maybe you're trying to modify a computed "
         "property or default function argument?"
     )
 
     # Workflow
-    E101 = "Can not execute command '{str_command}'. Do you have '{tool}' installed?"
+    E1001 = "Can not execute command '{str_command}'. Do you have '{tool}' installed?"
 
     # File system
-    E201 = "The tar file pulled from the remote attempted an unsafe path " "traversal."
+    E2001 = "The tar file pulled from the remote attempted an unsafe path " "traversal."
