@@ -13,7 +13,7 @@ and share your results with your team. Weasel can be used via the
 
 ![Illustration of project workflow and commands](docs/assets/images/projects.svg)
 
-> **Example** "Get started with a project template: `pipelines/tagger_parser_ud`"
+> **Example: Get started with a project template: `pipelines/tagger_parser_ud`**
 >
 > The easiest way to get started is to clone a project template and run it – for
 > example, this end-to-end template that lets you train a spaCy **part-of-speech
