@@ -2,7 +2,7 @@ from pathlib import Path
 
 from wasabi import msg
 
-from .._util import load_project_config, logger
+from ..utils import load_project_config, logger
 from .main import Arg, app
 from .remote_storage import RemoteStorage, get_command_hash
 from .run import update_lockfile

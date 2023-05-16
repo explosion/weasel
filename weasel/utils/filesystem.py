@@ -69,3 +69,24 @@ def ensure_path(path: Any) -> Any:
         return Path(path)
     else:
         return path
+
+
+def ensure_pathy(path):
+    """Temporary helper to prevent importing Pathy globally (which can cause
+    slow and annoying Google Cloud warning)."""
+    from pathy import Pathy  # noqa: F811
+
+    return Pathy.fluid(path)
+
+
+def is_subpath_of(parent, child):
+    """
+    Check whether `child` is a path contained within `parent`.
+    """
+    # Based on https://stackoverflow.com/a/37095733 .
+
+    # In Python 3.9, the `Path.is_relative_to()` method will supplant this, so
+    # we can stop using crusty old os.path functions.
+    parent_realpath = os.path.realpath(parent)
+    child_realpath = os.path.realpath(child)
+    return os.path.commonpath([parent_realpath, child_realpath]) == parent_realpath
