@@ -1,7 +1,7 @@
 # Command Line Interface
 
 The `weasel` CLI includes subcommands for working with
-[Weasel projects](/usage/projects), end-to-end workflows for building and
+Weasel projects, end-to-end workflows for building and
 deploying custom spaCy pipelines.
 
 ## clone
@@ -17,17 +17,17 @@ can provide any other repo (public or private) that you have access to using the
 python -m weasel clone [name] [dest] [--repo] [--branch] [--sparse]
 ```
 
-!!! example
-
-    ```bash
-    $ python -m weasel clone pipelines/ner_wikiner
-    ```
-
-    Clone from custom repo:
-
-    ```bash
-    $ python -m weasel clone template --repo https://github.com/your_org/your_repo
-    ```
+> :bulb: **Example usage**
+>
+> ```bash
+> $ python -m weasel clone pipelines/ner_wikiner
+> ```
+>
+> Clone from custom repo:
+>
+> ```bash
+> your_org/your_repo
+> ```
 
 | Name             | Description                                                                                                                                               |
 | ---------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -37,7 +37,7 @@ python -m weasel clone [name] [dest] [--repo] [--branch] [--sparse]
 | `--branch`, `-b` | The branch to clone from. Defaults to `master`. ~~str (option)~~                                                                                          |
 | `--sparse`, `-S` | Enable [sparse checkout](https://git-scm.com/docs/git-sparse-checkout) to only check out and download what's needed. Requires Git v22.2+. ~~bool (flag)~~ |
 | `--help`, `-h`   | Show help message and available arguments. ~~bool (flag)~~                                                                                                |
-| **CREATES**      | The cloned [project directory](/usage/projects#project-files).                                                                                            |
+| **CREATES**      | The cloned [project directory](tutorial/directory-and-assets.md#project-files).                                                                                            |
 
 ## assets
 
@@ -54,11 +54,11 @@ into the current project.
 python -m weasel assets [project_dir]
 ```
 
-!!! example
-
-    ```bash
-    $ python -m weasel assets [--sparse]
-    ```
+> :bulb: **Example**
+>
+> ```bash
+> $ python -m weasel assets [--sparse]
+> ```
 
 | Name                                           | Description                                                                                                                                               |
 | ---------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -81,11 +81,11 @@ preprocessing command that depends on those files will be re-run.
 python -m weasel run [subcommand] [project_dir] [--force] [--dry]
 ```
 
-!!! example
-
-    ```bash
-    $ python -m weasel run train
-    ```
+> :bulb: **Example**
+>
+> ```bash
+> $ python -m weasel run train
+> ```
 
 | Name            | Description                                                                             |
 | --------------- | --------------------------------------------------------------------------------------- |
@@ -120,16 +120,16 @@ protocols.
 python -m weasel push [remote] [project_dir]
 ```
 
-!!! example
-
-    ```bash
-    $ python -m weasel push my_bucket
-    ```
-
-    ```yaml title="project.yml"
-    remotes:
-      my_bucket: 's3://my-spacy-bucket'
-    ```
+> :bulb: **Example**
+>
+> ```bash
+> $ python -m weasel push my_bucket
+> ```
+>
+> ```yaml title="project.yml"
+> remotes:
+>   my_bucket: 's3://my-spacy-bucket'
+> ```
 
 | Name           | Description                                                                             |
 | -------------- | --------------------------------------------------------------------------------------- |
@@ -164,16 +164,16 @@ protocols.
 python -m weasel pull [remote] [project_dir]
 ```
 
-!!! example
-
-    ```bash
-    $ python -m weasel pull my_bucket
-    ```
-
-    ```yaml title="project.yml"
-    remotes:
-      my_bucket: 's3://my-spacy-bucket'
-    ```
+> :bulb: **Example**
+>
+> ```bash
+> $ python -m weasel pull my_bucket
+> ```
+>
+> ```yaml title="project.yml"
+> remotes:
+>   my_bucket: 's3://my-spacy-bucket'
+> ```
 
 | Name           | Description                                                                             |
 | -------------- | --------------------------------------------------------------------------------------- |
@@ -195,16 +195,16 @@ the `project document` command, only the auto-generated part is replaced.
 python -m weasel document [project_dir] [--output] [--no-emoji]
 ```
 
-??? example "Example usage"
-
-    ```bash
-    $ python -m weasel document --output README.md
-    ```
-
-    For more examples, see the templates in our
-    [`projects`](https://github.com/explosion/projects) repo.
-
-    ![Screenshot of auto-generated Markdown Readme](assets/images/project_document.jpg)
+> :bulb: **Example usage**
+>
+> ```bash
+> $ python -m weasel document --output README.md
+> ```
+>
+> For more examples, see the templates in our
+> [`projects`](https://github.com/explosion/projects) repo.
+>
+> project_document.jpg)
 
 | Name                | Description                                                                                                                                                                                             |
 | ------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -224,24 +224,24 @@ first defined workflow is used. The DVC config will only be updated if the
 `project.yml` changed. For details, see the
 [DVC integration](/usage/projects#dvc) docs.
 
-!!! warning
-
-    This command requires DVC to be installed and initialized in the project
-    directory, e.g. via [`dvc init`](https://dvc.org/doc/command-reference/init).
-    You'll also need to add the assets you want to track with
-    [`dvc add`](https://dvc.org/doc/command-reference/add).
+> **Warning**
+>
+> This command requires DVC to be installed and initialized in the project
+> directory, e.g. via [`dvc init`](https://dvc.org/doc/command-reference/init).
+> You'll also need to add the assets you want to track with
+> [`dvc add`](https://dvc.org/doc/command-reference/add).
 
 ```bash
 python -m weasel dvc [project_dir] [workflow] [--force] [--verbose] [--quiet]
 ```
 
-!!! example
-
-    ```bash
-    $ git init
-    $ dvc init
-    $ python -m weasel dvc all
-    ```
+> :bulb: **Example**
+>
+> ```bash
+> $ git init
+> $ dvc init
+> $ python -m weasel dvc all
+> ```
 
 | Name              | Description                                                                                                   |
 | ----------------- | ------------------------------------------------------------------------------------------------------------- |
