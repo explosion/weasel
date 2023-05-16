@@ -6,9 +6,9 @@ from typing import Any, Dict, List, Optional
 
 from wasabi import msg
 
-from .._util import COMMAND, NAME, PROJECT_FILE, Arg, Opt, app, get_hash
-from .._util import load_project_config
+from .._util import get_hash, load_project_config
 from ..util import join_command, run_command, working_dir
+from .main import COMMAND, NAME, PROJECT_FILE, Arg, Opt, app
 
 DVC_CONFIG = "dvc.yaml"
 DVC_DIR = ".dvc"

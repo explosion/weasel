@@ -8,36 +8,17 @@ from pathlib import Path
 from typing import TYPE_CHECKING, Any, Dict, Iterable, List, Optional, Tuple, Union
 
 import srsly
-import typer
 from click import NoSuchOption
 from click.parser import split_arg_string
 from confection import Config, ConfigValidationError
 from wasabi import msg
 
+from .cli.main import COMMAND, PROJECT_FILE
 from .schemas import ProjectConfigSchema, validate
 from .util import ENV_VARS, SimpleFrozenDict, logger, make_tempdir, run_command
 
 if TYPE_CHECKING:
     from pathy import FluidPath
-
-
-COMMAND = "python -m weasel"
-NAME = "weasel"
-HELP = """weasel Command-line Interface
-
-DOCS: https://spacy.io/api/cli
-"""
-
-PROJECT_FILE = "project.yml"
-PROJECT_LOCK = "project.lock"
-
-
-# Wrappers for Typer's annotations. Initially created to set defaults and to
-# keep the names short, but not needed at the moment.
-Arg = typer.Argument
-Opt = typer.Option
-
-app = typer.Typer(name=NAME, help=HELP)
 
 
 def parse_config_overrides(
