@@ -29,11 +29,11 @@ git init          # Initialize a Git repo
 dvc init          # Initialize a DVC project
 ```
 
-!!! warning "Important note on privacy"
-
-    DVC enables usage analytics by default, so if you're working in a
-    privacy-sensitive environment, make sure to
-    [**opt-out manually**](https://dvc.org/doc/user-guide/analytics#opting-out).
+> :warning: **Important note on privacy**
+>
+> DVC enables usage analytics by default, so if you're working in a
+> privacy-sensitive environment, make sure to
+> [**opt-out manually**](https://dvc.org/doc/user-guide/analytics#opting-out).
 
 The [`weasel dvc`](../cli.md#dvc) command creates a `dvc.yaml`
 config file based on a workflow defined in your `project.yml`. Whenever you
@@ -47,9 +47,9 @@ workflow or individual commands.
 python -m weasel dvc [project_dir] [workflow_name]
 ```
 
-!!! warning "Important note for multiple workflows"
-
-    DVC currently expects a single workflow per project, so when creating the config
-    with [`weasel dvc`](../cli.md#dvc), you need to specify the name
-    of a workflow defined in your `project.yml`. You can still use multiple
-    workflows, but only one can be tracked by DVC.
+> :warning: **Important note for multiple workflows**
+>
+> DVC currently expects a single workflow per project, so when creating the config
+> with [`weasel dvc`](../cli.md#dvc), you need to specify the name
+> of a workflow defined in your `project.yml`. You can still use multiple
+> workflows, but only one can be tracked by DVC.
