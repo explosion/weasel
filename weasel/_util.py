@@ -25,7 +25,7 @@ COMMAND = "python -m weasel"
 NAME = "weasel"
 HELP = """weasel Command-line Interface
 
-DOCS: https://spacy.io/api/cli
+DOCS: https://github.com/explosion/weasel
 """
 
 PROJECT_FILE = "project.yml"
@@ -37,7 +37,7 @@ PROJECT_LOCK = "project.lock"
 Arg = typer.Argument
 Opt = typer.Option
 
-app = typer.Typer(name=NAME, help=HELP)
+app = typer.Typer(name=NAME, help=HELP, no_args_is_help=True)
 
 
 def parse_config_overrides(
