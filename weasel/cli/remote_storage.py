@@ -11,7 +11,7 @@ from wasabi import msg
 from .._util import download_file, ensure_pathy, get_checksum, get_hash, make_tempdir
 from .._util import upload_file
 from ..errors import Errors
-from ..util import check_spacy_env_vars
+from ..utils import check_spacy_env_vars
 
 if TYPE_CHECKING:
     from pathy import FluidPath

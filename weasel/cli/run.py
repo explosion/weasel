@@ -9,8 +9,8 @@ from wasabi import msg
 from wasabi.util import locale_escape
 
 from .._util import get_checksum, get_hash, load_project_config, parse_config_overrides
-from ..util import SimpleFrozenDict, SimpleFrozenList, check_spacy_env_vars, is_cwd
-from ..util import join_command, run_command, split_command, working_dir
+from ..utils import SimpleFrozenDict, SimpleFrozenList, check_spacy_env_vars, is_cwd
+from ..utils import join_command, run_command, split_command, working_dir
 from .main import COMMAND, PROJECT_FILE, PROJECT_LOCK, Arg, Opt, app
 
 

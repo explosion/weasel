@@ -15,7 +15,7 @@ from wasabi import msg
 
 from .cli.main import COMMAND, PROJECT_FILE
 from .schemas import ProjectConfigSchema, validate
-from .util import ENV_VARS, SimpleFrozenDict, logger, make_tempdir, run_command
+from .utils import ENV_VARS, SimpleFrozenDict, logger, make_tempdir, run_command
 
 if TYPE_CHECKING:
     from pathy import FluidPath

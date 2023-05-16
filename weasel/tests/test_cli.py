@@ -9,7 +9,7 @@ from weasel._util import substitute_project_variables, validate_project_commands
 from weasel.cli.remote_storage import RemoteStorage
 from weasel.cli.run import _check_requirements
 from weasel.schemas import ProjectConfigSchema, validate
-from weasel.util import make_tempdir
+from weasel.utils import make_tempdir
 
 
 def test_issue11235():

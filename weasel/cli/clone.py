@@ -7,7 +7,7 @@ from wasabi import msg
 
 from .. import about
 from .._util import get_git_version, git_checkout, git_repo_branch_exists
-from ..util import ensure_path
+from ..utils import ensure_path
 from .main import COMMAND, PROJECT_FILE, Arg, Opt, app
 
 DEFAULT_REPO = about.__projects__
