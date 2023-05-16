@@ -12,21 +12,21 @@ calls into [`pytest`](https://docs.pytest.org/en/latest/), runs your tests and
 uses [`pytest-html`](https://github.com/pytest-dev/pytest-html) to export a test
 report:
 
-!!! example "Example configuration"
-
-    ```yaml title="project.yml"
-    commands:
-      - name: test
-        help: 'Test the trained pipeline'
-        script:
-          - 'pip install pytest pytest-html'
-          - 'python -m pytest ./scripts/tests --html=metrics/test-report.html'
-        deps:
-          - 'training/model-best'
-        outputs:
-          - 'metrics/test-report.html'
-        no_skip: true
-    ```
+> :bulb: **Example configuration**
+>
+> ```yaml title="project.yml"
+> commands:
+>   - name: test
+>     help: 'Test the trained pipeline'
+>     script:
+>       - 'pip install pytest pytest-html'
+>       - 'python -m pytest ./scripts/tests --html=metrics/test-report.html'
+>     deps:
+>       - 'training/model-best'
+>     outputs:
+>       - 'metrics/test-report.html'
+>     no_skip: true
+> ```
 
 Adding `training/model-best` to the command's `deps` lets you ensure that the
 file is available. If not, Weasel will show an error and the command won't run.
@@ -52,14 +52,14 @@ if __name__ == "__main__":
     typer.run(custom_evaluation)
 ```
 
-!!! note "About Typer"
-
-    [`typer`](https://typer.tiangolo.com/) is a modern library for building Python
-    CLIs using type hints. It's a dependency of spaCy, so it will already be
-    pre-installed in your environment. Function arguments automatically become
-    positional CLI arguments and using Python type hints, you can define the value
-    types. For instance, `batch_size: int` means that the value provided via the
-    command line is converted to an integer.
+> :information_source: **About Typer**
+>
+> [`typer`](https://typer.tiangolo.com/) is a modern library for building Python
+> CLIs using type hints. It's a dependency of spaCy, so it will already be
+> pre-installed in your environment. Function arguments automatically become
+> positional CLI arguments and using Python type hints, you can define the value
+> types. For instance, `batch_size: int` means that the value provided via the
+> command line is converted to an integer.
 
 In your `project.yml`, you can then run the script by calling
 `python scripts/custom_evaluation.py` with the function arguments. You can also
@@ -67,58 +67,58 @@ use the `vars` section to define reusable variables that will be substituted in
 commands, paths and URLs. In the following example, the batch size is defined as a
 variable will be added in place of `${vars.batch_size}` in the script.
 
-!!! example "Example usage of `vars`"
+> :bulb: **Example usage of `vars`**
+>
+> ```yaml title="project.yml"
+> vars:
+>  batch_size: 128
+>
+> commands:
+>   - name: evaluate
+>     script:
+>       - 'python scripts/custom_evaluation.py ${vars.batch_size} ./training/model-best ./corpus/eval.json'
+>     deps:
+>       - 'training/model-best'
+>       - 'corpus/eval.json'
+> ```
 
-    ```yaml title="project.yml"
-    vars:
-    batch_size: 128
-
-    commands:
-      - name: evaluate
-        script:
-          - 'python scripts/custom_evaluation.py ${vars.batch_size} ./training/model-best ./corpus/eval.json'
-        deps:
-          - 'training/model-best'
-          - 'corpus/eval.json'
-    ```
-
-!!! note "Calling into Python"
-
-    If any of your command scripts call into `python`, spaCy will take care of
-    replacing that with your `sys.executable`, to make sure you're executing
-    everything with the same Python (not some other Python installed on your
-    system). It also normalizes references to `python3`, `pip3` and `pip`.
+> :information_source: **Calling into Python**
+>
+> If any of your command scripts call into `python`, spaCy will take care of
+> replacing that with your `sys.executable`, to make sure you're executing
+> everything with the same Python (not some other Python installed on your
+> system). It also normalizes references to `python3`, `pip3` and `pip`.
 
 You can also use the `env` section to reference **environment variables** and
 make their values available to the commands. This can be useful for overriding
 settings on the command line and passing through system-level settings.
 
-!!! example "Example usage of EnvVars"
-
-    ```bash
-    export GPU_ID=1
-    BATCH_SIZE=128 python -m weasel run evaluate
-    ```
-
-    ```yaml title="project.yml"
-    env:
-      batch_size: BATCH_SIZE
-      gpu_id: GPU_ID
-
-    commands:
-      - name: evaluate
-        script:
-          - 'python scripts/custom_evaluation.py ${env.batch_size}'
-    ```
+> :bulb: **Example usage of EnvVars**
+>
+> ```bash
+> export GPU_ID=1
+> BATCH_SIZE=128 python -m weasel run evaluate
+> ```
+>
+> ```yaml title="project.yml"
+> env:
+>   batch_size: BATCH_SIZE
+>   gpu_id: GPU_ID
+>
+> commands:
+>   - name: evaluate
+>     script:
+>       - 'python scripts/custom_evaluation.py ${env.batch_size}'
+> ```
 
 ## Documenting your project
 
-??? example "Example"
-
-    For more examples, see the [`projects`](https://github.com/explosion/projects)
-    repo.
-
-    ![Screenshot of auto-generated Markdown Readme](../assets/images/project_document.jpg)
+> :bulb: **Examples**
+>
+> For more examples, see the [`projects`](https://github.com/explosion/projects)
+> repo.
+>
+> ![Screenshot of auto-generated Markdown Readme](../assets/images/project_document.jpg)
 
 When your custom project is ready and you want to share it with others, you can
 use the [`weasel document`](../cli.md#document) command to
@@ -138,12 +138,12 @@ before or after it and re-running the `document` command will **only
 update the auto-generated part**. This makes it easy to keep your documentation
 up to date.
 
-!!! warning
-
-    Note that the contents of an existing file will be **replaced** if no existing
-    auto-generated docs are found. If you want spaCy to ignore a file and not update
-    it, you can add the comment marker `{/* WEASEL: IGNORE */}` anywhere in
-    your markup.
+> **Warning**
+>
+> Note that the contents of an existing file will be **replaced** if no existing
+> auto-generated docs are found. If you want spaCy to ignore a file and not update
+> it, you can add the comment marker `{/* WEASEL: IGNORE */}` anywhere in
+> your markup.
 
 ## Cloning from your own repo
 
@@ -162,10 +162,10 @@ At a minimum, a valid project template needs to contain a
 a machine learning model and meta templates, or Jupyter
 notebooks with usage examples.
 
-!!! warning "Important note about assets"
-
-    It's typically not a good idea to check large data assets, trained pipelines or
-    other artifacts into a Git repo and you should exclude them from your project
-    template by adding a `.gitignore`. If you want to version your data and models,
-    check out [Data Version Control](./integrations.md#data-version-control-dvc) (DVC), which integrates with spaCy
-    projects.
+> :warning: **Important note about assets**
+>
+> It's typically not a good idea to check large data assets, trained pipelines or
+> other artifacts into a Git repo and you should exclude them from your project
+> template by adding a `.gitignore`. If you want to version your data and models,
+> check out [Data Version Control](./integrations.md#data-version-control-dvc) (DVC), which integrates with spaCy
+> projects.
