@@ -27,7 +27,7 @@ def project_clone_cli(
 ):
     """Clone a project template from a repository. Calls into "git" and will
     only download the files from the given subdirectory. The GitHub repo
-    defaults to the official spaCy template repo, but can be customized
+    defaults to the official Weasel template repo, but can be customized
     (including using a private repo).
 
     DOCS: https://spacy.io/api/cli#project-clone
@@ -97,7 +97,7 @@ def check_clone(name: str, dest: Path, repo: str) -> None:
     repo (str): URL of the repo to clone from.
     """
     git_err = (
-        f"Cloning spaCy project templates requires Git and the 'git' command. "
+        f"Cloning Weasel project templates requires Git and the 'git' command. "
         f"To clone a project without Git, copy the files from the '{name}' "
         f"directory in the {repo} to {dest} manually."
     )
