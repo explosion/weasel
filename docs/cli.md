@@ -4,7 +4,7 @@ The `weasel` CLI includes subcommands for working with
 Weasel projects, end-to-end workflows for building and
 deploying custom spaCy pipelines.
 
-## clone
+## :clipboard: clone
 
 Clone a project template from a Git repository. Calls into `git` under the hood
 and can use the sparse checkout feature if available, so you're only downloading
@@ -33,7 +33,7 @@ python -m weasel clone [name] [dest] [--repo] [--branch] [--sparse]
 | `--help`, `-h`   | Show help message and available arguments. ~~bool (flag)~~                                                                                                |
 | **CREATES**      | The cloned [project directory](tutorial/directory-and-assets.md).                                                                                         |
 
-## assets
+## :open_file_folder: assets
 
 Fetch project assets like datasets and pretrained weights. Assets are defined in
 the `assets` section of the [`project.yml`](tutorial/directory-and-assets.md#project-yml). If a
@@ -56,7 +56,7 @@ python -m weasel assets [project_dir]
 | `--help`, `-h`                                 | Show help message and available arguments. ~~bool (flag)~~                                                                                                |
 | **CREATES**                                    | Downloaded or copied assets defined in the `project.yml`.                                                                                                 |
 
-## run
+## :rocket: run
 
 Run a named command or workflow defined in the
 [`project.yml`](tutorial/directory-and-assets.md#project-yml). If a workflow name is specified,
@@ -78,7 +78,7 @@ python -m weasel run [subcommand] [project_dir] [--force] [--dry]
 | `--help`, `-h`  | Show help message and available arguments. ~~bool (flag)~~                              |
 | **EXECUTES**    | The command defined in the `project.yml`.                                               |
 
-## push
+## :arrow_up: push
 
 Upload all available files or directories listed as in the `outputs` section of
 commands to a remote storage. Outputs are archived and compressed prior to
@@ -120,7 +120,7 @@ python -m weasel push [remote] [project_dir]
 | `--help`, `-h` | Show help message and available arguments. ~~bool (flag)~~                              |
 | **UPLOADS**    | All project outputs that exist and are not already stored in the remote.                |
 
-## pull
+## :arrow_down: pull
 
 Download all files or directories listed as `outputs` for commands, unless they
 are already present locally. When searching for files in the remote, `pull`
@@ -164,7 +164,7 @@ python -m weasel pull [remote] [project_dir]
 | `--help`, `-h` | Show help message and available arguments. ~~bool (flag)~~                              |
 | **DOWNLOADS**  | All project outputs that do not exist locally and can be found in the remote.           |
 
-## document
+## :closed_book: document
 
 Auto-generate a pretty Markdown-formatted `README` for your project, based on
 its [`project.yml`](tutorial/directory-and-assets.md#project-yml). Will create sections that
@@ -193,7 +193,7 @@ python -m weasel document [project_dir] [--output] [--no-emoji]
 | `--no-emoji`, `-NE` | Don't use emoji in the titles. ~~bool (flag)~~                                                                                                                                                          |
 | **CREATES**         | The Markdown-formatted project documentation.                                                                                                                                                           |
 
-## dvc
+## :repeat: dvc
 
 Auto-generate [Data Version Control](https://dvc.org) (DVC) config file. Calls
 [`dvc run`](https://dvc.org/doc/command-reference/run) with `--no-exec` under
