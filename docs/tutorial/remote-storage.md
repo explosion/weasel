@@ -17,35 +17,35 @@ remote storages, so you can use any protocol that `Pathy` supports, including
 filesystem, although you may need to install extra dependencies to use certain
 protocols.
 
-!!! example "Example using remote storage"
+> :bulb: **Example using remote storage**
+>
+> ```bash
+> $ python -m weasel pull local
+> ```
+>
+> ```yaml title="project.yml"
+> remotes:
+> default: 's3://my-spacy-bucket'
+> local: '/mnt/scratch/cache'
+> ```
 
-    ```bash
-    $ python -m weasel pull local
-    ```
-
-    ```yaml title="project.yml"
-    remotes:
-    default: 's3://my-spacy-bucket'
-    local: '/mnt/scratch/cache'
-    ```
-
-!!! info "💡 How it works"
-
-    Inside the remote storage, spaCy uses a clever **directory structure** to avoid
-    overwriting files. The top level of the directory structure is a URL-encoded
-    version of the output's path. Within this directory are subdirectories named
-    according to a hash of the command string and the command's dependencies.
-    Finally, within those directories are files, named according to an MD5 hash of
-    their contents.
-
-    ```
-    └── urlencoded_file_path            # Path of original file
-        ├── some_command_hash           # Hash of command you ran
-        │   ├── some_content_hash       # Hash of file content
-        │   └── another_content_hash
-        └── another_command_hash
-            └── third_content_hash
-    ```
+> :information_source: **How it works**
+>
+> Inside the remote storage, spaCy uses a clever **directory structure** to avoid
+> overwriting files. The top level of the directory structure is a URL-encoded
+> version of the output's path. Within this directory are subdirectories named
+> according to a hash of the command string and the command's dependencies.
+> Finally, within those directories are files, named according to an MD5 hash of
+> their contents.
+>
+> ```
+> └── urlencoded_file_path            # Path of original file
+>     ├── some_command_hash           # Hash of command you ran
+>     │   ├── some_content_hash       # Hash of file content
+>     │   └── another_content_hash
+>     └── another_command_hash
+>         └── third_content_hash
+> ```
 
 For instance, let's say you had the following spaCy command in your `project.yml`:
 
@@ -89,7 +89,7 @@ file. The system even supports multiple outputs for the same file and the same
 context, which can happen if your training process is not deterministic, or if
 you have dependencies that aren't represented in the command.
 
-In summary, the [`weasel`](/api/cli#project) remote storages are designed
+In summary, the `weasel` remote storages are designed
 to make a particular set of trade-offs. Priority is placed on **convenience**,
 **correctness** and **avoiding data loss**. You can use
 [`push`](../cli.md#push) freely, as you'll never overwrite remote
