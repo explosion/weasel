@@ -14,8 +14,8 @@ env:
   RUN_MYPY: "true"
 
 jobs:
-  validate:
-    name: Validate
+  validation:
+    name: Validation
     if: github.repository_owner == 'explosion'
     runs-on: ubuntu-latest
 
@@ -44,9 +44,9 @@ jobs:
       - name: Run pre-commit
         run: SKIP=no-commit-to-branch pre-commit run --all-files
 
-  tests:
-    name: Test
-    needs: Validate
+  installation:
+    name: Installation
+    needs: validation
     if: github.repository_owner == 'explosion'
     strategy:
       fail-fast: false
@@ -91,6 +91,27 @@ jobs:
         shell: bash
         run: |
           python -c "import $MODULE_NAME" -Werror
+
+  tests:
+    name: Test
+    needs: validation
+    if: github.repository_owner == 'explosion'
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        python_version: ["3.8", "3.9", "3.10", "3.11"]
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - name: Check out repo
+        uses: actions/checkout@v3
+
+      - name: Configure Python version
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python_version }}
+          architecture: x64
 
       - name: Install test requirements
         run: |
