@@ -17,17 +17,21 @@ project_files = [
 
 
 @pytest.fixture(scope="function", params=project_files)
-def project_yaml_file(request, tmp_path_factory):
+def project_yaml_file(
+    request: pytest.FixtureRequest,
+    tmp_path_factory: pytest.TempPathFactory,
+):
     full_path = BASE_PATH / Path(request.param)
     config_contents = full_path.read_text()
-    local_file = Path("project.yml")
-    local_file.write_text(config_contents)
-    yield full_path
-    local_file.unlink()
+
+    test_dir = tmp_path_factory.mktemp("project")
+    path = test_dir / "project.yml"
+    path.write_text(config_contents)
+    return path
 
 
-def test_create_docs(project_yaml_file):
-    result = runner.invoke(app, ["document"])
+def test_create_docs(project_yaml_file: Path):
+    result = runner.invoke(app, ["document", str(project_yaml_file.parent)])
     conf_data = srsly.read_yaml(project_yaml_file)
     assert result.exit_code == 0
     assert conf_data["title"] in result.stdout
