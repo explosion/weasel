@@ -9,8 +9,8 @@ from typing import TYPE_CHECKING, Dict, List, Optional
 from wasabi import msg
 
 from weasel.errors import Errors
-from weasel.utils import check_spacy_env_vars, download_file, ensure_pathy
-from weasel.utils import get_checksum, get_hash, make_tempdir, upload_file
+from weasel.util import check_spacy_env_vars, download_file, ensure_pathy, get_checksum
+from weasel.util import get_hash, make_tempdir, upload_file
 
 if TYPE_CHECKING:
     from pathy import FluidPath

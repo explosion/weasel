@@ -6,8 +6,8 @@ from typing import Optional
 from wasabi import msg
 
 from weasel import about
-from weasel.utils import ensure_path, get_git_version, git_checkout
-from weasel.utils import git_repo_branch_exists
+from weasel.util import ensure_path, get_git_version, git_checkout
+from weasel.util import git_repo_branch_exists
 
 from .main import COMMAND, PROJECT_FILE, Arg, Opt, app
 

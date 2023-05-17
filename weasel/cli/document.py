@@ -2,7 +2,7 @@ from pathlib import Path
 
 from wasabi import MarkdownRenderer, msg
 
-from weasel.utils import load_project_config, working_dir
+from weasel.util import load_project_config, working_dir
 
 from .main import PROJECT_FILE, Arg, Opt, app
 
