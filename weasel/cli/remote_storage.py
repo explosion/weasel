@@ -96,7 +96,7 @@ class RemoteStorage:
                         for member in tar.getmembers():
                             member_path = os.path.join(path, member.name)
                             if not is_within_directory(path, member_path):
-                                raise ValueError(Errors.E852)
+                                raise ValueError(Errors.E201)
                         tar.extractall(path)
 
                     safe_extract(tar_file, self.root)
