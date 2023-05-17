@@ -11,10 +11,10 @@ from wasabi import msg
 
 from ..cli.main import PROJECT_FILE
 from ..schemas import ProjectConfigSchema, validate
-from .commands import show_validation_error, validate_project_commands
 from .environment import ENV_VARS
+from .frozen import SimpleFrozenDict
 from .logging import logger
-from .structures import SimpleFrozenDict
+from .validation import show_validation_error, validate_project_commands
 
 
 def parse_config_overrides(
