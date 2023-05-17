@@ -1,6 +1,6 @@
 import os
 
-from weasel.schemas import SpacyEnvVars
+from ..schemas import SpacyEnvVars
 
 
 class ENV_VARS:

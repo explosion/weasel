@@ -1,4 +1,4 @@
-from weasel.errors import Errors
+from ..errors import Errors
 
 
 class SimpleFrozenDict(dict):

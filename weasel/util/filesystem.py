@@ -7,7 +7,7 @@ from contextlib import contextmanager
 from pathlib import Path
 from typing import Any, Generator, Iterator, Union
 
-from weasel.errors import Warnings
+from ..errors import Warnings
 
 
 @contextmanager

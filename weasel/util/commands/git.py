@@ -4,8 +4,7 @@ from typing import Tuple
 
 from wasabi import msg
 
-from weasel.util.filesystem import is_subpath_of, make_tempdir
-
+from ...util.filesystem import is_subpath_of, make_tempdir
 from .run import run_command
 
 

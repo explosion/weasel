@@ -9,9 +9,8 @@ from click.parser import split_arg_string
 from confection import Config
 from wasabi import msg
 
-from weasel.cli.main import PROJECT_FILE
-from weasel.schemas import ProjectConfigSchema, validate
-
+from ..cli.main import PROJECT_FILE
+from ..schemas import ProjectConfigSchema, validate
 from .commands import show_validation_error, validate_project_commands
 from .environment import ENV_VARS
 from .logging import logger

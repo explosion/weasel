@@ -4,8 +4,8 @@ import subprocess
 import sys
 from typing import Any, List, Optional, Union
 
-from weasel.compat import is_windows
-from weasel.errors import Errors
+from ...compat import is_windows
+from ...errors import Errors
 
 
 def split_command(command: str) -> List[str]:

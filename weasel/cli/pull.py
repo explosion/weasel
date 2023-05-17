@@ -2,8 +2,7 @@ from pathlib import Path
 
 from wasabi import msg
 
-from weasel.util import load_project_config, logger
-
+from ..util import load_project_config, logger
 from .main import Arg, app
 from .remote_storage import RemoteStorage, get_command_hash
 from .run import update_lockfile
