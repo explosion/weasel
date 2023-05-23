@@ -5,7 +5,8 @@ import pytest
 import srsly
 from typer.testing import CliRunner
 
-from weasel._util import app, get_git_version
+from weasel import app
+from weasel.util import get_git_version
 
 
 def has_git():

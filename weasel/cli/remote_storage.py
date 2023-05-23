@@ -8,10 +8,9 @@ from typing import TYPE_CHECKING, Dict, List, Optional
 
 from wasabi import msg
 
-from .._util import download_file, ensure_pathy, get_checksum, get_hash, make_tempdir
-from .._util import upload_file
 from ..errors import Errors
-from ..util import check_spacy_env_vars
+from ..util import check_spacy_env_vars, download_file, ensure_pathy, get_checksum
+from ..util import get_hash, make_tempdir, upload_file
 
 if TYPE_CHECKING:
     from pathy import FluidPath
