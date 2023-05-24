@@ -19,7 +19,7 @@ def project_pull_cli(
     A storage can be anything that the smart-open library can upload to, e.g.
     AWS, Google Cloud Storage, SSH, local directories etc.
 
-    DOCS: https://spacy.io/api/cli#project-pull
+    DOCS: https://github.com/explosion/weasel/tree/main/docs/cli.md#arrow_down-push
     """
     for url, output_path in project_pull(project_dir, remote):
         if url is not None:

@@ -5,26 +5,26 @@ from wasabi import MarkdownRenderer, msg
 from .._util import PROJECT_FILE, Arg, Opt, app, load_project_config
 from ..util import working_dir
 
-DOCS_URL = "https://spacy.io"
+DOCS_URL = "https://github.com/explosion/weasel"
 INTRO_PROJECT = f"""The [`{PROJECT_FILE}`]({PROJECT_FILE}) defines the data assets required by the
 project, as well as the available commands and workflows. For details, see the
-[spaCy projects documentation]({DOCS_URL}/usage/projects)."""
+[Weasel documentation]({DOCS_URL})."""
 INTRO_COMMANDS = f"""The following commands are defined by the project. They
-can be executed using [`spacy project run [name]`]({DOCS_URL}/api/cli#project-run).
+can be executed using [`weasel run [name]`]({DOCS_URL}/tree/main/docs/migrate-spacy-docs/docs/cli.md#rocket-run).
 Commands are only re-run if their inputs have changed."""
 INTRO_WORKFLOWS = f"""The following workflows are defined by the project. They
-can be executed using [`spacy project run [name]`]({DOCS_URL}/api/cli#project-run)
+can be executed using [`weasel run [name]`]({DOCS_URL}/tree/main/docs/migrate-spacy-docs/docs/cli.md#rocket-run)
 and will run the specified commands in order. Commands are only re-run if their
 inputs have changed."""
 INTRO_ASSETS = f"""The following assets are defined by the project. They can
-be fetched by running [`spacy project assets`]({DOCS_URL}/api/cli#project-assets)
+be fetched by running [`weasel assets`]({DOCS_URL}/tree/main/docs/migrate-spacy-docs/docs/cli.md#open_file_folder-assets)
 in the project directory."""
 # These markers are added to the Markdown and can be used to update the file in
 # place if it already exists. Only the auto-generated part will be replaced.
-MARKER_START = "<!-- SPACY PROJECT: AUTO-GENERATED DOCS START (do not remove) -->"
-MARKER_END = "<!-- SPACY PROJECT: AUTO-GENERATED DOCS END (do not remove) -->"
+MARKER_START = "<!-- WEASEL: AUTO-GENERATED DOCS START (do not remove) -->"
+MARKER_END = "<!-- WEASEL: AUTO-GENERATED DOCS END (do not remove) -->"
 # If this marker is used in an existing README, it's ignored and not replaced
-MARKER_IGNORE = "<!-- SPACY PROJECT: IGNORE -->"
+MARKER_IGNORE = "<!-- WEASEL: IGNORE -->"
 
 
 @app.command("document")
@@ -41,7 +41,7 @@ def project_document_cli(
     auto-generated section and only the auto-generated docs will be replaced
     when you re-run the command.
 
-    DOCS: https://spacy.io/api/cli#project-document
+    DOCS: https://github.com/explosion/weasel/tree/main/docs/cli.md#closed_book-document
     """
     project_document(project_dir, output_file, no_emoji=no_emoji)
 
