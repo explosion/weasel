@@ -4,11 +4,11 @@ import time
 import pytest
 import srsly
 
-from weasel._util import is_subpath_of, load_project_config, validate_project_commands
 from weasel.cli.remote_storage import RemoteStorage
 from weasel.cli.run import _check_requirements
 from weasel.schemas import ProjectConfigSchema, validate
-from weasel.util import make_tempdir
+from weasel.util import is_subpath_of, load_project_config, make_tempdir
+from weasel.util import validate_project_commands
 
 
 def test_issue11235():

@@ -4,7 +4,7 @@ import pytest
 import srsly
 from typer.testing import CliRunner
 
-from weasel._util import app
+from weasel import app
 
 EXAMPLES = [
     (dict(title="Test"), False),
