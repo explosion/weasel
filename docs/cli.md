@@ -2,13 +2,13 @@
 
 The `weasel` CLI includes subcommands for working with
 Weasel projects, end-to-end workflows for building and
-deploying custom spaCy pipelines.
+deploying custom pipelines.
 
 ## :clipboard: clone
 
 Clone a project template from a Git repository. Calls into `git` under the hood
 and can use the sparse checkout feature if available, so you're only downloading
-what you need. By default, spaCy's
+what you need. By default, Weasel's
 [project templates repo](https://github.com/explosion/projects) is used, but you
 can provide any other repo (public or private) that you have access to using the
 `--repo` option.
@@ -38,7 +38,7 @@ python -m weasel clone [name] [dest] [--repo] [--branch] [--sparse]
 Fetch project assets like datasets and pretrained weights. Assets are defined in
 the `assets` section of the [`project.yml`](tutorial/directory-and-assets.md#project-yml). If a
 `checksum` is provided, the file is only downloaded if no local file with the
-same checksum exists and spaCy will show an error if the checksum of the
+same checksum exists and Weasel will show an error if the checksum of the
 downloaded file doesn't match. If assets don't specify a `url` they're
 considered "private" and you have to take care of putting them into the
 destination directory yourself. If a local path is provided, the asset is copied
@@ -90,7 +90,7 @@ If the contents are different, the new version of the file is uploaded. Deleting
 obsolete files is left up to you.
 
 Remotes can be defined in the `remotes` section of the
-[`project.yml`](tutorial/directory-and-assets.md#project-yml). Under the hood, spaCy uses
+[`project.yml`](tutorial/directory-and-assets.md#project-yml). Under the hood, Weasel uses
 [`Pathy`](https://github.com/justindujardin/pathy) to communicate with the
 remote storages, so you can use any protocol that `Pathy` supports, including
 [S3](https://aws.amazon.com/s3/),
@@ -134,7 +134,7 @@ outputs, so if you change the config back, you'll be able to fetch back the
 result.
 
 Remotes can be defined in the `remotes` section of the
-[`project.yml`](tutorial/directory-and-assets.md#project-yml). Under the hood, spaCy uses
+[`project.yml`](tutorial/directory-and-assets.md#project-yml). Under the hood, Weasel uses
 [`Pathy`](https://github.com/justindujardin/pathy) to communicate with the
 remote storages, so you can use any protocol that `Pathy` supports, including
 [S3](https://aws.amazon.com/s3/),

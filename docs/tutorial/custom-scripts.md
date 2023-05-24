@@ -55,7 +55,7 @@ if __name__ == "__main__":
 > :information_source: **About Typer**
 >
 > [`typer`](https://typer.tiangolo.com/) is a modern library for building Python
-> CLIs using type hints. It's a dependency of spaCy, so it will already be
+> CLIs using type hints. It's a dependency of Weasel, so it will already be
 > pre-installed in your environment. Function arguments automatically become
 > positional CLI arguments and using Python type hints, you can define the value
 > types. For instance, `batch_size: int` means that the value provided via the
@@ -84,7 +84,7 @@ variable will be added in place of `${vars.batch_size}` in the script.
 
 > :information_source: **Calling into Python**
 >
-> If any of your command scripts call into `python`, spaCy will take care of
+> If any of your command scripts call into `python`, Weasel will take care of
 > replacing that with your `sys.executable`, to make sure you're executing
 > everything with the same Python (not some other Python installed on your
 > system). It also normalizes references to `python3`, `pip3` and `pip`.
@@ -125,7 +125,7 @@ use the [`weasel document`](../cli.md#document) command to
 **auto-generate** a pretty, Markdown-formatted `README` file based on your
 project's `project.yml`. It will list all commands, workflows and assets defined
 in the project and include details on how to run the project, as well as links
-to the relevant spaCy documentation to make it easy for others to get started
+to the relevant Weasel documentation to make it easy for others to get started
 using your project.
 
 ```bash
@@ -141,7 +141,7 @@ up to date.
 > **Warning**
 >
 > Note that the contents of an existing file will be **replaced** if no existing
-> auto-generated docs are found. If you want spaCy to ignore a file and not update
+> auto-generated docs are found. If you want Weasel to ignore a file and not update
 > it, you can add the comment marker `{/* WEASEL: IGNORE */}` anywhere in
 > your markup.
 
@@ -167,5 +167,5 @@ notebooks with usage examples.
 > It's typically not a good idea to check large data assets, trained pipelines or
 > other artifacts into a Git repo and you should exclude them from your project
 > template by adding a `.gitignore`. If you want to version your data and models,
-> check out [Data Version Control](./integrations.md#data-version-control-dvc) (DVC), which integrates with spaCy
-> projects.
+> check out [Data Version Control](./integrations.md#data-version-control-dvc) (DVC),
+> which integrates with Weasek.

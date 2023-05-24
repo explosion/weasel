@@ -4,7 +4,7 @@
 
 > :information_source: **Cloning under the hood**
 >
-> To clone a project, spaCy calls into `git` and uses the "sparse checkout"
+> To clone a project, Weasel calls into `git` and uses the "sparse checkout"
 > feature to only clone the relevant directory or directories.
 
 The [`weasel clone`](../cli.md#clone) command clones an existing
@@ -53,7 +53,7 @@ will fetch the project assets for you.
 
 Asset URLs can be a number of different protocols: HTTP, HTTPS, FTP, SSH, and
 even cloud storage such as GCS and S3. You can also fetch assets using git, by
-replacing the `url` string with a `git` block. spaCy will use Git's "sparse
+replacing the `url` string with a `git` block. Weasel will use Git's "sparse
 checkout" feature to avoid downloading the whole repository.
 
 Sometimes your project configuration may include large assets that you don't
@@ -99,7 +99,7 @@ skipped. You can also set `--force` to force re-running a command, or `--dry` to
 perform a "dry run" and see what would happen (without actually running the
 script).
 
-Since spaCy v3.4.2, `weasels run` checks your installed dependencies to
+`weasels run` checks your installed dependencies to
 verify that your environment is properly set up and aligns with the project's
 `requirements.txt`, if there is one. If missing or conflicting dependencies are
 detected, a corresponding warning is displayed. If you'd like to disable the
@@ -130,13 +130,13 @@ defined in the `project.yml`, and executes the commands it specifies, in order:
 > python -m weasel run all
 > ```
 
-Using the expected [dependencies and outputs](./directory-and-assets.md#dependencies-and-outputs) defined in the
-commands, spaCy can determine whether to re-run a command (if its inputs or
+Using the expected [dependencies and outputs](./directory-and-assets.md#dependencies-and-outputs)
+defined in the commands, Weasel can determine whether to re-run a command (if its inputs or
 outputs have changed) or whether to skip it. If you're looking to implement more
 advanced data pipelines and track your changes in Git, check out the
 [Data Version Control (DVC) integration](./integrations.md#data-version-control-dvc). The
 [`weasel dvc`](../cli.md#dvc) command generates a DVC config file
-from a workflow defined in your `project.yml` so you can manage your spaCy
+from a workflow defined in your `project.yml` so you can manage your Weasel
 project as a DVC repo.
 
 ## 5. Optional: Push to remote storage
@@ -152,7 +152,7 @@ results** to avoid repeating work.
 >
 >```yaml title="project.yml"
 >remotes:
->  default: 's3://my-spacy-bucket'
+>  default: 's3://my-weasel-bucket'
 >  local: '/mnt/scratch/cache'
 >```
 >

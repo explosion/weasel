@@ -55,7 +55,7 @@ def project_document(
     md.add(MARKER_START)
     title = config.get("title")
     description = config.get("description")
-    md.add(md.title(1, f"spaCy Project{f': {title}' if title else ''}", "🪐"))
+    md.add(md.title(1, f"Weasel Project{f': {title}' if title else ''}", "🪐"))
     if description:
         md.add(description)
     md.add(md.title(2, PROJECT_FILE, "📋"))

@@ -25,13 +25,13 @@ protocols.
 >
 > ```yaml title="project.yml"
 > remotes:
-> default: 's3://my-spacy-bucket'
+> default: 's3://my-weasel-bucket'
 > local: '/mnt/scratch/cache'
 > ```
 
 > :information_source: **How it works**
 >
-> Inside the remote storage, spaCy uses a clever **directory structure** to avoid
+> Inside the remote storage, Weasel uses a clever **directory structure** to avoid
 > overwriting files. The top level of the directory structure is a URL-encoded
 > version of the output's path. Within this directory are subdirectories named
 > according to a hash of the command string and the command's dependencies.
@@ -63,7 +63,7 @@ For instance, let's say you had the following spaCy command in your `project.yml
 ```
 
 After you finish training, you run [`push`](../cli.md#push) to
-make sure the `training/model-best` output is saved to remote storage. spaCy
+make sure the `training/model-best` output is saved to remote storage. Weasel
 will then construct a hash from your command script and the listed dependencies,
 `corpus/train`, `corpus/dev` and `config.cfg`, in order to identify the
 execution context of your output. It would then compute an MD5 hash of the
@@ -76,7 +76,7 @@ python -m weasel push
 ```
 
 ``` title="Overview of the S3 bucket"
-└── s3://my-spacy-bucket/training%2Fmodel-best
+└── s3://my-weasel-bucket/training%2Fmodel-best
     └── 1d8cb33a06cc345ad3761c6050934a1b
         └── d8e20c3537a084c5c10d95899fe0b1ff
 ```

@@ -16,7 +16,8 @@ and share your results with your team. Weasel can be used via the
 ## :bulb: Example: Get started with a project template
 
 The easiest way to get started is to clone a project template and run it – for
-example, this [end-to-end template](https://github.com/explosion/projects/tree/v3/pipelines/tagger_parser_ud) that lets you train a spaCy **part-of-speech
+example, this [end-to-end template](https://github.com/explosion/projects/tree/v3/pipelines/tagger_parser_ud)
+that lets you train a spaCy **part-of-speech
 tagger** and **dependency parser** on a Universal Dependencies treebank.
 
 ```shell
