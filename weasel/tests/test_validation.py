@@ -2,9 +2,9 @@ import pytest
 import srsly
 from confection import ConfigValidationError
 
-from weasel._util import ProjectConfigSchema, is_subpath_of, load_project_config
-from weasel._util import make_tempdir, substitute_project_variables, validate
-from weasel._util import validate_project_commands
+from weasel.schemas import ProjectConfigSchema, validate
+from weasel.util import is_subpath_of, load_project_config, make_tempdir
+from weasel.util import substitute_project_variables, validate_project_commands
 
 
 @pytest.mark.parametrize(
