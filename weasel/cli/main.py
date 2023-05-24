@@ -4,7 +4,7 @@ COMMAND = "python -m weasel"
 NAME = "weasel"
 HELP = """weasel Command-line Interface
 
-DOCS: https://spacy.io/api/cli
+DOCS: https://github.com/explosion/weasel
 """
 
 PROJECT_FILE = "project.yml"
