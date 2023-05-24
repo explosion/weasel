@@ -2,22 +2,22 @@ from pathlib import Path
 
 from wasabi import MarkdownRenderer, msg
 
-from .._util import PROJECT_FILE, Arg, Opt, app, load_project_config
-from ..util import working_dir
+from ..util import load_project_config, working_dir
+from .main import PROJECT_FILE, Arg, Opt, app
 
 DOCS_URL = "https://github.com/explosion/weasel"
 INTRO_PROJECT = f"""The [`{PROJECT_FILE}`]({PROJECT_FILE}) defines the data assets required by the
 project, as well as the available commands and workflows. For details, see the
 [Weasel documentation]({DOCS_URL})."""
 INTRO_COMMANDS = f"""The following commands are defined by the project. They
-can be executed using [`weasel run [name]`]({DOCS_URL}/tree/main/docs/migrate-spacy-docs/docs/cli.md#rocket-run).
+can be executed using [`weasel run [name]`]({DOCS_URL}/tree/main/docs/cli.md#rocket-run).
 Commands are only re-run if their inputs have changed."""
 INTRO_WORKFLOWS = f"""The following workflows are defined by the project. They
-can be executed using [`weasel run [name]`]({DOCS_URL}/tree/main/docs/migrate-spacy-docs/docs/cli.md#rocket-run)
+can be executed using [`weasel run [name]`]({DOCS_URL}/tree/main/docs/cli.md#rocket-run)
 and will run the specified commands in order. Commands are only re-run if their
 inputs have changed."""
 INTRO_ASSETS = f"""The following assets are defined by the project. They can
-be fetched by running [`weasel assets`]({DOCS_URL}/tree/main/docs/migrate-spacy-docs/docs/cli.md#open_file_folder-assets)
+be fetched by running [`weasel assets`]({DOCS_URL}/tree/main/docs/cli.md#open_file_folder-assets)
 in the project directory."""
 # These markers are added to the Markdown and can be used to update the file in
 # place if it already exists. Only the auto-generated part will be replaced.

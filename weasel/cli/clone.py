@@ -5,10 +5,10 @@ from typing import Optional
 
 from wasabi import msg
 
-from .. import about
-from .._util import COMMAND, PROJECT_FILE, Arg, Opt, app, get_git_version, git_checkout
-from .._util import git_repo_branch_exists
-from ..util import ensure_path
+from weasel import about
+
+from ..util import ensure_path, get_git_version, git_checkout, git_repo_branch_exists
+from .main import COMMAND, PROJECT_FILE, Arg, Opt, app
 
 DEFAULT_REPO = about.__projects__
 DEFAULT_PROJECTS_BRANCH = about.__projects_branch__
@@ -27,7 +27,7 @@ def project_clone_cli(
 ):
     """Clone a project template from a repository. Calls into "git" and will
     only download the files from the given subdirectory. The GitHub repo
-    defaults to the official spaCy template repo, but can be customized
+    defaults to the official Weasel template repo, but can be customized
     (including using a private repo).
 
     DOCS: https://github.com/explosion/weasel/tree/main/docs/cli.md#clipboard-clone
@@ -97,7 +97,7 @@ def check_clone(name: str, dest: Path, repo: str) -> None:
     repo (str): URL of the repo to clone from.
     """
     git_err = (
-        f"Cloning spaCy project templates requires Git and the 'git' command. "
+        f"Cloning Weasel project templates requires Git and the 'git' command. "
         f"To clone a project without Git, copy the files from the '{name}' "
         f"directory in the {repo} to {dest} manually."
     )

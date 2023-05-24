@@ -8,10 +8,10 @@ import requests
 import typer
 from wasabi import msg
 
-from .._util import PROJECT_FILE, Arg, Opt, SimpleFrozenDict, app, download_file
-from .._util import get_checksum, get_git_version, git_checkout, load_project_config
-from .._util import parse_config_overrides
-from ..util import ensure_path, working_dir
+from ..util import SimpleFrozenDict, download_file, ensure_path, get_checksum
+from ..util import get_git_version, git_checkout, load_project_config
+from ..util import parse_config_overrides, working_dir
+from .main import PROJECT_FILE, Arg, Opt, app
 
 # Whether assets are extra if `extra` is not set.
 EXTRA_DEFAULT = False
@@ -78,7 +78,7 @@ def project_assets(
         checksum = asset.get("checksum")
         if "git" in asset:
             git_err = (
-                "Cloning spaCy project templates requires Git and the 'git' command. "
+                "Cloning Weasel project templates requires Git and the 'git' command. "
                 "Make sure it's installed and that the executable is available."
             )
             get_git_version(error=git_err)

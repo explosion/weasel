@@ -1,4 +1,3 @@
-import os
 from pathlib import Path
 from typing import Any, Dict
 
@@ -6,7 +5,8 @@ import pytest
 import srsly
 from typer.testing import CliRunner
 
-from weasel._util import app, get_git_version
+from weasel import app
+from weasel.util import get_git_version
 
 
 def has_git():
@@ -97,36 +97,14 @@ def test_project_run(project_dir: Path):
     result = CliRunner().invoke(app, ["run", "create", str(project_dir)])
     assert result.exit_code == 0
     assert test_file.is_file()
-
-    assert (
-        "You've set a `SPACY_CONFIG_OVERRIDES` environment variable"
-        not in result.output
-    )
-    assert (
-        "You've set a `SPACY_PROJECT_USE_GIT_VERSION` environment variable"
-        not in result.output
-    )
-
-    os.environ["SPACY_CONFIG_OVERRIDES"] = "test"
-    os.environ["SPACY_PROJECT_USE_GIT_VERSION"] = "false"
-
     result = CliRunner().invoke(app, ["run", "ok", str(project_dir)])
     assert result.exit_code == 0
     assert "okokok" in result.stdout
-
-    assert "You've set a `SPACY_CONFIG_OVERRIDES` environment variable" in result.output
-    assert (
-        "You've set a `SPACY_PROJECT_USE_GIT_VERSION` environment variable"
-        in result.output
-    )
 
 
 def test_check_spacy_env_vars(project_dir: Path, monkeypatch: pytest.MonkeyPatch):
     # make sure dry run works
     project_dir / "abc.txt"
-
-    monkeypatch.delenv("SPACY_CONFIG_OVERRIDES")
-    monkeypatch.delenv("SPACY_PROJECT_USE_GIT_VERSION")
 
     result = CliRunner().invoke(app, ["run", "--dry", "create", str(project_dir)])
     assert result.exit_code == 0
