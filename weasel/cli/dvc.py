@@ -33,7 +33,7 @@ def project_update_dvc_cli(
     workflow is used. The DVC config will only be updated if the project.yml
     changed.
 
-    DOCS: https://spacy.io/api/cli#project-dvc
+    DOCS: https://github.com/explosion/weasel/tree/main/docs/cli.md#repeat-dvc
     """
     project_update_dvc(project_dir, workflow, verbose=verbose, quiet=quiet, force=force)
 
