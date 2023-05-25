@@ -6,7 +6,7 @@ from typer.testing import CliRunner
 
 from weasel import app
 
-BASE_PATH = Path(__file__).parent.parent.resolve()
+BASE_PATH = Path(__file__).parent.parent
 
 runner = CliRunner()
 
