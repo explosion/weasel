@@ -1,4 +1,0 @@
-recursive-include weasel/tests *
-include LICENSE
-include README.md
-include pyproject.toml
