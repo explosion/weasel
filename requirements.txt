@@ -20,14 +20,3 @@ types-setuptools>=57.0.0
 ruff>=0.0.259; python_version > "3.6"
 isort>=5.12.0,<6.0; python_version > "3.7"
 pre-commit>=3.2.0,<4.0.0; python_version > "3.7"
-# docs
-mike
-mkdocs-bibtex
-mkdocs-gen-files
-mkdocs-literate-nav
-mkdocs-material
-mkdocstrings
-mkdocstrings-python
-mkdocs-glightbox
-mkdocs-jupyter
-mkdocs-charts-plugin
