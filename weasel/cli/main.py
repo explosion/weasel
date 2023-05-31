@@ -15,4 +15,4 @@ PROJECT_LOCK = "project.lock"
 Arg = typer.Argument
 Opt = typer.Option
 
-app = typer.Typer(name=NAME, help=HELP)
+app = typer.Typer(name=NAME, help=HELP, no_args_is_help=True)
