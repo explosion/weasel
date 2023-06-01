@@ -2,7 +2,7 @@
 
 set -e
 
-version=$(grep "version = " setup.cfg)
+version=$(grep "version = " pyproject.toml)
 version=${version/version = }
 version=${version/\'/}
 version=${version/\'/}

@@ -9,7 +9,7 @@ git checkout $1
 git pull origin $1
 git push origin $1
 
-version=$(grep "version = " setup.cfg)
+version=$(grep "version = " pyproject.toml)
 version=${version/version = }
 version=${version/\'/}
 version=${version/\'/}
