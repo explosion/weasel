@@ -25,9 +25,8 @@ def remote_url(tmp_path_factory: pytest.TempPathFactory):
 @pytest.fixture
 def clone(project_dir: Path):
     """Cloning shouldn't fail"""
-    # TODO point to main
     repo = "https://github.com/explosion/weasel"
-    branch = "test/add-test-from-pr"
+    branch = "main"
     result = runner.invoke(
         app,
         [

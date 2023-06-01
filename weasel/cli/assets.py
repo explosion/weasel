@@ -34,7 +34,7 @@ def project_assets_cli(
     provided in the project.yml, the file is only downloaded if no local file
     with the same checksum exists.
 
-    DOCS: https://spacy.io/api/cli#project-assets
+    DOCS: https://github.com/explosion/weasel/tree/main/docs/tutorial/directory-and-assets.md
     """
     overrides = parse_config_overrides(ctx.args)
     project_assets(
