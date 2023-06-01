@@ -8,6 +8,17 @@ from typer.testing import CliRunner
 from weasel import app
 from weasel.util import get_git_version
 
+runner = CliRunner()
+
+
+@pytest.mark.parametrize("cmd", [None, "--help"])
+def test_show_help(cmd):
+    """Basic test to confirm help text appears"""
+    result = runner.invoke(app, [cmd] if cmd else None)
+    print(result.stdout)
+    # TODO: modify this once the doc PR is merged
+    assert "https://spacy.io/api/cli" in result.stdout
+
 
 def has_git():
     try:
