@@ -1,6 +1,54 @@
+[project]
+name = "weasel"
+version = "0.0.0"
+authors = [
+    {name = "Explosion", email = "contact@explosion.ai"},
+]
+description = "Weasel: A small and easy workflow system"
+readme = "README.md"
+requires-python = ">=3.8"
+license = {text = "MIT"}
+classifiers = [
+    "Environment :: Console",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: POSIX :: Linux",
+    "Operating System :: MacOS :: MacOS X",
+    "Operating System :: Microsoft :: Windows",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Topic :: Scientific/Engineering",
+]
+dependencies = [
+    "confection>=0.0.4,<0.1.0",
+    "packaging>=20.0",
+    "wasabi>=0.9.1,<1.2.0",
+    "srsly>=2.4.3,<3.0.0",
+    "catalogue>=2.0.6,<2.1.0",
+    "typer>=0.3.0,<0.8.0",
+    "pathy>=0.10.0",
+    "requests>=2.13.0,<3.0.0",
+    "pydantic>=1.7.4,!=1.8,!=1.8.1,<1.11.0",
+]
+
+[tools.setuptools.dynamic]
+version = {attr = "weasel.__version__"}
+
+[project.entry-points."console_scripts"]
+weasel = "weasel:app"
+
 [build-system]
-requires = ["setuptools"]
+requires = ["setuptools", "setuptools-scm"]
 build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+packages = [
+    "weasel"
+]
 
 [tool.ruff]
 ignore = [
@@ -11,13 +59,24 @@ select = [
     "W",    # pycodestyle warnings
     "F",    # Pyflakes
     "Q",    # flake8-quotes
+    "T201"  # flake8-print
 ]
 
 [tool.ruff.per-file-ignores]
 # Ignore unused imports in __init__ files
 "__init__.py" = ["F401"]
 
-
 [tool.isort]
 multi_line_output = 9
 profile = "black"
+
+[tool.pytest.ini_options]
+addopts = "--cov weasel --cov-report term --cov-report xml"
+
+[tool.coverage.report]
+exclude_lines = ["if TYPE_CHECKING:"]
+
+[tool.mypy]
+ignore_missing_imports = true
+plugins = ["pydantic.mypy"]
+allow_redefinition = true
