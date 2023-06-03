@@ -100,7 +100,8 @@ class SpacyEnvVars(BaseSettings):
         if self.SPACY_CONFIG_OVERRIDES is not None:
             msg.warn(
                 "You've set a `SPACY_CONFIG_OVERRIDES` environment variable, "
-                "which is now deprecated. Weasel will not use it."
+                "which is now deprecated. Weasel will not use it. "
+                "You can use `WEASEL_CONFIG_OVERRIDES` instead."
             )
         if self.SPACY_PROJECT_USE_GIT_VERSION is not None:
             msg.warn(
