@@ -11,7 +11,7 @@ and share your results with your team. Weasel can be used via the
 [`weasel`](https://github.com/explosion/weasel/blob/main/docs/cli.md) command and we provide templates in our
 [`projects`](https://github.com/explosion/projects) repo.
 
-![Illustration of project workflow and commands](https://github.com/explosion/weasel/blob/main/docs/assets/images/projects.svg)
+![Illustration of project workflow and commands](https://raw.githubusercontent.com/explosion/weasel/main/docs/assets/images/projects.svg)
 
 ## 💡 Example: Get started with a project template
 
