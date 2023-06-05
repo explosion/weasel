@@ -51,7 +51,7 @@ There are a few backward incompatibilities that you should be aware of:
   You can set configuration overrides using `WEASEL_CONFIG_OVERRIDES`.
 - Support for the `spacy_version` configuration key has been dropped.
 - Support for `SPACY_PROJECT_USE_GIT_VERSION` environment variable has been dropped.
-- Error codes are now Weasel-specific, and do not follow spacy project codes.
+- Error codes are now Weasel-specific, and do not follow spaCy error codes.
 
-Weasel checks for the first three incompatibilities, and will issue a
+Weasel checks for the first three incompatibilities and will issue a
 warning if you're using it with spaCy-specific configuration options.
