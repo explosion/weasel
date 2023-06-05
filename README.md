@@ -41,3 +41,17 @@ Get started with the documentation:
 - [Using remote storage](docs/tutorial/remote-storage.md)
 - [Weasel integrations](docs/tutorial/integrations.md)
 - [Command line interface description](docs/cli.md)
+
+## Migrating from spaCy Projects
+
+Weasel is a standalone replacement for spaCy Projects.
+There are a few backward incompatibilities that you should be aware of:
+
+- The `SPACY_CONFIG_OVERRIDES` environment variable is no longer checked.
+  You can set configuration overrides using `WEASEL_CONFIG_OVERRIDES`.
+- Support for the `spacy_version` configuration key has been dropped.
+- Support for `SPACY_PROJECT_USE_GIT_VERSION` environment variable has been dropped.
+- Error codes are now Weasel-specific, and do not follow spacy project codes.
+
+Weasel checks for the first three incompatibilities, and will issue a
+warning if you're using it with spaCy-specific configuration options.
