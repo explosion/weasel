@@ -8,12 +8,12 @@ serving your custom pipelines. You can start off by cloning a pre-defined
 project template, adjust it to fit your needs, load in your data, train a
 pipeline, export it as a Python package, upload your outputs to a remote storage
 and share your results with your team. Weasel can be used via the
-[`weasel`](docs/cli.md) command and we provide templates in our
+[`weasel`](https://github.com/explosion/weasel/blob/main/docs/cli.md) command and we provide templates in our
 [`projects`](https://github.com/explosion/projects) repo.
 
-![Illustration of project workflow and commands](docs/assets/images/projects.svg)
+![Illustration of project workflow and commands](https://github.com/explosion/weasel/blob/main/docs/assets/images/projects.svg)
 
-## :bulb: Example: Get started with a project template
+## 💡 Example: Get started with a project template
 
 The easiest way to get started is to clone a project template and run it – for
 example, this [end-to-end template](https://github.com/explosion/projects/tree/v3/pipelines/tagger_parser_ud)
@@ -31,16 +31,16 @@ python -m weasel clone pipelines/tagger_parser_ud
 > that you can clone and run. The easiest way to get started is to pick a
 > template, clone it and start modifying it!
 
-## :closed_book: Documentation
+## 📕 Documentation
 
 Get started with the documentation:
 
-- [Learn how to create a Weasel workflow](docs/tutorial/workflow.md)
-- [Working with directory and assets](docs/tutorial/directory-and-assets.md)
-- [Running custom scripts](docs/tutorial/custom-scripts.md)
-- [Using remote storage](docs/tutorial/remote-storage.md)
-- [Weasel integrations](docs/tutorial/integrations.md)
-- [Command line interface description](docs/cli.md)
+- [Learn how to create a Weasel workflow](https://github.com/explosion/weasel/blob/main/docs/tutorial/workflow.md)
+- [Working with directory and assets](https://github.com/explosion/weasel/blob/main/docs/tutorial/directory-and-assets.md)
+- [Running custom scripts](https://github.com/explosion/weasel/blob/main/docs/tutorial/custom-scripts.md)
+- [Using remote storage](https://github.com/explosion/weasel/blob/main/docs/tutorial/remote-storage.md)
+- [Weasel integrations](https://github.com/explosion/weasel/blob/main/docs/tutorial/integrations.md)
+- [Command line interface description](https://github.com/explosion/weasel/blob/main/docs/cli.md)
 
 ## Migrating from spaCy Projects
 
