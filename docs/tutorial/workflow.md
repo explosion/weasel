@@ -7,7 +7,7 @@
 > To clone a project, Weasel calls into `git` and uses the "sparse checkout"
 > feature to only clone the relevant directory or directories.
 
-The [`weasel clone`](../cli.md#clone) command clones an existing
+The [`weasel clone`](../cli.md#clipboard-clone) command clones an existing
 project template and copies the files to a local directory. You can then run the
 project, e.g. to train a pipeline and edit the commands and scripts to build
 fully custom workflows.
@@ -27,7 +27,7 @@ also use any private repo you have access to with Git.
 Assets are data files your project needs – for example, the training and
 evaluation data or pretrained vectors and embeddings to initialize your model
 with. Each project template comes with a `project.yml` that defines the assets
-to download and where to put them. The [`weasel assets`](../cli.md#run)
+to download and where to put them. The [`weasel assets`](../cli.md#open_file_folder-assets)
 will fetch the project assets for you.
 
 > :bulb: **Example usage**
@@ -64,7 +64,7 @@ are not downloaded. If they should be, run `weasel assets --extra`.
 ## 3. Run a command
 
 Commands consist of one or more steps and can be run with
-[`weasel run`](../cli.md#run). The following will run the command
+[`weasel run`](../cli.md#rocket-run). The following will run the command
 `preprocess` defined in the `project.yml`:
 
 > :bulb: **Example usage**
@@ -90,7 +90,7 @@ Commands consist of one or more steps and can be run with
 > python -m weasel run preprocess
 > ```
 
-Commands can define their expected [dependencies and outputs](#deps-outputs)
+Commands can define their expected [dependencies and outputs](./directory-and-assets.md#dependencies-and-outputs)
 using the `deps` (files the commands require) and `outputs` (files the commands
 create) keys. This allows your project to track changes and determine whether a
 command needs to be re-run. For instance, if your input data changes, you want
@@ -135,14 +135,14 @@ defined in the commands, Weasel can determine whether to re-run a command (if it
 outputs have changed) or whether to skip it. If you're looking to implement more
 advanced data pipelines and track your changes in Git, check out the
 [Data Version Control (DVC) integration](./integrations.md#data-version-control-dvc). The
-[`weasel dvc`](../cli.md#dvc) command generates a DVC config file
+[`weasel dvc`](../cli.md#repeat-dvc) command generates a DVC config file
 from a workflow defined in your `project.yml` so you can manage your Weasel
 project as a DVC repo.
 
 ## 5. Optional: Push to remote storage
 
 After training a pipeline, you can optionally use the
-[`weasel push`](../cli.md#push) command to upload your outputs to
+[`weasel push`](../cli.md#arrow_up-push) command to upload your outputs to
 a remote storage, using protocols like [S3](https://aws.amazon.com/s3/),
 [Google Cloud Storage](https://cloud.google.com/storage) or SSH. This can help
 you **export** your pipeline packages, **share** work with your team, or **cache
@@ -164,5 +164,5 @@ results** to avoid repeating work.
 
 The `remotes` section in your `project.yml` lets you assign names to the
 different storages. To download state from a remote storage, you can use the
-[`weasel pull`](../cli.md#pull) command. For more details, see the
+[`weasel pull`](../cli.md#arrow_down-pull) command. For more details, see the
 docs on [remote storage](./remote-storage.md).
