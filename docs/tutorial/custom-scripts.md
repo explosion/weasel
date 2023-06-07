@@ -121,7 +121,7 @@ settings on the command line and passing through system-level settings.
 > ![Screenshot of auto-generated Markdown Readme](../assets/images/project_document.jpg)
 
 When your custom project is ready and you want to share it with others, you can
-use the [`weasel document`](../cli.md#document) command to
+use the [`weasel document`](../cli.md#closed_book-document) command to
 **auto-generate** a pretty, Markdown-formatted `README` file based on your
 project's `project.yml`. It will list all commands, workflows and assets defined
 in the project and include details on how to run the project, as well as links
@@ -147,7 +147,7 @@ up to date.
 
 ## Cloning from your own repo
 
-The [`weasel clone`](../cli.md#clone) command lets you customize
+The [`weasel clone`](../cli.md#clipboard-clone) command lets you customize
 the repo to clone from using the `--repo` option. It calls into `git`, so you'll
 be able to clone from any repo that you have access to, including private repos.
 
