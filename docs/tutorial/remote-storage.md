@@ -1,9 +1,9 @@
 # Remote Storage
 
 You can persist your project outputs to a remote storage using the
-[`push`](../cli.md#push) command. This can help you **export**
+[`push`](../cli.md#arrow_up-push) command. This can help you **export**
 your pipeline packages, **share** work with your team, or **cache results** to
-avoid repeating work. The [`pull`](../cli.md#pull) command will
+avoid repeating work. The [`pull`](../cli.md#arrow_down-pull) command will
 download any outputs that are in the remote storage and aren't available
 locally.
 
@@ -62,7 +62,7 @@ For instance, let's say you had the following spaCy command in your `project.yml
     - 'training/model-best'
 ```
 
-After you finish training, you run [`push`](../cli.md#push) to
+After you finish training, you run [`push`](../cli.md#arrow_up-push) to
 make sure the `training/model-best` output is saved to remote storage. Weasel
 will then construct a hash from your command script and the listed dependencies,
 `corpus/train`, `corpus/dev` and `config.cfg`, in order to identify the
@@ -82,9 +82,9 @@ python -m weasel push
 ```
 
 If you change the command or one of its dependencies (for instance, by editing
-the [`config.cfg`](/usage/training#config) file to tune the hyperparameters), a
-different creation hash will be calculated, so when you use
-[`push`](../cli.md#push) you won't be overwriting your previous
+the [`config.cfg`](https://spacy.io/usage/training#config) file to tune the hyperparameters),
+a different creation hash will be calculated, so when you use
+[`push`](../cli.md#arrow_up-push) you won't be overwriting your previous
 file. The system even supports multiple outputs for the same file and the same
 context, which can happen if your training process is not deterministic, or if
 you have dependencies that aren't represented in the command.
@@ -92,7 +92,7 @@ you have dependencies that aren't represented in the command.
 In summary, the `weasel` remote storages are designed
 to make a particular set of trade-offs. Priority is placed on **convenience**,
 **correctness** and **avoiding data loss**. You can use
-[`push`](../cli.md#push) freely, as you'll never overwrite remote
+[`push`](../cli.md#arrow_up-push) freely, as you'll never overwrite remote
 state, and you don't have to come up with names or version numbers. However,
 it's up to you to manage the size of your remote storage, and to remove files
 that are no longer relevant to you.

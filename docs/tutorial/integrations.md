@@ -35,7 +35,7 @@ dvc init          # Initialize a DVC project
 > privacy-sensitive environment, make sure to
 > [**opt-out manually**](https://dvc.org/doc/user-guide/analytics#opting-out).
 
-The [`weasel dvc`](../cli.md#dvc) command creates a `dvc.yaml`
+The [`weasel dvc`](../cli.md#repeat-dvc) command creates a `dvc.yaml`
 config file based on a workflow defined in your `project.yml`. Whenever you
 update your project, you can re-run the command to update your DVC config. You
 can then manage your Weasel project like any other DVC project, run
@@ -50,6 +50,6 @@ python -m weasel dvc [project_dir] [workflow_name]
 > :warning: **Important note for multiple workflows**
 >
 > DVC currently expects a single workflow per project, so when creating the config
-> with [`weasel dvc`](../cli.md#dvc), you need to specify the name
+> with [`weasel dvc`](../cli.md#repeat-dvc), you need to specify the name
 > of a workflow defined in your `project.yml`. You can still use multiple
 > workflows, but only one can be tracked by DVC.
