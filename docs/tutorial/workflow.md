@@ -150,17 +150,17 @@ results** to avoid repeating work.
 
 > :bulb: **Example usage**
 >
->```yaml title="project.yml"
->remotes:
->  default: 's3://my-weasel-bucket'
->  local: '/mnt/scratch/cache'
->```
+> ```yaml title="project.yml"
+> remotes:
+>   default: 's3://my-weasel-bucket'
+>   local: '/mnt/scratch/cache'
+> ```
 >
->Push to remote:
+> Push to remote:
 >
->```bash
->python -m weasel push
->```
+> ```bash
+> python -m weasel push
+> ```
 
 The `remotes` section in your `project.yml` lets you assign names to the
 different storages. To download state from a remote storage, you can use the
