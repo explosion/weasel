@@ -100,7 +100,7 @@ def test_project_assets(project_dir: Path):
 
 
 def test_project_run(project_dir: Path):
-    # make sure dry run works
+    # make sure dry run works correctly
     test_file = project_dir / "abc.txt"
     result = CliRunner().invoke(app, ["run", "--dry", "create", str(project_dir)])
     assert result.exit_code == 0
