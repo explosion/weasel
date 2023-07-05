@@ -95,7 +95,6 @@ jobs:
       - name: Test CLI
         run: |
           python -m weasel --help
-        if: matrix.python_version == '3.9'
 
       - name: Install test requirements
         run: |
