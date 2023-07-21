@@ -21,10 +21,11 @@ be fetched by running [`weasel assets`]({DOCS_URL}/tree/main/docs/cli.md#open_fi
 in the project directory."""
 # These markers are added to the Markdown and can be used to update the file in
 # place if it already exists. Only the auto-generated part will be replaced.
-MARKER_START = "<!-- WEASEL: AUTO-GENERATED DOCS START (do not remove) -->"
-MARKER_END = "<!-- WEASEL: AUTO-GENERATED DOCS END (do not remove) -->"
+MARKER_TAGS = ("WEASEL", "SPACY PROJECT")
+MARKER_START = "<!-- {tag}: AUTO-GENERATED DOCS START (do not remove) -->"
+MARKER_END = "<!-- {tag}: AUTO-GENERATED DOCS END (do not remove) -->"
 # If this marker is used in an existing README, it's ignored and not replaced
-MARKER_IGNORE = "<!-- WEASEL: IGNORE -->"
+MARKER_IGNORE = "<!-- {tag}: IGNORE -->"
 
 
 @app.command("document")
@@ -52,7 +53,7 @@ def project_document(
     is_stdout = str(output_file) == "-"
     config = load_project_config(project_dir)
     md = MarkdownRenderer(no_emoji=no_emoji)
-    md.add(MARKER_START)
+    md.add(MARKER_START.format(tag="WEASEL"))
     title = config.get("title")
     description = config.get("description")
     md.add(md.title(1, f"Weasel Project{f': {title}' if title else ''}", "🪐"))
@@ -91,7 +92,7 @@ def project_document(
         md.add(md.title(3, "Assets", "🗂"))
         md.add(INTRO_ASSETS)
         md.add(md.table(data, ["File", "Source", "Description"]))
-    md.add(MARKER_END)
+    md.add(MARKER_END.format(tag="WEASEL"))
     # Output result
     if is_stdout:
         print(md.text)
@@ -100,16 +101,25 @@ def project_document(
         if output_file.exists():
             with output_file.open("r", encoding="utf8") as f:
                 existing = f.read()
-            if MARKER_IGNORE in existing:
-                msg.warn("Found ignore marker in existing file: skipping", output_file)
-                return
-            if MARKER_START in existing and MARKER_END in existing:
-                msg.info("Found existing file: only replacing auto-generated docs")
-                before = existing.split(MARKER_START)[0]
-                after = existing.split(MARKER_END)[1]
-                content = f"{before}{content}{after}"
-            else:
+
+            for marker_tag in MARKER_TAGS:
+                if MARKER_IGNORE.format(tag=marker_tag) in existing:
+                    msg.warn("Found ignore marker in existing file: skipping", output_file)
+                    return
+
+            marker_tag_found = False
+            for marker_tag in MARKER_TAGS:
+                markers = {"start": MARKER_START.format(marker_tag), "end": MARKER_END.format(marker_tag)}
+                if markers["start"] in existing and markers["end"] in existing:
+                    marker_tag_found = True
+                    msg.info("Found existing file: only replacing auto-generated docs")
+                    before = existing.split(markers["start"])[0]
+                    after = existing.split(markers["end"])[1]
+                    content = f"{before}{content}{after}"
+                    break
+            if not marker_tag_found:
                 msg.warn("Replacing existing file")
+
         with output_file.open("w", encoding="utf8") as f:
             f.write(content)
         msg.good("Saved project documentation", output_file)
