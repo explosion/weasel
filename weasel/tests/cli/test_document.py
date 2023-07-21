@@ -6,7 +6,7 @@ import srsly
 from typer.testing import CliRunner
 
 from weasel import app
-from weasel.cli.document import MARKER_TAGS, MARKER_START, MARKER_END, MARKER_IGNORE
+from weasel.cli.document import MARKER_END, MARKER_IGNORE, MARKER_START, MARKER_TAGS
 
 runner = CliRunner()
 
