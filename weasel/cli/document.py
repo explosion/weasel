@@ -104,12 +104,17 @@ def project_document(
 
             for marker_tag in MARKER_TAGS:
                 if MARKER_IGNORE.format(tag=marker_tag) in existing:
-                    msg.warn("Found ignore marker in existing file: skipping", output_file)
+                    msg.warn(
+                        "Found ignore marker in existing file: skipping", output_file
+                    )
                     return
 
             marker_tag_found = False
             for marker_tag in MARKER_TAGS:
-                markers = {"start": MARKER_START.format(marker_tag), "end": MARKER_END.format(marker_tag)}
+                markers = {
+                    "start": MARKER_START.format(marker_tag),
+                    "end": MARKER_END.format(marker_tag),
+                }
                 if markers["start"] in existing and markers["end"] in existing:
                     marker_tag_found = True
                     msg.info("Found existing file: only replacing auto-generated docs")
