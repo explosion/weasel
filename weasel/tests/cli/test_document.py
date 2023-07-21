@@ -87,7 +87,8 @@ def test_markers(tmp_path_factory: pytest.TempPathFactory, marker: str):
     path.write_text(srsly.yaml_dumps(project))
 
     # Store readme with additional information.
-    with open(test_dir / "readme.md", "w") as file:
+    # runner.invoke(app, ["document", str(path.parent), "--output", test_dir / "readme.md"])
+    with open(test_dir / "readme.md", "w+", encoding="utf-8") as file:
         readme = runner.invoke(app, ["document", str(path.parent)]).output
         for to_replace in (MARKER_START, MARKER_END, MARKER_IGNORE):
             readme = readme.replace(
@@ -100,5 +101,5 @@ def test_markers(tmp_path_factory: pytest.TempPathFactory, marker: str):
     runner.invoke(
         app, ["document", str(path.parent), "--output", test_dir / "readme.md"]
     )
-    with open(test_dir / "readme.md", "r") as file:
+    with open(test_dir / "readme.md", "r", encoding="utf-8") as file:
         assert additional_text in "".join(file.readlines())
