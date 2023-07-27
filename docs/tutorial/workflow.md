@@ -99,13 +99,6 @@ skipped. You can also set `--force` to force re-running a command, or `--dry` to
 perform a "dry run" and see what would happen (without actually running the
 script).
 
-`weasels run` checks your installed dependencies to
-verify that your environment is properly set up and aligns with the project's
-`requirements.txt`, if there is one. If missing or conflicting dependencies are
-detected, a corresponding warning is displayed. If you'd like to disable the
-dependency check, set `check_requirements: false` in your project's
-`project.yml`.
-
 ## 4. Run a workflow
 
 Workflows are series of commands that are run in order and often depend on each
