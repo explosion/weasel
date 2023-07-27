@@ -1,4 +1,5 @@
 import os.path
+import subprocess
 import sys
 from pathlib import Path
 from typing import Any, Dict, Iterable, List, Optional, Sequence, Tuple
@@ -76,8 +77,7 @@ def project_run(
     req_path = project_dir / "requirements.txt"
     if not skip_requirements_check:
         if config.get("check_requirements", True) and os.path.exists(req_path):
-            with req_path.open() as requirements_file:
-                _check_requirements([req.strip() for req in requirements_file])
+            _check_requirements(req_path)
 
     if subcommand in workflows:
         msg.info(f"Running workflow '{subcommand}'")
@@ -304,37 +304,30 @@ def get_fileinfo(project_dir: Path, paths: List[str]) -> List[Dict[str, Optional
     return data
 
 
-def _check_requirements(requirements: List[str]) -> Tuple[bool, bool]:
+def _check_requirements(requirements: Path) -> None:
     """Checks whether requirements are installed and free of version conflicts.
-    requirements (List[str]): List of requirements.
-    RETURNS (Tuple[bool, bool]): Whether (1) any packages couldn't be imported, (2) any packages with version conflicts
-        exist.
+    Prints a warning and the output of 'pip install --dry-run' if problems are
+    detected.
+
+    requirements (Path): Path to requirements.
     """
-    import pkg_resources
-
-    failed_pkgs_msgs: List[str] = []
-    conflicting_pkgs_msgs: List[str] = []
-
-    for req in requirements:
-        try:
-            pkg_resources.require(req)
-        except pkg_resources.DistributionNotFound as dnf:
-            failed_pkgs_msgs.append(dnf.report())
-        except pkg_resources.VersionConflict as vc:
-            conflicting_pkgs_msgs.append(vc.report())
-        except Exception:
+    try:
+        cmd = f"{sys.executable} -m pip install --dry-run -r {requirements}"
+        result = run_command(cmd, capture=True)
+        if "Would install" in result.stdout:
             msg.warn(
-                f"Unable to check requirement: {req} "
-                "Checks are currently limited to requirement specifiers "
-                "(PEP 508)"
+                title="Missing requirements detected. Make sure your Python "
+                "environment is set up correctly and you installed all "
+                "requirements specified in your project's requirements.txt:"
             )
-
-    if len(failed_pkgs_msgs) or len(conflicting_pkgs_msgs):
+            msg.text(f"Running: {cmd}", spaced=True)
+            for line in result.stdout.split("\n"):
+                msg.text(line)
+    except subprocess.SubprocessError as e:
         msg.warn(
-            title="Missing requirements or requirement conflicts detected. Make sure your Python environment is set up "
-            "correctly and you installed all requirements specified in your project's requirements.txt: "
+            title="Invalid or conflicting requirements detected. Double-check "
+            "the requirements specified in your project's requirements.txt:"
         )
-        for pgk_msg in failed_pkgs_msgs + conflicting_pkgs_msgs:
-            msg.text(pgk_msg)
-
-    return len(failed_pkgs_msgs) > 0, len(conflicting_pkgs_msgs) > 0
+        msg.text(f"Running: {cmd}", spaced=True)
+        for line in e.ret.stdout.split("\n"):  # type: ignore[attr-defined]
+            msg.text(line)

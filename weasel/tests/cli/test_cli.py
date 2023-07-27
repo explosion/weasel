@@ -168,9 +168,8 @@ def test_local_remote_storage_pull_missing():
         assert remote.pull(filename) is None
 
 
-@pytest.mark.filterwarnings("ignore::DeprecationWarning")
 @pytest.mark.parametrize(
-    "reqs,output",
+    "reqs,has_invalid",
     [
         [
             """
@@ -179,32 +178,36 @@ def test_local_remote_storage_pull_missing():
             # comment
 
             confection""",
-            (False, False),
+            False,
         ],
         [
             """# comment
-            --some-flag
+            --pre
             weasel""",
-            (False, False),
+            False,
         ],
         [
             """# comment
-            --some-flag
+            --pre
             weasel; python_version >= '3.6'""",
-            (False, False),
+            False,
         ],
         [
             """# comment
-             spacyunknowndoesnotexist12345""",
-            (True, False),
+            wheel==0.38.4
+            wheel==0.40.0""",
+            True,
         ],
     ],
 )
-def test_project_check_requirements(reqs, output):
-    import pkg_resources
-
-    # excessive guard against unlikely package name
-    try:
-        pkg_resources.require("spacyunknowndoesnotexist12345")
-    except pkg_resources.DistributionNotFound:
-        assert output == _check_requirements([req.strip() for req in reqs.split("\n")])
+def test_project_check_requirements(capsys, reqs, has_invalid):
+    with make_tempdir() as d:
+        reqs_path = d / "requirements.txt"
+        with open(str(reqs_path), "w") as f:
+            f.write(reqs)
+        _check_requirements(reqs_path)
+        captured = capsys.readouterr()
+        if has_invalid:
+            assert "Invalid" in captured.out
+        else:
+            assert captured.out == ""
