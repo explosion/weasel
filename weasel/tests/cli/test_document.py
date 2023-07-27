@@ -99,7 +99,7 @@ def test_markers(tmp_path_factory: pytest.TempPathFactory, marker: str):
 
     # Run `document` again on existing readme file. Ensure additional information is still there.
     runner.invoke(
-        app, ["document", str(path.parent), "--output", test_dir / "readme.md"]
+        app, ["document", str(path.parent), "--output", str(test_dir / "readme.md")]
     )
     with open(test_dir / "readme.md", "r", encoding="utf-8") as file:
         assert additional_text in "".join(file.readlines())
