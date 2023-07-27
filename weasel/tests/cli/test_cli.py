@@ -1,4 +1,5 @@
 import os
+import sys
 import time
 
 import pytest
@@ -168,6 +169,7 @@ def test_local_remote_storage_pull_missing():
         assert remote.pull(filename) is None
 
 
+@pytest.mark.skipif(sys.version_info < (3, 7), reason="No pip that supports --dry-run")
 @pytest.mark.parametrize(
     "reqs,has_invalid",
     [

@@ -6,6 +6,7 @@ from typing import Any, Dict, Iterable, List, Optional, Sequence
 
 import srsly
 import typer
+from packaging.version import Version
 from wasabi import msg
 from wasabi.util import locale_escape
 
@@ -311,6 +312,14 @@ def _check_requirements(requirements: Path) -> None:
 
     requirements (Path): Path to requirements.
     """
+    try:
+        import pip
+
+        if hasattr(pip, "__version__") and Version(pip.__version__) < Version("22.2"):
+            msg.warn("Unable to check requirements, please upgrade to pip 22.2+")
+            return
+    except Exception:
+        pass
     try:
         cmd = f"{sys.executable} -m pip install --dry-run -r {requirements}"
         result = run_command(cmd, capture=True)
