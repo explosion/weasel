@@ -1,8 +1,7 @@
 from collections import defaultdict
 from typing import Any, Dict, List, Optional, Type, Union
 
-from pydantic import BaseModel, BaseSettings, Field, StrictStr, ValidationError
-from pydantic import root_validator
+from pydantic import BaseModel, Field, StrictStr, ValidationError, root_validator
 from wasabi import msg
 
 
@@ -90,21 +89,3 @@ class ProjectConfigSchema(BaseModel):
                 "which is now deprecated. Weasel will not validate your version of spaCy.",
             )
         return obj
-
-
-class SpacyEnvVars(BaseSettings):
-    SPACY_CONFIG_OVERRIDES: Optional[str] = None
-    SPACY_PROJECT_USE_GIT_VERSION: Optional[bool] = None
-
-    def check(self):
-        if self.SPACY_CONFIG_OVERRIDES is not None:
-            msg.warn(
-                "You've set a `SPACY_CONFIG_OVERRIDES` environment variable, "
-                "which is now deprecated. Weasel will not use it. "
-                "You can use `WEASEL_CONFIG_OVERRIDES` instead."
-            )
-        if self.SPACY_PROJECT_USE_GIT_VERSION is not None:
-            msg.warn(
-                "You've set a `SPACY_PROJECT_USE_GIT_VERSION` environment variable, "
-                "which is now deprecated. Weasel will not use it."
-            )
