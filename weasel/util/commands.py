@@ -66,7 +66,7 @@ def run_command(
         # Indicates the *command* wasn't found, it's an error before the command
         # is run.
         raise FileNotFoundError(
-            Errors.E970.format(str_command=cmd_str, tool=cmd_list[0])
+            Errors.E501.format(str_command=cmd_str, tool=cmd_list[0])
         ) from None
     if ret.returncode != 0 and capture:
         message = f"Error running command:\n\n{cmd_str}\n\n"
