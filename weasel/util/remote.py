@@ -3,10 +3,10 @@ from pathlib import Path
 from typing import TYPE_CHECKING, Union
 
 if TYPE_CHECKING:
-    from pathy import FluidPath
+    from cloudpathlib import CloudPath
 
 
-def upload_file(src: Path, dest: Union[str, "FluidPath"]) -> None:
+def upload_file(src: Path, dest: Union[str, "CloudPath"]) -> None:
     """Upload a file.
 
     src (Path): The source path.
@@ -26,7 +26,7 @@ def upload_file(src: Path, dest: Union[str, "FluidPath"]) -> None:
 
 
 def download_file(
-    src: Union[str, "FluidPath"], dest: Path, *, force: bool = False
+    src: Union[str, "CloudPath"], dest: Path, *, force: bool = False
 ) -> None:
     """Download a file using smart_open.
 

@@ -13,7 +13,7 @@ from ..util import check_spacy_env_vars, download_file, ensure_pathy, get_checks
 from ..util import get_hash, make_tempdir, upload_file
 
 if TYPE_CHECKING:
-    from pathy import FluidPath
+    from cloudpathlib import CloudPath
 
 
 class RemoteStorage:
@@ -28,7 +28,7 @@ class RemoteStorage:
         self.url = ensure_pathy(url)
         self.compression = compression
 
-    def push(self, path: Path, command_hash: str, content_hash: str) -> "FluidPath":
+    def push(self, path: Path, command_hash: str, content_hash: str) -> "CloudPath":
         """Compress a file or directory within a project and upload it to a remote
         storage. If an object exists at the full URL, nothing is done.
 
@@ -58,7 +58,7 @@ class RemoteStorage:
         *,
         command_hash: Optional[str] = None,
         content_hash: Optional[str] = None,
-    ) -> Optional["FluidPath"]:
+    ) -> Optional["CloudPath"]:
         """Retrieve a file from the remote cache. If the file already exists,
         nothing is done.
 
@@ -108,7 +108,7 @@ class RemoteStorage:
         *,
         command_hash: Optional[str] = None,
         content_hash: Optional[str] = None,
-    ) -> Optional["FluidPath"]:
+    ) -> Optional["CloudPath"]:
         """Find the best matching version of a file within the storage,
         or `None` if no match can be found. If both the creation and content hash
         are specified, only exact matches will be returned. Otherwise, the most
@@ -130,7 +130,7 @@ class RemoteStorage:
                     urls = [url for url in urls if url.parts[-1] == content_hash]
         if len(urls) >= 2:
             try:
-                urls.sort(key=lambda x: x.stat().last_modified)  # type: ignore
+                urls.sort(key=lambda x: x.stat().st_mtime)
             except Exception:
                 msg.warn(
                     "Unable to sort remote files by last modified. The file(s) "
@@ -138,7 +138,7 @@ class RemoteStorage:
                 )
         return urls[-1] if urls else None
 
-    def make_url(self, path: Path, command_hash: str, content_hash: str) -> "FluidPath":
+    def make_url(self, path: Path, command_hash: str, content_hash: str) -> "CloudPath":
         """Construct a URL from a subpath, a creation hash and a content hash."""
         return self.url / self.encode_name(str(path)) / command_hash / content_hash
 
