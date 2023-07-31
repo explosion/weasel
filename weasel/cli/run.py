@@ -315,8 +315,7 @@ def _check_requirements(requirements: Path) -> None:
     try:
         import pip
 
-        if hasattr(pip, "__version__") and Version(pip.__version__) < Version("22.2"):
-            msg.warn("Unable to check requirements, please upgrade to pip 22.2+")
+        if Version(pip.__version__) < Version("22.2"):
             return
     except Exception:
         pass
@@ -333,10 +332,12 @@ def _check_requirements(requirements: Path) -> None:
             for line in result.stdout.split("\n"):
                 msg.text(line)
     except subprocess.SubprocessError as e:
-        msg.warn(
-            title="Invalid or conflicting requirements detected. Double-check "
-            "the requirements specified in your project's requirements.txt:"
-        )
-        msg.text(f"Running: {cmd}", spaced=True)
-        for line in e.ret.stdout.split("\n"):  # type: ignore[attr-defined]
-            msg.text(line)
+        if e.ret.returncode == 1:  # type: ignore[attr-defined]
+            msg.warn(
+                title="Invalid or conflicting requirements detected. "
+                "Double-check the requirements specified in your project's "
+                "requirements.txt:"
+            )
+            msg.text(f"Running: {cmd}", spaced=True)
+            for line in e.ret.stdout.split("\n"):  # type: ignore[attr-defined]
+                msg.text(line)
