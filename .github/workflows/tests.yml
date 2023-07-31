@@ -109,3 +109,12 @@ jobs:
         shell: bash
         run: |
           python -m pytest --pyargs $MODULE_NAME -Werror
+
+      - name: Install pydantic v1
+        run: |
+          python -m pip install -U "pydantic<2.0.0"
+
+      - name: Run tests with pydantic v1
+        shell: bash
+        run: |
+          python -m pytest --pyargs $MODULE_NAME -Werror

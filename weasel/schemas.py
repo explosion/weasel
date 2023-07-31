@@ -39,7 +39,7 @@ class ProjectConfigAssetURL(BaseModel):
     # fmt: off
     dest: StrictStr = Field(..., title="Destination of downloaded asset")
     url: Optional[StrictStr] = Field(None, title="URL of asset")
-    checksum: Optional[str] = Field(None, title="MD5 hash of file", regex=r"([a-fA-F\d]{32})")
+    checksum: Optional[str] = Field(None, title="MD5 hash of file", pattern=r"([a-fA-F\d]{32})")
     description: StrictStr = Field("", title="Description of asset")
     # fmt: on
 
@@ -47,7 +47,7 @@ class ProjectConfigAssetURL(BaseModel):
 class ProjectConfigAssetGit(BaseModel):
     # fmt: off
     git: ProjectConfigAssetGitItem = Field(..., title="Git repo information")
-    checksum: Optional[str] = Field(None, title="MD5 hash of file", regex=r"([a-fA-F\d]{32})")
+    checksum: Optional[str] = Field(None, title="MD5 hash of file", pattern=r"([a-fA-F\d]{32})")
     description: Optional[StrictStr] = Field(None, title="Description of asset")
     # fmt: on
 
