@@ -313,14 +313,6 @@ def _check_requirements(requirements: Path) -> None:
     requirements (Path): Path to requirements.
     """
     try:
-        import pip
-
-        if Version(pip.__version__) < Version("22.2"):
-            msg.info("Unable to check requirements, please upgrade to pip 22.2+")
-            return
-    except Exception:
-        pass
-    try:
         cmd = f"{sys.executable} -m pip install --dry-run -r {requirements}"
         result = run_command(cmd, capture=True)
         if "Would install" in result.stdout:
@@ -342,3 +334,12 @@ def _check_requirements(requirements: Path) -> None:
             msg.text(f"Running: {cmd}", spaced=True)
             for line in e.ret.stdout.split("\n"):  # type: ignore[attr-defined]
                 msg.text(line)
+        else:
+            import pip
+
+            if hasattr(pip, "__version__") and Version(pip.__version__) < Version(
+                "22.2"
+            ):
+                msg.info("Unable to check requirements, please upgrade to pip 22.2+")
+            else:
+                msg.info("Unable to check requirements")
