@@ -331,9 +331,6 @@ def _check_requirements(requirements: Path) -> None:
                 "Double-check the requirements specified in your project's "
                 "requirements.txt:"
             )
-            msg.text(f"Running: {cmd}", spaced=True)
-            for line in e.ret.stdout.split("\n"):  # type: ignore[attr-defined]
-                msg.text(line)
         else:
             import pip
 
@@ -341,5 +338,9 @@ def _check_requirements(requirements: Path) -> None:
                 "22.2"
             ):
                 msg.info("Unable to check requirements, please upgrade to pip 22.2+")
+                return
             else:
                 msg.info("Unable to check requirements")
+        msg.text(f"Running: {cmd}", spaced=True)
+        for line in e.ret.stdout.split("\n"):  # type: ignore[attr-defined]
+            msg.text(line)
