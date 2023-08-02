@@ -316,6 +316,7 @@ def _check_requirements(requirements: Path) -> None:
         import pip
 
         if Version(pip.__version__) < Version("22.2"):
+            msg.info("Unable to check requirements, please upgrade to pip 22.2+")
             return
     except Exception:
         pass
