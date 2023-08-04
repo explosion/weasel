@@ -2,7 +2,6 @@ from collections import defaultdict
 from typing import Any, Dict, List, Optional, Type, Union
 
 from pydantic import BaseModel, Field, StrictStr, ValidationError, root_validator
-
 from wasabi import msg
 
 
