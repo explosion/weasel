@@ -1,10 +1,7 @@
 from collections import defaultdict
 from typing import Any, Dict, List, Optional, Type, Union
 
-try:
-    from pydantic.v1 import BaseModel, Field, StrictStr, ValidationError, root_validator
-except ImportError:
-    from pydantic import BaseModel, Field, StrictStr, ValidationError, root_validator  # type: ignore
+from pydantic import BaseModel, Field, StrictStr, ValidationError, root_validator
 
 from wasabi import msg
 
