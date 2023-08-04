@@ -74,9 +74,9 @@ def ensure_path(path: Any) -> Any:
 def ensure_pathy(path):
     """Temporary helper to prevent importing Pathy globally (which can cause
     slow and annoying Google Cloud warning)."""
-    from pathy import Pathy  # noqa: F811
+    from cloudpathlib import AnyPath  # noqa: F811
 
-    return Pathy.fluid(path)
+    return AnyPath(path)
 
 
 def is_subpath_of(parent, child):
