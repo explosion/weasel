@@ -5,6 +5,8 @@ from typer.testing import CliRunner
 
 from weasel import app
 
+from .test_cli_app import has_git
+
 runner = CliRunner()
 
 
@@ -53,6 +55,7 @@ def assets(clone, project_dir: Path):
     assert (project_dir / "assets/README.md").exists()
 
 
+@pytest.mark.skipif(not has_git(), reason="git not installed")
 def test_remote(project_dir: Path, remote_url: Path):
     result = runner.invoke(app, ["assets", str(project_dir)])
     assert result.exit_code == 0
