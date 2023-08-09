@@ -5,7 +5,6 @@ import pytest
 import srsly
 
 from weasel.cli.remote_storage import RemoteStorage
-from weasel.cli.run import _check_requirements
 from weasel.schemas import ProjectConfigSchema, validate
 from weasel.util import is_subpath_of, load_project_config, make_tempdir
 from weasel.util import validate_project_commands
@@ -166,45 +165,3 @@ def test_local_remote_storage_pull_missing():
         remote = RemoteStorage(d / "root", str(d / "remote"))
         assert remote.pull(filename, command_hash="aaaa") is None
         assert remote.pull(filename) is None
-
-
-@pytest.mark.filterwarnings("ignore::DeprecationWarning")
-@pytest.mark.parametrize(
-    "reqs,output",
-    [
-        [
-            """
-            weasel
-
-            # comment
-
-            confection""",
-            (False, False),
-        ],
-        [
-            """# comment
-            --some-flag
-            weasel""",
-            (False, False),
-        ],
-        [
-            """# comment
-            --some-flag
-            weasel; python_version >= '3.6'""",
-            (False, False),
-        ],
-        [
-            """# comment
-             spacyunknowndoesnotexist12345""",
-            (True, False),
-        ],
-    ],
-)
-def test_project_check_requirements(reqs, output):
-    import pkg_resources
-
-    # excessive guard against unlikely package name
-    try:
-        pkg_resources.require("spacyunknowndoesnotexist12345")
-    except pkg_resources.DistributionNotFound:
-        assert output == _check_requirements([req.strip() for req in reqs.split("\n")])
