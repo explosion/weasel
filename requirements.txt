@@ -2,7 +2,6 @@
 confection>=0.0.4,<0.2.0
 wasabi>=0.9.1,<1.2.0
 srsly>=2.4.3,<3.0.0
-catalogue>=2.0.6,<2.1.0
 typer>=0.3.0,<0.8.0
 cloudpathlib>=0.7.0,<0.16.0
 smart-open>=5.2.1,<7.0.0
