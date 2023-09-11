@@ -10,6 +10,10 @@ class ErrorsWithCodes(type):
 class Warnings(metaclass=ErrorsWithCodes):
     # File system
     W801 = "Could not clean/remove the temp directory at {dir}: {msg}."
+    W802 = (
+        "Remote storage is not yet supported for Python 3.12 with "
+        "cloudpathlib. Please use Python 3.11 or earlier for remote storage."
+    )
 
 
 class Errors(metaclass=ErrorsWithCodes):
