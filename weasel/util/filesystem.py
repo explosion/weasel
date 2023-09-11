@@ -72,9 +72,17 @@ def ensure_path(path: Any) -> Any:
 
 
 def ensure_pathy(path):
-    """Temporary helper to prevent importing Pathy globally (which can cause
-    slow and annoying Google Cloud warning)."""
-    from cloudpathlib import AnyPath  # noqa: F811
+    """Temporary helper to prevent importing cloudpathlib globally (which was
+    originally added due to a slow and annoying Google Cloud warning with
+    Pathy)"""
+    try:
+        from cloudpathlib import AnyPath  # noqa: F811
+    except ImportError as e:
+        import sys
+
+        if sys.version >= (3, 12):
+            warnings.warn(Warnings.W802)
+        raise e
 
     return AnyPath(path)
 
