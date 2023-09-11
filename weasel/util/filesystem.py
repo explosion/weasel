@@ -47,7 +47,7 @@ def make_tempdir() -> Generator[Path, None, None]:
     try:
         shutil.rmtree(str(d), onerror=force_remove)
     except PermissionError as e:
-        warnings.warn(Warnings.W091.format(dir=d, msg=e))
+        warnings.warn(Warnings.W801.format(dir=d, msg=e))
 
 
 def is_cwd(path: Union[Path, str]) -> bool:
