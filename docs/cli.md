@@ -1,8 +1,7 @@
 # Command Line Interface
 
-The `weasel` CLI includes subcommands for working with
-Weasel projects, end-to-end workflows for building and
-deploying custom pipelines.
+The `weasel` CLI includes subcommands for working with Weasel projects,
+end-to-end workflows for building and deploying custom pipelines.
 
 ## :clipboard: clone
 
@@ -36,13 +35,13 @@ python -m weasel clone [name] [dest] [--repo] [--branch] [--sparse]
 ## :open_file_folder: assets
 
 Fetch project assets like datasets and pretrained weights. Assets are defined in
-the `assets` section of the [`project.yml`](tutorial/directory-and-assets.md#project-yml). If a
-`checksum` is provided, the file is only downloaded if no local file with the
-same checksum exists and Weasel will show an error if the checksum of the
-downloaded file doesn't match. If assets don't specify a `url` they're
-considered "private" and you have to take care of putting them into the
-destination directory yourself. If a local path is provided, the asset is copied
-into the current project.
+the `assets` section of the
+[`project.yml`](tutorial/directory-and-assets.md#project-yml). If a `checksum`
+is provided, the file is only downloaded if no local file with the same checksum
+exists and Weasel will show an error if the checksum of the downloaded file
+doesn't match. If assets don't specify a `url` they're considered "private" and
+you have to take care of putting them into the destination directory yourself.
+If a local path is provided, the asset is copied into the current project.
 
 ```bash
 python -m weasel assets [project_dir]
@@ -59,11 +58,12 @@ python -m weasel assets [project_dir]
 ## :rocket: run
 
 Run a named command or workflow defined in the
-[`project.yml`](tutorial/directory-and-assets.md#project-yml). If a workflow name is specified,
-all commands in the workflow are run, in order. If commands define
-[dependencies or outputs](tutorial/directory-and-assets.md#dependencies-and-outputs), they will only be
-re-run if state has changed. For example, if the input dataset changes, a
-preprocessing command that depends on those files will be re-run.
+[`project.yml`](tutorial/directory-and-assets.md#project-yml). If a workflow
+name is specified, all commands in the workflow are run, in order. If commands
+define
+[dependencies or outputs](tutorial/directory-and-assets.md#dependencies-and-outputs),
+they will only be re-run if state has changed. For example, if the input dataset
+changes, a preprocessing command that depends on those files will be re-run.
 
 ```bash
 python -m weasel run [subcommand] [project_dir] [--force] [--dry]
@@ -80,6 +80,11 @@ python -m weasel run [subcommand] [project_dir] [--force] [--dry]
 
 ## :arrow_up: push
 
+> :warning: **Important note on Python 3.12**
+>
+> As of `cloudpathlib` v0.15.1, Python 3.12 is not yet supported. For remote
+> storage, please use Python 3.11 or earlier.
+
 Upload all available files or directories listed as in the `outputs` section of
 commands to a remote storage. Outputs are archived and compressed prior to
 upload, and addressed in the remote storage using the output's relative path
@@ -90,10 +95,10 @@ If the contents are different, the new version of the file is uploaded. Deleting
 obsolete files is left up to you.
 
 Remotes can be defined in the `remotes` section of the
-[`project.yml`](tutorial/directory-and-assets.md#project-yml). Under the hood, Weasel uses
-[`Pathy`](https://github.com/justindujardin/pathy) to communicate with the
-remote storages, so you can use any protocol that `Pathy` supports, including
-[S3](https://aws.amazon.com/s3/),
+[`project.yml`](tutorial/directory-and-assets.md#project-yml). Under the hood,
+Weasel uses [`cloudpathlib`](https://cloudpathlib.drivendata.org) to communicate
+with the remote storages, so you can use any protocol that `CloudPath` supports,
+including [S3](https://aws.amazon.com/s3/),
 [Google Cloud Storage](https://cloud.google.com/storage), and the local
 filesystem, although you may need to install extra dependencies to use certain
 protocols.
@@ -122,6 +127,11 @@ python -m weasel push [remote] [project_dir]
 
 ## :arrow_down: pull
 
+> :warning: **Important note on Python 3.12**
+>
+> As of `cloudpathlib` v0.15.1, Python 3.12 is not yet supported. For remote
+> storage, please use Python 3.11 or earlier.
+
 Download all files or directories listed as `outputs` for commands, unless they
 are already present locally. When searching for files in the remote, `pull`
 won't just look at the output path, but will also consider the **command
@@ -134,10 +144,10 @@ outputs, so if you change the config back, you'll be able to fetch back the
 result.
 
 Remotes can be defined in the `remotes` section of the
-[`project.yml`](tutorial/directory-and-assets.md#project-yml). Under the hood, Weasel uses
-[`Pathy`](https://github.com/justindujardin/pathy) to communicate with the
-remote storages, so you can use any protocol that `Pathy` supports, including
-[S3](https://aws.amazon.com/s3/),
+[`project.yml`](tutorial/directory-and-assets.md#project-yml). Under the hood,
+Weasel uses [`cloudpathlib`](https://cloudpathlib.drivendata.org/) to
+communicate with the remote storages, so you can use any protocol that
+`CloudPath` supports, including [S3](https://aws.amazon.com/s3/),
 [Google Cloud Storage](https://cloud.google.com/storage), and the local
 filesystem, although you may need to install extra dependencies to use certain
 protocols.
@@ -167,11 +177,12 @@ python -m weasel pull [remote] [project_dir]
 ## :closed_book: document
 
 Auto-generate a pretty Markdown-formatted `README` for your project, based on
-its [`project.yml`](tutorial/directory-and-assets.md#project-yml). Will create sections that
-document the available commands, workflows and assets. The auto-generated
-content will be placed between two hidden markers, so you can add your own
-custom content before or after the auto-generated documentation. When you re-run
-the `project document` command, only the auto-generated part is replaced.
+its [`project.yml`](tutorial/directory-and-assets.md#project-yml). Will create
+sections that document the available commands, workflows and assets. The
+auto-generated content will be placed between two hidden markers, so you can add
+your own custom content before or after the auto-generated documentation. When
+you re-run the `project document` command, only the auto-generated part is
+replaced.
 
 ```bash
 python -m weasel document [project_dir] [--output] [--no-emoji]
@@ -199,9 +210,9 @@ Auto-generate [Data Version Control](https://dvc.org) (DVC) config file. Calls
 [`dvc run`](https://dvc.org/doc/command-reference/run) with `--no-exec` under
 the hood to generate the `dvc.yaml`. A DVC project can only define one pipeline,
 so you need to specify one workflow defined in the
-[`project.yml`](tutorial/directory-and-assets.md#project-yml). If no workflow is specified, the
-first defined workflow is used. The DVC config will only be updated if the
-`project.yml` changed. For details, see the
+[`project.yml`](tutorial/directory-and-assets.md#project-yml). If no workflow is
+specified, the first defined workflow is used. The DVC config will only be
+updated if the `project.yml` changed. For details, see the
 [DVC integration](tutorial/integrations.md#data-version-control-dvc) docs.
 
 > **Warning**
