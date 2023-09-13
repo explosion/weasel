@@ -80,7 +80,7 @@ def ensure_pathy(path):
     except ImportError as e:
         import sys
 
-        if sys.version >= (3, 12):
+        if sys.version_info >= (3, 12):
             warnings.warn(Warnings.W802)
         raise e
 
