@@ -1,6 +1,7 @@
 import os
 import shutil
 import stat
+import sys
 import tempfile
 import warnings
 from contextlib import contextmanager
@@ -45,7 +46,10 @@ def make_tempdir() -> Generator[Path, None, None]:
         rmfunc(path)
 
     try:
-        shutil.rmtree(str(d), onexc=force_remove)
+        if sys.version_info >= (3, 12):
+            shutil.rmtree(str(d), onexc=force_remove)
+        else:
+            shutil.rmtree(str(d), onerror=force_remove)
     except PermissionError as e:
         warnings.warn(Warnings.W801.format(dir=d, msg=e))
 
