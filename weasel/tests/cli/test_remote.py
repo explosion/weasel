@@ -1,3 +1,4 @@
+import sys
 from pathlib import Path
 
 import pytest
@@ -8,6 +9,9 @@ from weasel import app
 from .test_cli_app import has_git
 
 runner = CliRunner()
+
+if sys.version_info >= (3, 12):
+    pytest.skip("Python 3.12+ not supported for remotes", allow_module_level=True)
 
 
 @pytest.fixture

@@ -1,3 +1,4 @@
+import sys
 from pathlib import Path
 from typing import Any, Dict
 
@@ -163,6 +164,9 @@ def test_project_clone(tmp_path: Path, options_string: str):
     assert (out / "README.md").is_file()
 
 
+@pytest.mark.skipif(
+    sys.version_info >= (3, 12), reason="Python 3.12+ not supported for remotes"
+)
 def test_project_push_pull(tmp_path: Path, project_dir: Path):
     proj = dict(SAMPLE_PROJECT)
     remote = "xyz"
