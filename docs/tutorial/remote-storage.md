@@ -1,10 +1,5 @@
 # Remote Storage
 
-> :warning: **Important note on Python 3.12**
->
-> As of v0.15.1, `cloudpathlib` does not support Python 3.12. For remote
-> storage, please use Python 3.11 or earlier.
-
 You can persist your project outputs to a remote storage using the
 [`push`](../cli.md#arrow_up-push) command. This can help you **export** your
 pipeline packages, **share** work with your team, or **cache results** to avoid
