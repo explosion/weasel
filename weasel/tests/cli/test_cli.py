@@ -1,5 +1,4 @@
 import os
-import sys
 import time
 
 import pytest
@@ -114,9 +113,6 @@ def test_is_subpath_of(parent, child, expected):
     assert is_subpath_of(parent, child) == expected
 
 
-@pytest.mark.skipif(
-    sys.version_info >= (3, 12), reason="Python 3.12+ not supported for remotes"
-)
 def test_local_remote_storage():
     with make_tempdir() as d:
         filename = "a.txt"
@@ -162,9 +158,6 @@ def test_local_remote_storage():
                 assert file_.read() == content
 
 
-@pytest.mark.skipif(
-    sys.version_info >= (3, 12), reason="Python 3.12+ not supported for remotes"
-)
 def test_local_remote_storage_pull_missing():
     # pulling from a non-existent remote pulls nothing gracefully
     with make_tempdir() as d:
