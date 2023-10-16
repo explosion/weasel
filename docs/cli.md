@@ -80,11 +80,6 @@ python -m weasel run [subcommand] [project_dir] [--force] [--dry]
 
 ## :arrow_up: push
 
-> :warning: **Important note on Python 3.12**
->
-> As of `cloudpathlib` v0.15.1, Python 3.12 is not yet supported. For remote
-> storage, please use Python 3.11 or earlier.
-
 Upload all available files or directories listed as in the `outputs` section of
 commands to a remote storage. Outputs are archived and compressed prior to
 upload, and addressed in the remote storage using the output's relative path
@@ -126,11 +121,6 @@ python -m weasel push [remote] [project_dir]
 | **UPLOADS**    | All project outputs that exist and are not already stored in the remote.                |
 
 ## :arrow_down: pull
-
-> :warning: **Important note on Python 3.12**
->
-> As of `cloudpathlib` v0.15.1, Python 3.12 is not yet supported. For remote
-> storage, please use Python 3.11 or earlier.
 
 Download all files or directories listed as `outputs` for commands, unless they
 are already present locally. When searching for files in the remote, `pull`
