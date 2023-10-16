@@ -10,9 +10,6 @@ from .test_cli_app import has_git
 
 runner = CliRunner()
 
-if sys.version_info >= (3, 12):
-    pytest.skip("Python 3.12+ not supported for remotes", allow_module_level=True)
-
 
 @pytest.fixture
 def project_dir(tmp_path_factory: pytest.TempPathFactory):

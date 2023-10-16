@@ -3,7 +3,7 @@ confection>=0.0.4,<0.2.0
 wasabi>=0.9.1,<1.2.0
 srsly>=2.4.3,<3.0.0
 typer>=0.3.0,<0.10.0
-cloudpathlib>=0.7.0,<0.16.0
+cloudpathlib>=0.7.0,<0.17.0
 smart-open>=5.2.1,<7.0.0
 # Third party dependencies
 requests>=2.13.0,<3.0.0
@@ -13,7 +13,7 @@ packaging>=20.0
 # Development dependencies
 black==22.3.0
 pytest>=5.2.0,!=7.1.0
-mypy>=0.990,<1.1.0; platform_machine != "aarch64" and python_version >= "3.7"
+mypy>=1.5.0,<1.7.0; python_version >= "3.8"
 types-requests
 types-setuptools>=57.0.0
 ruff>=0.0.259; python_version > "3.6"

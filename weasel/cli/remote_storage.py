@@ -1,6 +1,7 @@
 import hashlib
 import os
 import site
+import sys
 import tarfile
 import urllib.parse
 from pathlib import Path
@@ -97,7 +98,10 @@ class RemoteStorage:
                             member_path = os.path.join(path, member.name)
                             if not is_within_directory(path, member_path):
                                 raise ValueError(Errors.E201)
-                        tar.extractall(path)
+                        if sys.version_info >= (3, 12):
+                            tar.extractall(path, filter="data")
+                        else:
+                            tar.extractall(path)
 
                     safe_extract(tar_file, self.root)
         return url
