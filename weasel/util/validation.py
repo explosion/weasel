@@ -7,7 +7,7 @@ from typing import TYPE_CHECKING, Any, Dict, Optional, Union
 from confection import ConfigValidationError
 from wasabi import msg
 
-from ..cli.main import COMMAND, PROJECT_FILE
+from ..cli.main import PROJECT_FILE
 
 if TYPE_CHECKING:
     pass
