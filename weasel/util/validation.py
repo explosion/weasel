@@ -7,7 +7,7 @@ from typing import TYPE_CHECKING, Any, Dict, Optional, Union
 from confection import ConfigValidationError
 from wasabi import msg
 
-from ..cli.main import COMMAND, PROJECT_FILE
+from ..cli.main import PROJECT_FILE
 
 if TYPE_CHECKING:
     pass
@@ -51,7 +51,7 @@ def show_validation_error(
                 "fill-config' command to fill in all the defaults, if possible:",
                 spaced=True,
             )
-            print(f"{COMMAND} init fill-config {config_path} {config_path} \n")
+            print(f"python -m spacy init fill-config {config_path} {config_path} \n")
         sys.exit(1)
     except InterpolationError as e:
         msg.fail("Config validation error", e, exits=1)
