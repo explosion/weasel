@@ -118,7 +118,7 @@ def print_run_help(project_dir: Path, subcommand: Optional[str] = None) -> None:
     project_loc = "" if is_cwd(project_dir) else project_dir
     if subcommand:
         validate_subcommand(list(commands.keys()), list(workflows.keys()), subcommand)
-        print(f"Usage: {COMMAND} project run {subcommand} {project_loc}")
+        print(f"Usage: {COMMAND} run {subcommand} {project_loc}")
         if subcommand in commands:
             help_text = commands[subcommand].get("help")
             if help_text:
@@ -131,7 +131,7 @@ def print_run_help(project_dir: Path, subcommand: Optional[str] = None) -> None:
                 for i, step in enumerate(steps)
             ]
             msg.table(steps_data)
-            help_cmd = f"{COMMAND} project run [COMMAND] {project_loc} --help"
+            help_cmd = f"{COMMAND} run [COMMAND] {project_loc} --help"
             print(f"For command details, run: {help_cmd}")
     else:
         print("")
@@ -140,11 +140,11 @@ def print_run_help(project_dir: Path, subcommand: Optional[str] = None) -> None:
             print(f"{locale_escape(title)}\n")
         if config_commands:
             print(f"Available commands in {PROJECT_FILE}")
-            print(f"Usage: {COMMAND} project run [COMMAND] {project_loc}")
+            print(f"Usage: {COMMAND} run [COMMAND] {project_loc}")
             msg.table([(cmd["name"], cmd.get("help", "")) for cmd in config_commands])
         if workflows:
             print(f"Available workflows in {PROJECT_FILE}")
-            print(f"Usage: {COMMAND} project run [WORKFLOW] {project_loc}")
+            print(f"Usage: {COMMAND} run [WORKFLOW] {project_loc}")
             msg.table([(name, " -> ".join(steps)) for name, steps in workflows.items()])
 
 
