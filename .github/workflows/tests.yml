@@ -109,3 +109,11 @@ jobs:
         shell: bash
         run: |
           python -m pytest --pyargs $MODULE_NAME -Werror
+
+      - name: Test spacy project CLI help/info messages
+        shell: bash
+        run: |
+          python -m pip install spacy
+          python -m spacy project clone pipelines/ner_demo | grep -q "spacy project assets"
+          cd ner_demo
+          python -m spacy project run --help | grep -q "spacy project run"

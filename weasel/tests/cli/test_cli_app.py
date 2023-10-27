@@ -160,6 +160,7 @@ def test_project_clone(tmp_path: Path, options_string: str):
         options = options_string.split()
     result = CliRunner().invoke(app, ["clone", target, *options, str(out)])
     assert result.exit_code == 0
+    assert "weasel assets" in result.output
     assert (out / "README.md").is_file()
 
 

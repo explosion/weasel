@@ -3,12 +3,12 @@ import subprocess
 from pathlib import Path
 from typing import Optional
 
+import typer
 from wasabi import msg
 
-from weasel import about
-
+from .. import about
 from ..util import ensure_path, get_git_version, git_checkout, git_repo_branch_exists
-from .main import COMMAND, PROJECT_FILE, Arg, Opt, app
+from .main import COMMAND, PROJECT_FILE, Arg, Opt, _get_parent_command, app
 
 DEFAULT_REPO = about.__projects__
 DEFAULT_PROJECTS_BRANCH = about.__projects_branch__
@@ -18,11 +18,12 @@ DEFAULT_BRANCHES = ["main", "master"]
 @app.command("clone")
 def project_clone_cli(
     # fmt: off
+    ctx: typer.Context,  # This is only used to read the parent command
     name: str = Arg(..., help="The name of the template to clone"),
     dest: Optional[Path] = Arg(None, help="Where to clone the project. Defaults to current working directory", exists=False),
     repo: str = Opt(DEFAULT_REPO, "--repo", "-r", help="The repository to clone from"),
     branch: Optional[str] = Opt(None, "--branch", "-b", help=f"The branch to clone from. If not provided, will attempt {', '.join(DEFAULT_BRANCHES)}"),
-    sparse_checkout: bool = Opt(False, "--sparse", "-S", help="Use sparse Git checkout to only check out and clone the files needed. Requires Git v22.2+.")
+    sparse_checkout: bool = Opt(False, "--sparse", "-S", help="Use sparse Git checkout to only check out and clone the files needed. Requires Git v22.2+."),
     # fmt: on
 ):
     """Clone a project template from a repository. Calls into "git" and will
@@ -53,7 +54,15 @@ def project_clone_cli(
         if not git_repo_branch_exists(repo, branch):
             msg.fail(f"repo: {repo} (branch: {branch}) does not exist.", exits=1)
     assert isinstance(branch, str)
-    project_clone(name, dest, repo=repo, branch=branch, sparse_checkout=sparse_checkout)
+    parent_command = _get_parent_command(ctx)
+    project_clone(
+        name,
+        dest,
+        repo=repo,
+        branch=branch,
+        sparse_checkout=sparse_checkout,
+        parent_command=parent_command,
+    )
 
 
 def project_clone(
@@ -63,6 +72,7 @@ def project_clone(
     repo: str = about.__projects__,
     branch: str = about.__projects_branch__,
     sparse_checkout: bool = False,
+    parent_command: str = COMMAND,
 ) -> None:
     """Clone a project template from a repository.
 
@@ -85,7 +95,7 @@ def project_clone(
         msg.warn(f"No {PROJECT_FILE} found in directory")
     else:
         msg.good("Your project is now ready!")
-        print(f"To fetch the assets, run:\n{COMMAND} assets {dest}")
+        print(f"To fetch the assets, run:\n{parent_command} assets {dest}")
 
 
 def check_clone(name: str, dest: Path, repo: str) -> None:
