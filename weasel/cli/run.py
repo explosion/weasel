@@ -10,7 +10,8 @@ from wasabi.util import locale_escape
 from ..util import SimpleFrozenDict, SimpleFrozenList, check_spacy_env_vars
 from ..util import get_checksum, get_hash, is_cwd, join_command, load_project_config
 from ..util import parse_config_overrides, run_command, split_command, working_dir
-from .main import COMMAND, PROJECT_FILE, PROJECT_LOCK, Arg, Opt, app
+from .main import COMMAND, PROJECT_FILE, PROJECT_LOCK, Arg, Opt, _get_parent_command
+from .main import app
 
 
 @app.command(
@@ -33,11 +34,19 @@ def project_run_cli(
 
     DOCS: https://github.com/explosion/weasel/tree/main/docs/cli.md#rocket-run
     """
+    parent_command = _get_parent_command(ctx)
     if show_help or not subcommand:
-        print_run_help(project_dir, subcommand)
+        print_run_help(project_dir, subcommand, parent_command)
     else:
         overrides = parse_config_overrides(ctx.args)
-        project_run(project_dir, subcommand, overrides=overrides, force=force, dry=dry)
+        project_run(
+            project_dir,
+            subcommand,
+            overrides=overrides,
+            force=force,
+            dry=dry,
+            parent_command=parent_command,
+        )
 
 
 def project_run(
@@ -49,6 +58,7 @@ def project_run(
     dry: bool = False,
     capture: bool = False,
     skip_requirements_check: bool = False,
+    parent_command: str = COMMAND,
 ) -> None:
     """Run a named script defined in the project.yml. If the script is part
     of the default pipeline (defined in the "run" section), DVC is used to
@@ -103,7 +113,9 @@ def project_run(
                     update_lockfile(current_dir, cmd)
 
 
-def print_run_help(project_dir: Path, subcommand: Optional[str] = None) -> None:
+def print_run_help(
+    project_dir: Path, subcommand: Optional[str] = None, parent_command: str = COMMAND
+) -> None:
     """Simulate a CLI help prompt using the info available in the project.yml.
 
     project_dir (Path): The project directory.
@@ -118,7 +130,7 @@ def print_run_help(project_dir: Path, subcommand: Optional[str] = None) -> None:
     project_loc = "" if is_cwd(project_dir) else project_dir
     if subcommand:
         validate_subcommand(list(commands.keys()), list(workflows.keys()), subcommand)
-        print(f"Usage: {COMMAND} run {subcommand} {project_loc}")
+        print(f"Usage: {parent_command} run {subcommand} {project_loc}")
         if subcommand in commands:
             help_text = commands[subcommand].get("help")
             if help_text:
@@ -131,7 +143,7 @@ def print_run_help(project_dir: Path, subcommand: Optional[str] = None) -> None:
                 for i, step in enumerate(steps)
             ]
             msg.table(steps_data)
-            help_cmd = f"{COMMAND} run [COMMAND] {project_loc} --help"
+            help_cmd = f"{parent_command} run [COMMAND] {project_loc} --help"
             print(f"For command details, run: {help_cmd}")
     else:
         print("")
@@ -140,11 +152,11 @@ def print_run_help(project_dir: Path, subcommand: Optional[str] = None) -> None:
             print(f"{locale_escape(title)}\n")
         if config_commands:
             print(f"Available commands in {PROJECT_FILE}")
-            print(f"Usage: {COMMAND} run [COMMAND] {project_loc}")
+            print(f"Usage: {parent_command} run [COMMAND] {project_loc}")
             msg.table([(cmd["name"], cmd.get("help", "")) for cmd in config_commands])
         if workflows:
             print(f"Available workflows in {PROJECT_FILE}")
-            print(f"Usage: {COMMAND} run [WORKFLOW] {project_loc}")
+            print(f"Usage: {parent_command} run [WORKFLOW] {project_loc}")
             msg.table([(name, " -> ".join(steps)) for name, steps in workflows.items()])
 
 
@@ -259,7 +271,9 @@ def update_lockfile(project_dir: Path, command: Dict[str, Any]) -> None:
     srsly.write_yaml(lock_path, data)
 
 
-def get_lock_entry(project_dir: Path, command: Dict[str, Any]) -> Dict[str, Any]:
+def get_lock_entry(
+    project_dir: Path, command: Dict[str, Any], *, parent_command: str = COMMAND
+) -> Dict[str, Any]:
     """Get a lockfile entry for a given command. An entry includes the command,
     the script (command steps) and a list of dependencies and outputs with
     their paths and file hashes, if available. The format is based on the
@@ -273,7 +287,7 @@ def get_lock_entry(project_dir: Path, command: Dict[str, Any]) -> Dict[str, Any]
     outs = get_fileinfo(project_dir, command.get("outputs", []))
     outs_nc = get_fileinfo(project_dir, command.get("outputs_no_cache", []))
     return {
-        "cmd": f"{COMMAND} run {command['name']}",
+        "cmd": f"{parent_command} run {command['name']}",
         "script": command["script"],
         "deps": deps,
         "outs": [*outs, *outs_nc],
