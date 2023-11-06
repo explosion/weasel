@@ -112,8 +112,8 @@ def project_document(
             marker_tag_found = False
             for marker_tag in MARKER_TAGS:
                 markers = {
-                    "start": MARKER_START.format(marker_tag),
-                    "end": MARKER_END.format(marker_tag),
+                    "start": MARKER_START.format(tag=marker_tag),
+                    "end": MARKER_END.format(tag=marker_tag),
                 }
                 if markers["start"] in existing and markers["end"] in existing:
                     marker_tag_found = True
