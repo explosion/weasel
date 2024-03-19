@@ -4,10 +4,14 @@ import time
 import pytest
 import srsly
 
+from tempfile import TemporaryDirectory
+from pathlib import Path
+
 from weasel.cli.remote_storage import RemoteStorage
 from weasel.schemas import ProjectConfigSchema, validate
 from weasel.util import is_subpath_of, load_project_config, make_tempdir
 from weasel.util import validate_project_commands
+from weasel.util import git_checkout
 
 
 def test_issue11235():
@@ -165,3 +169,30 @@ def test_local_remote_storage_pull_missing():
         remote = RemoteStorage(d / "root", str(d / "remote"))
         assert remote.pull(filename, command_hash="aaaa") is None
         assert remote.pull(filename) is None
+
+
+def test_project_git_dir_asset():
+    with TemporaryDirectory() as d:
+        p = Path(d)
+        # Use a very small repo.
+        git_checkout(
+            "https://github.com/explosion/os-signpost.git",
+            "os_signpost",
+            p / "signpost",
+            branch="v0.0.3",
+        )
+        assert os.path.isdir(p / "signpost")
+
+
+@pytest.mark.issue(66)
+def test_project_git_file_asset():
+    with TemporaryDirectory() as d:
+        p = Path(d)
+        # Use a very small repo.
+        git_checkout(
+            "https://github.com/explosion/os-signpost.git",
+            "README.md",
+            p / "readme.md",
+            branch="v0.0.3",
+        )
+        assert os.path.isfile(p / "readme.md")
