@@ -1,7 +1,5 @@
 import os
 import time
-from pathlib import Path
-from tempfile import TemporaryDirectory
 
 import pytest
 import srsly
@@ -170,27 +168,25 @@ def test_local_remote_storage_pull_missing():
 
 
 def test_project_git_dir_asset():
-    with TemporaryDirectory() as d:
-        p = Path(d)
+    with make_tempdir() as d:
         # Use a very small repo.
         git_checkout(
             "https://github.com/explosion/os-signpost.git",
             "os_signpost",
-            p / "signpost",
+            d / "signpost",
             branch="v0.0.3",
         )
-        assert os.path.isdir(p / "signpost")
+        assert os.path.isdir(d / "signpost")
 
 
 @pytest.mark.issue(66)
 def test_project_git_file_asset():
-    with TemporaryDirectory() as d:
-        p = Path(d)
+    with make_tempdir() as d:
         # Use a very small repo.
         git_checkout(
             "https://github.com/explosion/os-signpost.git",
             "README.md",
-            p / "readme.md",
+            d / "readme.md",
             branch="v0.0.3",
         )
-        assert os.path.isfile(p / "readme.md")
+        assert os.path.isfile(d / "readme.md")

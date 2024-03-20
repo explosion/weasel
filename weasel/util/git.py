@@ -1,7 +1,6 @@
 import os
 import shutil
 from pathlib import Path
-from tempfile import TemporaryDirectory
 from typing import Tuple
 
 from wasabi import msg
@@ -34,14 +33,13 @@ def git_checkout(
             f"temporarily. To only download the files needed, make sure "
             f"you're using Git v2.22 or above."
         )
-    with TemporaryDirectory() as tmp_dir:
-        tmp_path = Path(tmp_dir)
-        cmd = f"git -C {tmp_path} clone {repo} . -b {branch}"
+    with make_tempdir() as tmp_dir:
+        cmd = f"git -C {tmp_dir} clone {repo} . -b {branch}"
         run_command(cmd, capture=True)
         # We need Path(name) to make sure we also support subdirectories
         try:
-            source_path = tmp_path / Path(subpath)
-            if not is_subpath_of(tmp_path, source_path):
+            source_path = tmp_dir / Path(subpath)
+            if not is_subpath_of(tmp_dir, source_path):
                 err = f"'{subpath}' is a path outside of the cloned repository."
                 msg.fail(err, repo, exits=1)
             if os.path.isdir(source_path):
