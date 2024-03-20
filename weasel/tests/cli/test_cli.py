@@ -1,17 +1,15 @@
 import os
 import time
+from pathlib import Path
+from tempfile import TemporaryDirectory
 
 import pytest
 import srsly
 
-from tempfile import TemporaryDirectory
-from pathlib import Path
-
 from weasel.cli.remote_storage import RemoteStorage
 from weasel.schemas import ProjectConfigSchema, validate
-from weasel.util import is_subpath_of, load_project_config, make_tempdir
+from weasel.util import git_checkout, is_subpath_of, load_project_config, make_tempdir
 from weasel.util import validate_project_commands
-from weasel.util import git_checkout
 
 
 def test_issue11235():

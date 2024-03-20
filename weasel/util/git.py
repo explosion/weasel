@@ -1,8 +1,8 @@
 import os
 import shutil
 from pathlib import Path
-from typing import Tuple
 from tempfile import TemporaryDirectory
+from typing import Tuple
 
 from wasabi import msg
 
