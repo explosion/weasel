@@ -72,7 +72,7 @@ a **Git repo** instead.
 ### Downloading from a URL or cloud storage
 
 Under the hood, Weasel uses the
-[`smart-open`](https://github.com/RaRe-Technologies/smart_open) library so you
+[`smart_open`](https://github.com/RaRe-Technologies/smart_open) library so you
 can use any protocol it supports. Note that you may need to install extra
 dependencies to use certain protocols.
 

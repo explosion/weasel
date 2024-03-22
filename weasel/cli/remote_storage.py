@@ -20,7 +20,7 @@ if TYPE_CHECKING:
 class RemoteStorage:
     """Push and pull outputs to and from a remote file storage.
 
-    Remotes can be anything that `smart-open` can support: AWS, GCS, file system,
+    Remotes can be anything that `smart_open` can support: AWS, GCS, file system,
     ssh, etc.
     """
 
