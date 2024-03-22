@@ -16,7 +16,7 @@ def project_push_cli(
 ):
     """Persist outputs to a remote storage. You can alias remotes in your
     project.yml by mapping them to storage paths. A storage can be anything that
-    the smart-open library can upload to, e.g. AWS, Google Cloud Storage, SSH,
+    the smart_open library can upload to, e.g. AWS, Google Cloud Storage, SSH,
     local directories etc.
 
     DOCS: https://github.com/explosion/weasel/tree/main/docs/cli.md#arrow_up-push
@@ -30,7 +30,7 @@ def project_push_cli(
 
 def project_push(project_dir: Path, remote: str):
     """Persist outputs to a remote storage. You can alias remotes in your project.yml
-    by mapping them to storage paths. A storage can be anything that the smart-open
+    by mapping them to storage paths. A storage can be anything that the smart_open
     library can upload to, e.g. gcs, aws, ssh, local directories etc
     """
     config = load_project_config(project_dir)
