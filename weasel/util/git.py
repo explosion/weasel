@@ -1,3 +1,4 @@
+import os
 import shutil
 from pathlib import Path
 from typing import Tuple
@@ -41,7 +42,10 @@ def git_checkout(
             if not is_subpath_of(tmp_dir, source_path):
                 err = f"'{subpath}' is a path outside of the cloned repository."
                 msg.fail(err, repo, exits=1)
-            shutil.copytree(str(source_path), str(dest))
+            if os.path.isdir(source_path):
+                shutil.copytree(source_path, dest)
+            else:
+                shutil.copyfile(source_path, dest)
         except FileNotFoundError:
             err = f"Can't clone {subpath}. Make sure the directory exists in the repo (branch '{branch}')"
             msg.fail(err, repo, exits=1)
