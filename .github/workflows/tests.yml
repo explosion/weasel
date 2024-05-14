@@ -49,10 +49,21 @@ jobs:
     needs: Validate
     if: github.repository_owner == 'explosion'
     strategy:
-      fail-fast: false
+      fail-fast: true
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
-        python_version: ["3.7", "3.8", "3.9", "3.10", "3.11", "3.12"]
+        python_version: ["3.12"]
+        include:
+          - os: macos-latest
+            python_version: "3.7"
+          - os: windows-latest
+            python_version: "3.8"
+          - os: ubuntu-latest
+            python_version: "3.9"
+          - os: macos-latest
+            python_version: "3.10"
+          - os: windows-latest
+            python_version: "3.11"
     runs-on: ${{ matrix.os }}
 
     steps:
