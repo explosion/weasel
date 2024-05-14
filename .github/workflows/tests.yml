@@ -105,7 +105,7 @@ jobs:
         run: |
           python -m pytest --pyargs $MODULE_NAME -Werror
 
-      - name: Test spacy project CLI help/info messages
+      - name: Test 'spacy project' CLI help/info messages
         shell: bash
         run: |
           python -m pip install spacy
