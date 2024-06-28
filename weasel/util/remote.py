@@ -1,6 +1,9 @@
 import shutil
+import os
+import sys
+from wasabi import msg
 from pathlib import Path
-from typing import TYPE_CHECKING, Union
+from typing import TYPE_CHECKING, Union, Optional, Any
 
 if TYPE_CHECKING:
     from cloudpathlib import CloudPath
@@ -20,7 +23,10 @@ def upload_file(src: Path, dest: Union[str, "CloudPath"]) -> None:
             dest.parent.mkdir(parents=True)
 
     dest = str(dest)
-    with smart_open.open(dest, mode="wb") as output_file:
+    if dest.startswith("az://"):
+        dest = dest.replace("az", "azure", 1)
+    transport_params = _transport_params(dest)
+    with smart_open.open(dest, mode="wb", transport_params=transport_params) as output_file:
         with src.open(mode="rb") as input_file:
             output_file.write(input_file.read())
 
@@ -40,6 +46,23 @@ def download_file(
     if dest.exists() and not force:
         return None
     src = str(src)
-    with smart_open.open(src, mode="rb", compression="disable") as input_file:
+    if src.startswith("az://"):
+        src = src.replace("az", "azure", 1)
+    transport_params = _transport_params(src)
+    with smart_open.open(src, mode="rb", compression="disable", transport_params=transport_params) as input_file:
         with dest.open(mode="wb") as output_file:
             shutil.copyfileobj(input_file, output_file)
+
+
+def _transport_params(url: str) -> Optional[dict[str, Any]]:
+    if url.startswith("azure://"):
+        connection_string = os.environ.get("AZURE_STORAGE_CONNECTION_STRING")
+        if not connection_string:
+            msg.fail(
+                "Azure storage requires a connection string, which was not provided.",
+                "Assign it to the environment variable AZURE_STORAGE_CONNECTION_STRING."
+            )
+            sys.exit(1)
+        from azure.storage.blob import BlobServiceClient
+        return {"client": BlobServiceClient.from_connection_string(connection_string)}
+    return None
