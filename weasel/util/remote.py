@@ -23,6 +23,8 @@ def upload_file(src: Path, dest: Union[str, "CloudPath"]) -> None:
             dest.parent.mkdir(parents=True)
 
     dest = str(dest)
+    if dest.startswith("az://"):
+        dest = dest.replace("az", "azure", 1)
     transport_params = _transport_params(dest)
     with smart_open.open(dest, mode="wb", transport_params=transport_params) as output_file:
         with src.open(mode="rb") as input_file:
@@ -44,6 +46,8 @@ def download_file(
     if dest.exists() and not force:
         return None
     src = str(src)
+    if src.startswith("az://"):
+        src = src.replace("az", "azure", 1)
     transport_params = _transport_params(src)
     with smart_open.open(src, mode="rb", compression="disable", transport_params=transport_params) as input_file:
         with dest.open(mode="wb") as output_file:
