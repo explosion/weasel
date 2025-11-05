@@ -5,7 +5,7 @@ from typing import Any, Dict, List, Optional
 
 import srsly
 from click import NoSuchOption
-from click.parser import split_arg_string
+from click.shell_completion import split_arg_string
 from confection import Config
 from wasabi import msg
 
