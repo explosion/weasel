@@ -63,7 +63,7 @@ jobs:
           - os: macos-latest
             python_version: "3.13"
           - os: windows-latest
-            python_version: "3.14"
+            python_version: "3.13"
     runs-on: ${{ matrix.os }}
 
     steps:
