@@ -1,6 +1,7 @@
 import os
 import time
 
+from pathlib import Path
 import pytest
 import srsly
 
@@ -115,7 +116,7 @@ def test_is_subpath_of(parent, child, expected):
 
 def test_local_remote_storage():
     with make_tempdir() as d:
-        filename = "a.txt"
+        filename = Path("a.txt")
 
         content_hashes = ("aaaa", "cccc", "bbbb")
         for i, content_hash in enumerate(content_hashes):
@@ -161,7 +162,7 @@ def test_local_remote_storage():
 def test_local_remote_storage_pull_missing():
     # pulling from a non-existent remote pulls nothing gracefully
     with make_tempdir() as d:
-        filename = "a.txt"
+        filename = Path("a.txt")
         remote = RemoteStorage(d / "root", str(d / "remote"))
         assert remote.pull(filename, command_hash="aaaa") is None
         assert remote.pull(filename) is None
