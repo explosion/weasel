@@ -98,7 +98,7 @@ def project_run(
         for dep in cmd.get("deps", []):
             if not (project_dir / dep).exists():
                 err = f"Missing dependency specified by command '{subcommand}': {dep}"
-                err_help = "Maybe you forgot to run the 'project assets' command or a previous step?"
+                err_help = "Maybe you forgot to run the 'weasel assets' command or a previous step?"
                 err_exits = 1 if not dry else None
                 msg.fail(err, err_help, exits=err_exits)
         check_spacy_env_vars()
