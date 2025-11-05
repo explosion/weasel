@@ -17,4 +17,3 @@ jobs:
       pure-python: true
     secrets:
       gh-token: ${{ secrets.GITHUB_TOKEN }}
-
