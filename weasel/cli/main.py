@@ -15,7 +15,7 @@ PROJECT_LOCK = "project.lock"
 Arg = typer.Argument
 Opt = typer.Option
 
-app = typer.Typer(name=NAME, help=HELP, no_args_is_help=True)
+app = typer.Typer(name=NAME, help=HELP, no_args_is_help=True, add_completion=False)
 
 
 def _get_parent_command(ctx: typer.Context) -> str:
