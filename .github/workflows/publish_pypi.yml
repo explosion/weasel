@@ -11,5 +11,8 @@ on:
 jobs:
   upload_pypi:
     uses: explosion/gha-cibuildwheel/.github/workflows/publish_pypi.yml@main
+    permissions:
+      id-tokens: write
+      contents: read
     with:
       pypi-package-name: 'weasel'
