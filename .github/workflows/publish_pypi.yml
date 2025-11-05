@@ -1,0 +1,15 @@
+# The cibuildwheel action triggers on creation of a release, this
+# triggers on publication.
+# The expected workflow is to create a draft release and let the wheels
+# upload, and then hit 'publish', which uploads to PyPi.
+
+on:
+  release:
+    types:
+      - published
+
+jobs:
+  upload_pypi:
+    uses: explosion/gha-cibuildwheel/.github/workflows/publish_pypi.yml@main
+    with:
+      pypi-package-name: 'weasel'
