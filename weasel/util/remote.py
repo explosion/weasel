@@ -2,7 +2,7 @@ import os
 import shutil
 import sys
 from pathlib import Path
-from typing import TYPE_CHECKING, Any, Optional, Union
+from typing import TYPE_CHECKING, Any, Dict, Optional, Union
 
 from wasabi import msg
 
@@ -59,7 +59,7 @@ def download_file(
             shutil.copyfileobj(input_file, output_file)
 
 
-def _transport_params(url: str) -> Optional[dict[str, Any]]:
+def _transport_params(url: str) -> Optional[Dict[str, Any]]:
     if url.startswith("azure://"):
         connection_string = os.environ.get("AZURE_STORAGE_CONNECTION_STRING")
         if not connection_string:
