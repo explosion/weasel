@@ -1,12 +1,11 @@
 from collections import defaultdict
 from typing import Any, Dict, List, Optional, Type, Union
 
-try:
-    from pydantic.v1 import BaseModel, Field, StrictStr, ValidationError, root_validator
-except ImportError:
-    from pydantic import BaseModel, Field, StrictStr, ValidationError, root_validator  # type: ignore
-
+from pydantic import VERSION as PYDANTIC_VERSION
+from pydantic import BaseModel, Field, StrictStr, ValidationError
 from wasabi import msg
+
+IS_PYDANTIC_V2 = PYDANTIC_VERSION.startswith("2.")
 
 
 def validate(schema: Type[BaseModel], obj: Dict[str, Any]) -> List[str]:
@@ -39,11 +38,19 @@ class ProjectConfigAssetGitItem(BaseModel):
     # fmt: on
 
 
+CHECKSUM_REGEX = r"([a-fA-F\d]{32})"
+ChecksumField = (
+    Field(None, title="MD5 hash of file", pattern=CHECKSUM_REGEX)
+    if IS_PYDANTIC_V2
+    else Field(None, title="MD5 hash of file", regex=CHECKSUM_REGEX)
+)
+
+
 class ProjectConfigAssetURL(BaseModel):
     # fmt: off
     dest: StrictStr = Field(..., title="Destination of downloaded asset")
     url: Optional[StrictStr] = Field(None, title="URL of asset")
-    checksum: Optional[str] = Field(None, title="MD5 hash of file", regex=r"([a-fA-F\d]{32})")
+    checksum: Optional[str] = ChecksumField
     description: StrictStr = Field("", title="Description of asset")
     # fmt: on
 
@@ -51,12 +58,12 @@ class ProjectConfigAssetURL(BaseModel):
 class ProjectConfigAssetGit(BaseModel):
     # fmt: off
     git: ProjectConfigAssetGitItem = Field(..., title="Git repo information")
-    checksum: Optional[str] = Field(None, title="MD5 hash of file", regex=r"([a-fA-F\d]{32})")
+    checksum: Optional[str] = ChecksumField
     description: Optional[StrictStr] = Field(None, title="Description of asset")
     # fmt: on
 
 
-class ProjectConfigCommand(BaseModel):
+class ProjectConfigCommandBase(BaseModel):
     # fmt: off
     name: StrictStr = Field(..., title="Name of command")
     help: Optional[StrictStr] = Field(None, title="Command description")
@@ -67,12 +74,40 @@ class ProjectConfigCommand(BaseModel):
     no_skip: bool = Field(False, title="Never skip this command, even if nothing changed")
     # fmt: on
 
-    class Config:
-        title = "A single named command specified in a project config"
-        extra = "forbid"
+
+PROJECT_CONFIG_COMMAND_TITLE = "A single named command specified in a project config"
+
+if IS_PYDANTIC_V2:
+
+    class ProjectConfigCommand(ProjectConfigCommandBase):
+        model_config = {
+            "title": PROJECT_CONFIG_COMMAND_TITLE,
+            "extra": "forbid",
+        }
+
+else:
+
+    class ProjectConfigCommand(ProjectConfigCommandBase):  # type: ignore[no-redef]
+        class Config:
+            title = PROJECT_CONFIG_COMMAND_TITLE
+            extra = "forbid"
 
 
-class ProjectConfigSchema(BaseModel):
+def check_legacy_keys(obj: Dict[str, Any]) -> Dict[str, Any]:
+    if "spacy_version" in obj:
+        msg.warn(
+            "Your project configuration file includes a `spacy_version` key, "
+            "which is now deprecated. Weasel will not validate your version of spaCy.",
+        )
+    if "check_requirements" in obj:
+        msg.warn(
+            "Your project configuration file includes a `check_requirements` key, "
+            "which is now deprecated. Weasel will not validate your requirements.",
+        )
+    return obj
+
+
+class ProjectConfigSchemaBase(BaseModel):
     # fmt: off
     vars: Dict[StrictStr, Any] = Field({}, title="Optional variables to substitute in commands")
     env: Dict[StrictStr, Any] = Field({}, title="Optional variable names to substitute in commands, mapped to environment variable names")
@@ -82,19 +117,27 @@ class ProjectConfigSchema(BaseModel):
     title: Optional[str] = Field(None, title="Project title")
     # fmt: on
 
-    class Config:
-        title = "Schema for project configuration file"
 
-    @root_validator(pre=True)
-    def check_legacy_keys(cls, obj: Dict[str, Any]) -> Dict[str, Any]:
-        if "spacy_version" in obj:
-            msg.warn(
-                "Your project configuration file includes a `spacy_version` key, "
-                "which is now deprecated. Weasel will not validate your version of spaCy.",
-            )
-        if "check_requirements" in obj:
-            msg.warn(
-                "Your project configuration file includes a `check_requirements` key, "
-                "which is now deprecated. Weasel will not validate your requirements.",
-            )
-        return obj
+PROJECT_CONFIG_TITLE = "Schema for project configuration file"
+
+if IS_PYDANTIC_V2:
+    from pydantic import model_validator
+
+    class ProjectConfigSchema(ProjectConfigSchemaBase):
+        model_config = {"title": PROJECT_CONFIG_TITLE}
+
+        @model_validator(mode="before")
+        @classmethod
+        def check_legacy_keys(cls, obj: Dict[str, Any]) -> Dict[str, Any]:
+            return check_legacy_keys(obj)
+
+else:
+    from pydantic import root_validator
+
+    class ProjectConfigSchema(ProjectConfigSchemaBase):  # type: ignore[no-redef]
+        class Config:
+            title = PROJECT_CONFIG_TITLE
+
+        @root_validator(pre=True)
+        def check_legacy_keys(cls, obj: Dict[str, Any]) -> Dict[str, Any]:
+            return check_legacy_keys(obj)
