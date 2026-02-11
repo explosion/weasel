@@ -12,12 +12,13 @@ from weasel.util import get_git_version
 runner = CliRunner()
 
 
-@pytest.mark.parametrize("cmd", ["--help"])
+@pytest.mark.parametrize("cmd", [None, "--help"])
 def test_show_help(cmd):
     """Basic test to confirm help text appears"""
-    # This test used to exercise the no-args help as well but
-    # it no longer seems to work in typer-slim. Maybe I'm doing it wrong?
-    result = runner.invoke(app, [cmd])
+    if cmd:
+        result = runner.invoke(app, [cmd])
+    else:
+        result = runner.invoke(app)
     for line in HELP.splitlines():
         assert line in result.stdout
 
