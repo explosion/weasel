@@ -26,8 +26,7 @@ def is_compatible_version(
         version = Version(version)  # type: ignore[assignment]
     except (InvalidSpecifier, InvalidVersion):
         return None
-    spec.prereleases = prereleases
-    return version in spec
+    return spec.contains(version, prereleases=prereleases)
 
 
 def get_minor_version(version: str) -> Optional[str]:
