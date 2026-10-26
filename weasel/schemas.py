@@ -1,14 +1,8 @@
 from collections import defaultdict
 from typing import Any, Dict, List, Optional, Type, Union
 
-from pydantic import (
-    BaseModel,
-    ConfigDict,
-    Field,
-    StrictStr,
-    ValidationError,
-    model_validator,
-)
+from pydantic import BaseModel, ConfigDict, Field, StrictStr, ValidationError
+from pydantic import model_validator
 from wasabi import msg
 
 
