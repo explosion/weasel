@@ -90,14 +90,20 @@ class RemoteStorage:
                     def is_within_directory(directory, target):
                         abs_directory = os.path.abspath(directory)
                         abs_target = os.path.abspath(target)
-                        prefix = os.path.commonprefix([abs_directory, abs_target])
-                        return prefix == abs_directory
+                        # commonpath compares whole path components, so a
+                        # sibling like "/root2" isn't treated as inside "/root"
+                        try:
+                            common = os.path.commonpath([abs_directory, abs_target])
+                        except ValueError:
+                            # Paths on different drives (Windows)
+                            return False
+                        return common == abs_directory
 
                     def safe_extract(tar, path):
                         for member in tar.getmembers():
                             member_path = os.path.join(path, member.name)
                             if not is_within_directory(path, member_path):
-                                raise ValueError(Errors.E201)
+                                raise ValueError(Errors.E801)
                         if sys.version_info >= (3, 12):
                             tar.extractall(path, filter="data")
                         else:

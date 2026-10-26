@@ -1,4 +1,5 @@
 import os
+import tarfile
 import time
 from pathlib import Path
 
@@ -157,6 +158,26 @@ def test_local_remote_storage():
             remote.pull(filename)
             with loc_file.open(mode="r") as file_:
                 assert file_.read() == content
+
+
+def test_local_remote_storage_pull_rejects_sibling_path():
+    # A member that escapes into a sibling directory sharing the root's name
+    # as a string prefix ("root2" vs "root") must be rejected
+    with make_tempdir() as d:
+        filename = Path("a.txt")
+        root = d / "root"
+        root.mkdir()
+        (root / filename).write_text("content")
+        remote = RemoteStorage(root, str(d / "remote"))
+        url = remote.push(filename, "aaaa", "bbbb")
+        evil = d / "evil.txt"
+        evil.write_text("evil")
+        with tarfile.open(str(url), mode="w:gz") as tar_file:
+            tar_file.add(str(evil), arcname="../root2/evil.txt")
+        (root / filename).unlink()
+        with pytest.raises(ValueError):
+            remote.pull(filename)
+        assert not (d / "root2").exists()
 
 
 def test_local_remote_storage_pull_missing():
