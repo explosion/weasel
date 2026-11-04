@@ -10,11 +10,11 @@ if TYPE_CHECKING:
     from cloudpathlib import CloudPath
 
 
-def upload_file(src: Path, dest: Union[str, "CloudPath"]) -> None:
+def upload_file(src: Path, dest: Union[str, Path, "CloudPath"]) -> None:
     """Upload a file.
 
     src (Path): The source path.
-    url (str): The destination URL to upload to.
+    dest (Union[str, Path, CloudPath]): The destination path or URL.
     """
     import smart_open
 
@@ -35,11 +35,11 @@ def upload_file(src: Path, dest: Union[str, "CloudPath"]) -> None:
 
 
 def download_file(
-    src: Union[str, "CloudPath"], dest: Path, *, force: bool = False
+    src: Union[str, Path, "CloudPath"], dest: Path, *, force: bool = False
 ) -> None:
     """Download a file using smart_open.
 
-    url (str): The URL of the file.
+    src (Union[str, Path, CloudPath]): The source path or URL.
     dest (Path): The destination path.
     force (bool): Whether to force download even if file exists.
         If False, the download will be skipped.

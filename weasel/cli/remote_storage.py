@@ -16,6 +16,10 @@ if TYPE_CHECKING:
     from cloudpathlib import CloudPath
 
 
+# Python 3.12+, and the 3.8.17 / 3.9.17 / 3.10.12 / 3.11.4 security backports
+HAS_TAR_FILTERS = hasattr(tarfile, "data_filter")
+
+
 def is_within_directory(directory: "os.PathLike[str] | str", target: str) -> bool:
     abs_directory = os.path.abspath(directory)
     abs_target = os.path.abspath(target)
@@ -37,10 +41,8 @@ def safe_extract(tar: tarfile.TarFile, path: "os.PathLike[str] | str") -> None:
     for member in members:
         if not is_within_directory(path, os.path.join(path, member.name)):
             raise ValueError(Errors.E801)
-    if hasattr(tarfile, "data_filter"):
-        # Python 3.12+, and the 3.8.17 / 3.9.17 / 3.10.12 / 3.11.4 security
-        # backports. The "data" filter rejects links pointing outside the
-        # destination (checked against the real filesystem as members are
+    if HAS_TAR_FILTERS:
+        # The "data" filter rejects links pointing outside the destination (checked against the real filesystem as members are
         # extracted, so chained links are covered), device files, and
         # unsafe permission bits.
         tar.extractall(path, filter="data")

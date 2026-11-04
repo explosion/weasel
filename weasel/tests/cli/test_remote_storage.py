@@ -7,6 +7,7 @@ from pathlib import Path
 
 import pytest
 
+from weasel.cli import remote_storage
 from weasel.cli.remote_storage import get_site_hash, is_within_directory, safe_extract
 
 
@@ -44,10 +45,12 @@ def extract_mode(request, monkeypatch):
     """Run each test with the tarfile extraction filters available, and again
     as on a Python without them (< 3.8.17 / 3.9.17 / 3.10.12 / 3.11.4)."""
     if request.param == "filter":
-        if not hasattr(tarfile, "data_filter"):
+        if not remote_storage.HAS_TAR_FILTERS:
             pytest.skip("tarfile extraction filters not available")
     else:
-        monkeypatch.delattr(tarfile, "data_filter", raising=False)
+        # Patch weasel's flag rather than deleting tarfile.data_filter: on
+        # 3.14+ extractall() without a filter uses data_filter by default
+        monkeypatch.setattr(remote_storage, "HAS_TAR_FILTERS", False)
         # 3.12/3.13 warn about extractall() without a filter; the real
         # fallback only runs on Pythons that have no filters to warn about
         warnings.filterwarnings("ignore", category=DeprecationWarning)
@@ -141,7 +144,7 @@ def test_safe_extract_rejects_hardlink_escape(tmp_path, dirs):
 
 def test_safe_extract_fallback_refuses_internal_symlink(tmp_path, dirs, monkeypatch):
     root, _ = dirs
-    monkeypatch.delattr(tarfile, "data_filter", raising=False)
+    monkeypatch.setattr(remote_storage, "HAS_TAR_FILTERS", False)
 
     def build(tar):
         _add_file(tar, "real.txt")
