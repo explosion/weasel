@@ -18,8 +18,8 @@ repos:
       - id: detect-private-key
       # - id: requirements-txt-fixer
 
-  - repo: https://github.com/charliermarsh/ruff-pre-commit
-    rev: v0.0.254
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.15.7
     hooks:
       - id: ruff
         args: [--fix, --exit-non-zero-on-fix]
@@ -29,7 +29,6 @@ repos:
     hooks:
       - id: mypy
         additional_dependencies:
-          - "types-requests"
           - "types-setuptools"
           - "pydantic"
 

@@ -106,8 +106,8 @@ def test_project_config_interpolation(int_value):
     with make_tempdir() as d:
         srsly.write_yaml(d / "project.yml", project)
         cfg = load_project_config(d)
-    assert type(cfg) == dict
-    assert type(cfg["commands"]) == list
+    assert type(cfg) is dict
+    assert type(cfg["commands"]) is list
     assert cfg["commands"][0]["script"][0] == "hello 10 foo"
     assert cfg["commands"][1]["script"][0] == "foo true"
     commands = [{"name": "x", "script": ["hello ${vars.a} ${vars.b.e}"]}]
@@ -130,8 +130,8 @@ def test_project_config_interpolation_override(greeting):
     with make_tempdir() as d:
         srsly.write_yaml(d / "project.yml", project)
         cfg = load_project_config(d, overrides=overrides)
-    assert type(cfg) == dict
-    assert type(cfg["commands"]) == list
+    assert type(cfg) is dict
+    assert type(cfg["commands"]) is list
     assert cfg["commands"][0]["script"][0] == f"hello {greeting}"
 
 

@@ -2,7 +2,7 @@
 requires = ["setuptools"]
 build-backend = "setuptools.build_meta"
 
-[tool.ruff]
+[tool.ruff.lint]
 ignore = [
     "E501",
 ]
@@ -13,7 +13,7 @@ select = [
     "Q",    # flake8-quotes
 ]
 
-[tool.ruff.per-file-ignores]
+[tool.ruff.lint.per-file-ignores]
 # Ignore unused imports in __init__ files
 "__init__.py" = ["F401"]
 
