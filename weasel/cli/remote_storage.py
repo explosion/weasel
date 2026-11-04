@@ -1,11 +1,10 @@
 import hashlib
 import os
 import site
-import sys
 import tarfile
 import urllib.parse
 from pathlib import Path
-from typing import TYPE_CHECKING, Dict, List, Optional
+from typing import TYPE_CHECKING, Dict, List, Optional, Union
 
 from wasabi import msg
 
@@ -15,6 +14,47 @@ from ..util import get_hash, make_tempdir, upload_file
 
 if TYPE_CHECKING:
     from cloudpathlib import CloudPath
+
+
+def is_within_directory(directory: "os.PathLike[str] | str", target: str) -> bool:
+    abs_directory = os.path.abspath(directory)
+    abs_target = os.path.abspath(target)
+    # commonpath compares whole path components, so a sibling like "/root2"
+    # isn't treated as inside "/root"
+    try:
+        common = os.path.commonpath([abs_directory, abs_target])
+    except ValueError:
+        # Paths on different drives (Windows)
+        return False
+    return common == abs_directory
+
+
+def safe_extract(tar: tarfile.TarFile, path: "os.PathLike[str] | str") -> None:
+    """Extract a tar file pulled from a remote, refusing anything that could
+    write outside of `path` (CVE-2007-4559, directory traversal).
+    """
+    members = tar.getmembers()
+    for member in members:
+        if not is_within_directory(path, os.path.join(path, member.name)):
+            raise ValueError(Errors.E801)
+    if hasattr(tarfile, "data_filter"):
+        # Python 3.12+, and the 3.8.17 / 3.9.17 / 3.10.12 / 3.11.4 security
+        # backports. The "data" filter rejects links pointing outside the
+        # destination (checked against the real filesystem as members are
+        # extracted, so chained links are covered), device files, and
+        # unsafe permission bits.
+        tar.extractall(path, filter="data")
+    else:
+        # Without the extraction filters a symlink or hard link member can
+        # point outside the destination and a later member can write through
+        # it. Lexical checks on link targets can be defeated by chaining
+        # links, so links (and special files) are refused outright. Outputs
+        # that legitimately contain symlinks can only be pulled on a Python
+        # that has the extraction filters.
+        for member in members:
+            if not (member.isfile() or member.isdir()):
+                raise ValueError(Errors.E802.format(name=member.name))
+        tar.extractall(path)
 
 
 class RemoteStorage:
@@ -29,7 +69,9 @@ class RemoteStorage:
         self.url = ensure_pathy(url)
         self.compression = compression
 
-    def push(self, path: Path, command_hash: str, content_hash: str) -> "CloudPath":
+    def push(
+        self, path: Path, command_hash: str, content_hash: str
+    ) -> Union["CloudPath", Path]:
         """Compress a file or directory within a project and upload it to a remote
         storage. If an object exists at the full URL, nothing is done.
 
@@ -48,7 +90,7 @@ class RemoteStorage:
         with make_tempdir() as tmp:
             tar_loc = tmp / self.encode_name(str(path))
             mode_string = f"w:{self.compression}" if self.compression else "w"
-            with tarfile.open(tar_loc, mode=mode_string) as tar_file:
+            with tarfile.open(tar_loc, mode=mode_string) as tar_file:  # type: ignore[call-overload]
                 tar_file.add(str(loc), arcname=str(path))
             upload_file(tar_loc, url)
         return url
@@ -59,7 +101,7 @@ class RemoteStorage:
         *,
         command_hash: Optional[str] = None,
         content_hash: Optional[str] = None,
-    ) -> Optional["CloudPath"]:
+    ) -> Optional[Union["CloudPath", Path]]:
         """Retrieve a file from the remote cache. If the file already exists,
         nothing is done.
 
@@ -81,34 +123,9 @@ class RemoteStorage:
                 tar_loc = tmp / url.parts[-1]
                 download_file(url, tar_loc)
                 mode_string = f"r:{self.compression}" if self.compression else "r"
-                with tarfile.open(tar_loc, mode=mode_string) as tar_file:
+                with tarfile.open(tar_loc, mode=mode_string) as tar_file:  # type: ignore[call-overload]
                     # This requires that the path is added correctly, relative
                     # to root. This is how we set things up in push()
-
-                    # Disallow paths outside the current directory for the tar
-                    # file (CVE-2007-4559, directory traversal vulnerability)
-                    def is_within_directory(directory, target):
-                        abs_directory = os.path.abspath(directory)
-                        abs_target = os.path.abspath(target)
-                        # commonpath compares whole path components, so a
-                        # sibling like "/root2" isn't treated as inside "/root"
-                        try:
-                            common = os.path.commonpath([abs_directory, abs_target])
-                        except ValueError:
-                            # Paths on different drives (Windows)
-                            return False
-                        return common == abs_directory
-
-                    def safe_extract(tar, path):
-                        for member in tar.getmembers():
-                            member_path = os.path.join(path, member.name)
-                            if not is_within_directory(path, member_path):
-                                raise ValueError(Errors.E801)
-                        if sys.version_info >= (3, 12):
-                            tar.extractall(path, filter="data")
-                        else:
-                            tar.extractall(path)
-
                     safe_extract(tar_file, self.root)
         return url
 
@@ -118,7 +135,7 @@ class RemoteStorage:
         *,
         command_hash: Optional[str] = None,
         content_hash: Optional[str] = None,
-    ) -> Optional["CloudPath"]:
+    ) -> Optional[Union["CloudPath", Path]]:
         """Find the best matching version of a file within the storage,
         or `None` if no match can be found. If both the creation and content hash
         are specified, only exact matches will be returned. Otherwise, the most
@@ -148,7 +165,9 @@ class RemoteStorage:
                 )
         return urls[-1] if urls else None
 
-    def make_url(self, path: Path, command_hash: str, content_hash: str) -> "CloudPath":
+    def make_url(
+        self, path: Path, command_hash: str, content_hash: str
+    ) -> Union["CloudPath", Path]:
         """Construct a URL from a subpath, a creation hash and a content hash."""
         return self.url / self.encode_name(str(path)) / command_hash / content_hash
 
@@ -183,15 +202,17 @@ def get_site_hash():
     """
     site_dirs = site.getsitepackages()
     if site.ENABLE_USER_SITE:
-        site_dirs.extend(site.getusersitepackages())
+        site_dirs.append(site.getusersitepackages())
     packages = set()
     for site_dir in site_dirs:
-        site_dir = Path(site_dir)
-        for subpath in site_dir.iterdir():
+        site_path = Path(site_dir)
+        if not site_path.is_dir():
+            continue
+        for subpath in site_path.iterdir():
             if subpath.parts[-1].endswith("dist-info"):
                 packages.add(subpath.parts[-1].replace(".dist-info", ""))
     package_bytes = "".join(sorted(packages)).encode("utf8")
-    return hashlib.md5sum(package_bytes).hexdigest()
+    return hashlib.md5(package_bytes).hexdigest()
 
 
 def get_env_hash(env: Dict[str, str]) -> str:
