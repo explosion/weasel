@@ -77,7 +77,7 @@ def project_document(
         md.add(md.table(data, ["Workflow", "Steps"]))
     # Assets
     assets = config.get("assets", [])
-    data = []
+    asset_data = []
     for a in assets:
         source = "Git" if a.get("git") else "URL" if a.get("url") else "Local"
         dest_path = a["dest"]
@@ -87,11 +87,11 @@ def project_document(
             with working_dir(project_dir) as p:
                 if (p / dest_path).exists():
                     dest = md.link(dest, dest_path)
-        data.append((dest, source, a.get("description", "")))
-    if data:
+        asset_data.append((dest, source, a.get("description", "")))
+    if asset_data:
         md.add(md.title(3, "Assets", "🗂"))
         md.add(INTRO_ASSETS)
-        md.add(md.table(data, ["File", "Source", "Description"]))
+        md.add(md.table(asset_data, ["File", "Source", "Description"]))
     md.add(MARKER_END.format(tag="WEASEL"))
     # Output result
     if is_stdout:
