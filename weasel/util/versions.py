@@ -18,6 +18,9 @@ def is_compatible_version(
     RETURNS (bool / None): Whether the version is compatible, or None if the
         version or constraint are invalid.
     """
+    # An empty constraint is invalid, not "no constraint".
+    if not constraint:
+        return None
     # Handle cases where exact version is provided as constraint
     if constraint[0].isdigit():
         constraint = f"=={constraint}"
